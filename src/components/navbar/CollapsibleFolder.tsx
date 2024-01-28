@@ -26,27 +26,29 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
 
   return (
     <Collapsible onOpenChange={setOpen}>
-      <CollapsibleTrigger className="w-full px-2">
-        <Route
+      <div className="px-2">
+        <Route  
           isLink={false}
           path={`/dashboard/${folder.id}`}
           icon={folder.icon_id}
           left={
-            <RouteButton fixed={false}>
-              <ChevronDownIcon
-                width={14}
-                height={14}
-                color="grey"
-                className={clsx(onOpenTransition, "transition-all")}
-              />
-            </RouteButton>
+            <CollapsibleTrigger>
+              <RouteButton type="hover">
+                <ChevronDownIcon
+                  width={14}
+                  height={14}
+                  color="grey"
+                  className={clsx(onOpenTransition, "transition-all")}
+                />
+              </RouteButton>
+            </CollapsibleTrigger>
           }
           right={
             <>
-              <RouteButton fixed={false} hidden className="z-[1000] relative">
+              <RouteButton type="hidden" className="">
                 <DotsHorizontalIcon width={14} height={14} color="grey" />
               </RouteButton>
-              <RouteButton fixed={false} hidden>
+              <RouteButton type="hidden">
                 <PlusIcon width={14} height={14} color="grey" />
               </RouteButton>
             </>
@@ -54,27 +56,18 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
         >
           {folder.title}
         </Route>
-      </CollapsibleTrigger>
+      </div>
       <CollapsibleContent>
         <div className="flex flex-col gap-[2.5px] px-2 pl-8">
           {filesFolder.map((file) => {
             return (
               <Route
                 isLink
-                path={`/dashboard/${
-                  functions.filter((func) => func.id === file.function_id)[0].id
-                }`}
+                path={`/dashboard/${file.id}`}
                 right={
                   <>
-                    <RouteButton
-                      fixed={false}
-                      hidden
-                      className="z-[1000] relative"
-                    >
+                    <RouteButton type="hidden" className="z-[1000] relative">
                       <DotsHorizontalIcon width={14} height={14} color="grey" />
-                    </RouteButton>
-                    <RouteButton fixed={false} hidden>
-                      <PlusIcon width={14} height={14} color="grey" />
                     </RouteButton>
                   </>
                 }

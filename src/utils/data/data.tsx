@@ -115,6 +115,7 @@ export const functions: Function[] = [
     title: "Calorie Counter",
     data: "",
     created_at: "",
+    icon_id: "🧮",
   },
 ];
 
@@ -127,14 +128,14 @@ export const files: File[] = [
     created_at: "",
   },
   {
-    id: "0b536308-55f3-4b74-a34e-4510e0a434d4",
+    id: "5efb1924-11de-476b-86ca-4d0c5f31a392",
     function_id: "07097ecc-ba60-4c45-b6f6-7b91df6a5ac2",
     folder_id: "3cfbff41-a704-453e-baba-6154243fe3ef",
     workspace_id: "5ae778c2-cfac-4767-ad57-f46539f497c4",
     created_at: "",
   },
   {
-    id: "0b536308-55f3-4b74-a34e-4510e0a434d4",
+    id: "35186ba1-cd2b-44da-bd72-16c461b38293",
     function_id: "9fd9f418-e7c5-41f8-8c1d-950a532afd8e",
     folder_id: "3cfbff41-a704-453e-baba-6154243fe3ef",
     workspace_id: "5ae778c2-cfac-4767-ad57-f46539f497c4",

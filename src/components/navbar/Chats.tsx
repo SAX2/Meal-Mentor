@@ -17,7 +17,7 @@ const Chats = ({ userId }: { userId: string }) => {
       <CollapsibleTrigger className="w-full">
         <div className="px-3 pt-2 pb-0 flex items-center justify-between">
           <h1 className="text-xs font-medium text-grey">Chats</h1>
-          <RouteButton fixed={false}>
+          <RouteButton type="hover">
             <div>
               <ChevronDownIcon
                 width={14}

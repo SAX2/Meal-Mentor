@@ -31,7 +31,7 @@ const Navbar: React.FC<NavbarProps> = ({ params, className }) => {
               path={`/dashboard/${route.path}`}
               right={
                 route.additional == null ? null : (
-                  <RouteButton fixed>
+                  <RouteButton type="fixed">
                     <p className="text-sm text-grey">{route.additional}</p>
                   </RouteButton>
                 )

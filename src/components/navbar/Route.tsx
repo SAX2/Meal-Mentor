@@ -49,7 +49,7 @@ const Route: React.FC<RouteProps> = ({
           {children}
         </div>
       </div>
-      <div className="flex items-center gap-[2.5px]">{right}</div>
+      {right && <div className="flex items-center gap-[2.5px]">{right}</div>}
     </>
   );
 
@@ -70,21 +70,21 @@ const Route: React.FC<RouteProps> = ({
 
 const RouteButton: React.FC<{
   children: React.ReactNode;
-  fixed: boolean;
-  hidden?: boolean;
+  type: 'hidden' | 'fixed' | 'hover';
   className?: string;
-}> = ({ children, fixed, hidden, className }) => {
-  const isFixed = fixed
-    ? "bg-white-2-sec-2"
-    : "bg-transparent hover:bg-white-2-sec-2 transition-colors ease-in-out duration-75";
-  const isHidden = hidden ? "opacity-0 group-hover:opacity-100" : "";
+}> = ({ children, className, type }) => {
+  
+  const isFixed = type == "fixed" && "bg-white-2-sec-2";
+  const isHidden = type == 'hidden' && "transition-opacity ease-in-out duration-150 opacity-0 group-hover:opacity-100 bg-transparent hover:bg-white-2-sec-2";
+  const isHover = type == 'hover' && "bg-transparent hover:bg-white-2-sec-2"
 
   return (
     <div
       className={clsx(
-        "h-5 w-5 flex items-center justify-center rounded-md transition-opacity ease-in-out duration-150",
+        "h-5 w-5 flex items-center justify-center rounded-md transition-colors ease-in-out duration-150",
         isFixed,
         isHidden,
+        isHover,
         className
       )}
     >

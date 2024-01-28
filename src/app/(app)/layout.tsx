@@ -5,7 +5,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="bg-white w-full h-dvh flex">
       <Navbar />
-      <div className="p-8">{children}</div>
+      <div className='w-full'>{children}</div>
     </div>
   );
 };

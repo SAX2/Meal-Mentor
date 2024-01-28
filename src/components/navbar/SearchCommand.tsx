@@ -4,7 +4,7 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
-  CommandList
+  CommandList,
 } from "@/components/ui/command";
 import React, { useRef } from "react";
 
@@ -28,7 +28,7 @@ export const SearchCommand = ({
   }, []);
 
   return (
-    <CommandDialog onOpenChange={setOpen} open={open}>
+    <CommandDialog onOpenChange={setOpen} open={open} modal>
       <CommandInput placeholder={`Search...`} className="" />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
