@@ -1,9 +1,9 @@
-import { files, folders, functions } from '@/utils/data/data';
 import React from 'react'
+import { files, folders, functions } from '@/utils/data/data';
 import { Route, routeClassname } from './navbar/Route';
 import { ChevronRightIcon, ShareIcon, StarIcon } from 'lucide-react';
-import clsx from 'clsx';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import clsx from 'clsx';
 
 const DocumentTopBar = ({ id }: { id: string }) => {
   const file = files.filter((file) => file.id === id)[0];
@@ -15,14 +15,14 @@ const DocumentTopBar = ({ id }: { id: string }) => {
       <div className="h-[46px] flex items-center">
         <div className="w-fit flex gap-3 items-center">
           <Route
-            isLink={false}
+            isLink
             path={`/dashboard/${folder.id}`}
             icon={folder.icon_id}
           >
             <p className="truncate">{folder.title}</p>
           </Route>
           <ChevronRightIcon width={14} height={14} className="grey" />
-          <Route icon={item.icon_id} path={`/dashboard/${file.id}`} isLink>
+          <Route icon={item.icon_id} path={`/dashboard/${file.folder_id}/${file.id}`} isLink>
             <p className="truncate">{item.title}</p>
           </Route>
         </div>

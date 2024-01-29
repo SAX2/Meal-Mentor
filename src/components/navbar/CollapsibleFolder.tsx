@@ -28,7 +28,7 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
     <Collapsible onOpenChange={setOpen}>
       <div className="px-2">
         <Route  
-          isLink={false}
+          isLink
           path={`/dashboard/${folder.id}`}
           icon={folder.icon_id}
           left={
@@ -62,8 +62,9 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
           {filesFolder.map((file) => {
             return (
               <Route
+                key={file.id}
                 isLink
-                path={`/dashboard/${file.id}`}
+                path={`/dashboard/${file.folder_id}/${file.id}`}
                 right={
                   <>
                     <RouteButton type="hidden" className="z-[1000] relative">
