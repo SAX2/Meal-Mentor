@@ -53,16 +53,11 @@ export interface Types {
     };
     files: {
       id: string | null;
-      function_id: string | null;
-      workspace_id: string | null;
-      folder_id: string | null;
-      created_at: string | null;
-    };
-    functions: {
-      id: string | null;
       title: string | null;
       icon_id?: string;
       data: string | null;
+      workspace_id: string | null;
+      folder_id: string | null;
       created_at: string | null;
     };
   };
@@ -71,7 +66,6 @@ export interface Types {
 export type User = Types["public"]["users"];
 export type Item = Types["public"]["items"];
 export type Chat = Types["public"]["chats"];
-export type Function = Types["public"]["functions"];
 export type Workspace = Types["public"]["workspaces"];
 export type Collaborators = Types["public"]["collaborators"];
 export type Folder = Types["public"]["folder"];

@@ -1,13 +1,12 @@
-'use client';
+"use client";
 
-import { File, Folder } from "@/utils/data"
-import React, { useState } from "react"
+import { File, Folder } from "@/utils/data";
+import React, { useState } from "react";
 import { Collapsible, CollapsibleTrigger } from "../ui/collapsible";
 import { Route, RouteButton } from "./Route";
 import { ChevronDownIcon, PlusIcon } from "lucide-react";
 import clsx from "clsx";
 import { CollapsibleContent } from "@radix-ui/react-collapsible";
-import { functions } from "@/utils/data/data";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 interface CollapsibleFolderProps {
   files: File[];
@@ -18,16 +17,16 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
   files,
   folder,
 }) => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
-  const onOpenTransition = open ? '' : 'rotate-[-90deg]';
+  const onOpenTransition = open ? "" : "rotate-[-90deg]";
 
   const filesFolder = files.filter((file) => file.folder_id === folder.id);
 
   return (
     <Collapsible onOpenChange={setOpen}>
       <div className="px-2">
-        <Route  
+        <Route
           isLink
           path={`/dashboard/${folder.id}`}
           icon={folder.icon_id}
@@ -72,11 +71,9 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
                     </RouteButton>
                   </>
                 }
+                icon={file.icon_id}
               >
-                {
-                  functions.filter((func) => func.id === file.function_id)[0]
-                    .title
-                }
+                {file.title}
               </Route>
             );
           })}
