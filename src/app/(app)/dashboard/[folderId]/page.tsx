@@ -1,9 +1,9 @@
-import React from 'react'
+import React from "react";
 
-const page = () => {
-  return (
-    <div>page</div>
-  )
-}
+const page = ({ params }: { params: { folderId: string } }) => {
+  const { folderId } = params;
+
+  return <div>{folderId}</div>;
+};
 
 export default page;
