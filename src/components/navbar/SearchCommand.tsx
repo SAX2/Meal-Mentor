@@ -6,7 +6,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import React, { useRef } from "react";
+import React from "react";
 
 export const SearchCommand = ({
   setOpen,

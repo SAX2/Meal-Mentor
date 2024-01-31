@@ -1,15 +1,22 @@
-import { files, folders, routes, user } from '@/utils/data/data';
+import { files, folders, routes, user } from "@/utils/data/data";
 import React from "react";
-import UserCard from './UserCard';
-import { Separator } from '../ui/separator';
-import Search from './Search';
-import { Route, RouteButton, routeClassname } from './Route';
-import Chats from './Chats';
-import CollapsibleFolder from './CollapsibleFolder';
+import UserCard from "./UserCard";
+import { Separator } from "../ui/separator";
+import Search from "./Search";
+import { Route, RouteButton, routeClassname } from "./Route";
+import Chats from "./Chats";
+import CollapsibleFolder from "./CollapsibleFolder";
+import {
+  Dialog,
+  DialogContent,
+  DialogOverlay,
+  DialogTrigger,
+} from "../ui/dialog";
+import SettingsDialogContent from "./SettingsDialogContent";
 
 interface NavbarProps {
-  params?: { workspaceId: string },
-  className?: string,
+  params?: { workspaceId: string };
+  className?: string;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ params, className }) => {
@@ -24,7 +31,7 @@ const Navbar: React.FC<NavbarProps> = ({ params, className }) => {
       </div>
       <div className="p-[5px] flex flex-col gap-[2.5px]">
         {routes.map((route) => {
-          return (
+          const routeElement = (
             <Route
               key={route.path}
               isLink={route.isLink}
@@ -41,6 +48,19 @@ const Navbar: React.FC<NavbarProps> = ({ params, className }) => {
               {route.title}
             </Route>
           );
+
+          if (route.path === "/settings") {
+            return (
+              <Dialog>
+                <DialogTrigger>{routeElement}</DialogTrigger>
+                <DialogContent className="max-w-3xl min-h-[450px] h-fit p-0">
+                  <SettingsDialogContent />
+                </DialogContent>
+              </Dialog>
+            );
+          }
+
+          return routeElement;
         })}
       </div>
       <div className="p-[5px]">
@@ -63,4 +83,4 @@ const Navbar: React.FC<NavbarProps> = ({ params, className }) => {
   );
 };
 
-export default Navbar
+export default Navbar;
