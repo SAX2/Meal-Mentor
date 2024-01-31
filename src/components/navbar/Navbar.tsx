@@ -12,7 +12,6 @@ import {
   DialogOverlay,
   DialogTrigger,
 } from "../ui/dialog";
-import SettingsDialogContent from "./SettingsDialogContent";
 
 interface NavbarProps {
   params?: { workspaceId: string };
