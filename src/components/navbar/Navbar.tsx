@@ -35,7 +35,7 @@ const Navbar: React.FC<NavbarProps> = ({ params, className }) => {
             <Route
               key={route.path}
               isLink={route.isLink}
-              path={`/dashboard/${route.path}`}
+              path={`/dashboard${route.path}`}
               right={
                 route.additional == null ? null : (
                   <RouteButton type="fixed">
@@ -49,16 +49,16 @@ const Navbar: React.FC<NavbarProps> = ({ params, className }) => {
             </Route>
           );
 
-          if (route.path === "/settings") {
-            return (
-              <Dialog>
-                <DialogTrigger>{routeElement}</DialogTrigger>
-                <DialogContent className="max-w-3xl min-h-[450px] h-fit p-0">
-                  <SettingsDialogContent />
-                </DialogContent>
-              </Dialog>
-            );
-          }
+          // if (route.path === "/settings") {
+          //   return (
+          //     <Dialog>
+          //       <DialogTrigger>{routeElement}</DialogTrigger>
+          //       <DialogContent className="max-w-3xl min-h-[450px] h-fit p-0">
+          //         <SettingsDialogContent />
+          //       </DialogContent>
+          //     </Dialog>
+          //   );
+          // }
 
           return routeElement;
         })}

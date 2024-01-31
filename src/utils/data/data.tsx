@@ -1,4 +1,4 @@
-import { ActivityIcon, BellIcon, CalendarIcon, Settings2Icon } from "lucide-react";
+import { ActivityIcon, BellIcon, CalendarIcon, LanguagesIcon, ReceiptIcon, Settings2Icon, StarIcon, UserIcon } from "lucide-react";
 import { Chat, Collaborators, File, Folder, Item, User, Workspace } from ".";
 
 export const user: User = {
@@ -28,7 +28,7 @@ export const routes: Item[] = [
     additional: null,
   },
   {
-    isLink: false,
+    isLink: true,
     path: "/settings",
     type: "settings",
     title: "Settings",
@@ -41,6 +41,52 @@ export const routes: Item[] = [
     title: "Scheduler",
     icon: <CalendarIcon width={16} height={16} />,
     additional: null,
+  },
+];
+
+export const routesSettings: Item[] = [
+  {
+    isLink: true,
+    path: '/user',
+    title: "User",
+    icon: <UserIcon width={16} height={16} />,
+    additional: null
+  },
+  {
+    isLink: true, 
+    path: "/bill-management",
+    title: "Bill management",
+    icon: <ReceiptIcon width={16} height={16} />,
+    additional: null,
+  },
+  {
+    isLink: true, 
+    path: "/subscription",
+    title: "Subscription",
+    icon: <StarIcon width={16} height={16} />,
+    additional: null,
+  },
+  {
+    isLink: true, 
+    path: "/notifications",
+    title: "Notifications",
+    icon: <BellIcon width={16} height={16} />,
+    additional: null,
+  },
+  {
+    isLink: true, 
+    path: "/language-settings",
+    title: "Language settings",
+    icon: <LanguagesIcon width={16} height={16} />,
+    additional: null,
+  },
+  {
+    isLink: false,
+    path: "/user",
+    type: "notifications",
+    title: "Notifications",
+    icon: <BellIcon width={16} height={16}/>,
+    additional: 4,
   },
 ];
 
