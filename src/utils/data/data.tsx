@@ -80,14 +80,6 @@ export const routesSettings: Item[] = [
     icon: <LanguagesIcon width={16} height={16} />,
     additional: null,
   },
-  {
-    isLink: false,
-    path: "/user",
-    type: "notifications",
-    title: "Notifications",
-    icon: <BellIcon width={16} height={16}/>,
-    additional: 4,
-  },
 ];
 
 export const chats: Chat[] = [
