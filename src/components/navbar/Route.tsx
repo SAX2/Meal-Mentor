@@ -1,7 +1,9 @@
-import clsx from 'clsx';
-import Link from 'next/link';
-import React from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import clsx from "clsx";
+import Link from "next/link";
+import React from "react";
+import EmojiRoute from "../emoji/EmojiRoute";
+import Emoji from "../emoji/Emoji";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 interface RouteProps {
   children?: React.ReactNode;
@@ -15,6 +17,7 @@ interface RouteProps {
     fallback: string | undefined;
   };
   optionsHidden?: boolean;
+  picker?: boolean;
 }
 
 export const routeClassname =
@@ -27,36 +30,43 @@ const Route: React.FC<RouteProps> = ({
   right,
   isLink,
   image,
-  left
+  left,
+  picker
 }) => {
   const renderContent = (
     <>
       <div className="flex gap-[6px] items-center h-full">
         {left && <>{left}</>}
         <div className="flex gap-[7px] items-center justify-start">
-          {image ? (
+          {image && (
             <Avatar className="w-5 h-5 rounded-sm">
               <AvatarImage src={image.src} className="object-cover" />
               <AvatarFallback className="rounded-sm bg-green-800 text-white text-xs">
                 {image.fallback}
               </AvatarFallback>
             </Avatar>
-          ) : image === undefined && icon === undefined ? (
-            <div>•</div>
-          ) : (
-            <div className="font-medium">{icon}</div>
           )}
+          {(icon && !picker) && <Emoji icon={icon.toString()} className="w-4 h-4"/>}
+          {(icon && picker) && <EmojiRoute icon={icon.toString()}/>}
+          {image === undefined && icon == undefined && <div>•</div>}
           {children}
         </div>
       </div>
-      {right && <div className="flex items-center gap-[2.5px] relative z-50">{right}</div>}
+      {right && (
+        <div className="flex items-center gap-[2.5px] relative z-50">
+          {right}
+        </div>
+      )}
     </>
   );
 
   return (
     <>
       {isLink ? (
-        <Link href={path} className={clsx(routeClassname, "justify-between relative z-0")}>
+        <Link
+          href={path}
+          className={clsx(routeClassname, "justify-between relative z-0")}
+        >
           {renderContent}
         </Link>
       ) : (
@@ -70,13 +80,14 @@ const Route: React.FC<RouteProps> = ({
 
 const RouteButton: React.FC<{
   children: React.ReactNode;
-  type: 'hidden' | 'fixed' | 'hover';
+  type: "hidden" | "fixed" | "hover";
   className?: string;
 }> = ({ children, className, type }) => {
-  
   const isFixed = type == "fixed" && "bg-white-2-sec-2";
-  const isHidden = type == 'hidden' && "transition-opacity ease-in-out duration-150 opacity-0 group-hover:opacity-100 bg-transparent hover:bg-white-2-sec-2";
-  const isHover = type == 'hover' && "bg-transparent hover:bg-white-2-sec-2"
+  const isHidden =
+    type == "hidden" &&
+    "transition-opacity ease-in-out duration-150 opacity-0 group-hover:opacity-100 bg-transparent hover:bg-white-2-sec-2";
+  const isHover = type == "hover" && "bg-transparent hover:bg-white-2-sec-2";
 
   return (
     <div

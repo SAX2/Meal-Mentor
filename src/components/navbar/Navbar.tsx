@@ -1,9 +1,9 @@
 import { files, folders, routes, user } from "@/utils/data/data";
+import { Route, RouteButton, routeClassname } from "./Route";
 import React from "react";
 import UserCard from "./UserCard";
 import { Separator } from "../ui/separator";
 import Search from "./Search";
-import { Route, RouteButton, routeClassname } from "./Route";
 import Chats from "./Chats";
 import CollapsibleFolder from "./CollapsibleFolder";
 import {
@@ -53,7 +53,6 @@ const Navbar: React.FC<NavbarProps> = ({ params, className }) => {
           //     <Dialog>
           //       <DialogTrigger>{routeElement}</DialogTrigger>
           //       <DialogContent className="max-w-3xl min-h-[450px] h-fit p-0">
-          //         <SettingsDialogContent />
           //       </DialogContent>
           //     </Dialog>
           //   );
