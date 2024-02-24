@@ -53,7 +53,7 @@ const Route: React.FC<RouteProps> = ({
           {(icon && !picker && !iconType) && <Emoji icon={icon.toString()} className="w-4 h-4"/>}
           {(icon && picker) && <EmojiRoute icon={icon.toString()}/>}
           {image === undefined && icon == undefined && <div>•</div>}
-          {children}
+          <p className="truncate">{children}</p>
         </div>
       </div>
       {right && (

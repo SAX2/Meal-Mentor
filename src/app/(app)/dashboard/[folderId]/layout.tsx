@@ -10,13 +10,13 @@ interface layoutProps {
 const layout:React.FC<layoutProps> = ({ children, params }) => {
 
   return (
-    <div className='w-full'>
+    <div className="w-full">
       <DocumentTopBar />
-      <div className='p-8'>
-        {children}
+      <div className="p-8 flex justify-center">
+        <div className='w-8/12'>{children}</div>
       </div>
     </div>
-  )
+  );
 }
 
 export default layout

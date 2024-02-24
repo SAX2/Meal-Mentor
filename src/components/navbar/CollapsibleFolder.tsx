@@ -62,7 +62,7 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
         </ContextMenu>
       </div>
       <CollapsibleContent>
-        <div className="flex flex-col gap-[2.5px] px-2 pl-8">
+        <div className="flex flex-col gap-[2.5px] px-2">
           {filesFolder.map((file) => {
             return (
               <ContextMenu type="file" id={file.id}>
@@ -71,6 +71,18 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
                   key={file.id}
                   isLink
                   path={`/dashboard/${file.folder_id}/${file.id}`}
+                  left={
+                    <div className="opacity-0">
+                      <RouteButton type="hover">
+                        <ChevronDownIcon
+                          width={14}
+                          height={14}
+                          color="grey"
+                          className={clsx(onOpenTransition, "transition-all")}
+                        />
+                      </RouteButton>
+                    </div>
+                  }
                   right={
                     <>
                       <RouteButton type="hidden" className="z-[1000] relative">

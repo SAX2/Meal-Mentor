@@ -1,11 +1,25 @@
+import { files } from '@/utils/data/data';
+import EmojiRoute from '@/components/emoji/EmojiRoute';
 import React from 'react'
+
+const fetchFile = ({ id }: { id: string }) => {
+  const res = files.filter(file => file.id === id)
+  const data = res.length >= 1 ? res[0] : null;
+  return data;
+}
 
 const page = ({ params }: { params: { documentId: string } }) => {
   const { documentId } = params;
+  const data = fetchFile({ id: documentId });
 
   return (
-    <div>{documentId}</div>
-  )
+    <div key={data?.id}>
+      <div className="flex gap-3 items-center">
+        <EmojiRoute icon={data?.icon_id} customSize="w-11 h-11" />
+        <h1 className="text-4xl font-extrabold truncate">{data?.title}</h1>
+      </div>
+    </div>
+  );
 }
 
 export default page

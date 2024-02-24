@@ -20,7 +20,7 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ params, className }) => {
   return (
-    <div className="max-w-[300px] w-full bg-white-2 border-r h-full">
+    <nav className="max-w-[300px] w-full bg-white-2 border-r h-full">
       <div className="p-[5px]">
         <UserCard user={user} />
       </div>
@@ -28,7 +28,7 @@ const Navbar: React.FC<NavbarProps> = ({ params, className }) => {
       <div className="p-[10px]">
         <Search />
       </div>
-      <div className="p-[5px] flex flex-col gap-[2.5px]">
+      <ul className="p-[5px] flex flex-col gap-[2.5px]">
         {routes.map((route) => {
           const routeElement = (
             <Route
@@ -61,12 +61,12 @@ const Navbar: React.FC<NavbarProps> = ({ params, className }) => {
 
           return routeElement;
         })}
-      </div>
+      </ul>
       <div className="p-[5px]">
         <Chats userId={user.id} />
       </div>
-      <div className="p-[5px] flex flex-col gap-[2.5px]">
-        <div>
+      <ul className="p-[5px] flex flex-col gap-[2.5px]">
+        <li>
           {folders.map((folder) => {
             return (
               <CollapsibleFolder
@@ -76,9 +76,9 @@ const Navbar: React.FC<NavbarProps> = ({ params, className }) => {
               />
             );
           })}
-        </div>
-      </div>
-    </div>
+        </li>
+      </ul>
+    </nav>
   );
 };
 

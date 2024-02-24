@@ -2,6 +2,7 @@ import React from "react";
 import { Route } from "../navbar/Route";
 import { files, folders } from "@/utils/data/data";
 import { ChevronRightIcon } from "lucide-react";
+import ContextMenu from "../context-menu/ContextMenu";
 
 const Routes = ({
   folderId,
@@ -30,22 +31,23 @@ const Routes = ({
       {items.map((item) => {
         return (
           <>
-            <Route
-              isLink
-              path={
-                item.type == "file"
-                  ? `/dashboard/${folderId}/${item.id}`
-                  : `/dashboard/${item.id}`
-              }
-              icon={item.icon_id}
-              key={item.id}
-            >
-              <p className="truncate">{item.title}</p>
-            </Route>
-            {items.length > 1 &&
-              (items.indexOf(item) < items.length - 1 && (
-                <ChevronRightIcon width={14} height={14} className="text-grey" />
-              ))}
+            <ContextMenu id={item.id} type={item.type}>
+              <Route
+                isLink
+                path={
+                  item.type == "file"
+                    ? `/dashboard/${folderId}/${item.id}`
+                    : `/dashboard/${item.id}`
+                }
+                icon={item.icon_id}
+                key={item.id}
+              >
+                <p className="truncate">{item.title}</p>
+              </Route>
+            </ContextMenu>
+            {items.length > 1 && items.indexOf(item) < items.length - 1 && (
+              <ChevronRightIcon width={14} height={14} className="text-grey" />
+            )}
           </>
         );
       })}

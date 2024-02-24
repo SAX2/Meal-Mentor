@@ -1,15 +1,21 @@
 import React from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import EmojiPicker from "./EmojiPicker";
+import clsx from "clsx";
 
-const EmojiRoute = ({ icon }: { icon: string }) => {
+interface EmojiRouteProps {
+  icon: string | undefined;
+  customSize?: string;
+}
+
+const EmojiRoute: React.FC<EmojiRouteProps> = ({ icon, customSize }) => {
   return (
     <Popover>
-      <PopoverTrigger className="w-5 h-5 hover:bg-white-2-sec-2 flex justify-center items-center transition-colors ease-in-out duration-150 rounded-md">
+      <PopoverTrigger className={clsx("hover:bg-white-2-sec-2 flex justify-center items-center transition-colors ease-in-out duration-150 rounded-md w-fit h-fit p-[2.5px]")}>
         <img
           src={`https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/${icon}.png`}
           alt={icon}
-          className="w-4 h-4"
+          className={customSize ? customSize : 'w-4 h-4'}
         />
       </PopoverTrigger>
       <PopoverContent className="h-[200px] ml-6 p-0 bg-white-2 shadow-pop">
