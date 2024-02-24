@@ -8,6 +8,8 @@ import { ChevronDownIcon, PlusIcon } from "lucide-react";
 import clsx from "clsx";
 import { CollapsibleContent } from "@radix-ui/react-collapsible";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import ContextMenu from "../context-menu/ContextMenu";
+
 interface CollapsibleFolderProps {
   files: File[];
   folder: Folder;
@@ -26,57 +28,65 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
   return (
     <Collapsible onOpenChange={setOpen}>
       <div className="px-2">
-        <Route
-          picker
-          isLink
-          path={`/dashboard/${folder.id}`}
-          icon={folder.icon_id}
-          left={
-            <CollapsibleTrigger>
-              <RouteButton type="hover">
-                <ChevronDownIcon
-                  width={14}
-                  height={14}
-                  color="grey"
-                  className={clsx(onOpenTransition, "transition-all")}
-                />
-              </RouteButton>
-            </CollapsibleTrigger>
-          }
-          right={
-            <>
-              <RouteButton type="hidden" className="">
-                <DotsHorizontalIcon width={14} height={14} color="grey" />
-              </RouteButton>
-              <RouteButton type="hidden">
-                <PlusIcon width={14} height={14} color="grey" />
-              </RouteButton>
-            </>
-          }
-        >
-          {folder.title}
-        </Route>
+        <ContextMenu type="folder" id={folder.id}>
+          <Route
+            picker
+            isLink
+            path={`/dashboard/${folder.id}`}
+            icon={folder.icon_id}
+            left={
+              <CollapsibleTrigger>
+                <RouteButton type="hover">
+                  <ChevronDownIcon
+                    width={14}
+                    height={14}
+                    color="grey"
+                    className={clsx(onOpenTransition, "transition-all")}
+                  />
+                </RouteButton>
+              </CollapsibleTrigger>
+            }
+            right={
+              <>
+                <RouteButton type="hidden" className="">
+                  <DotsHorizontalIcon width={14} height={14} color="grey" />
+                </RouteButton>
+                <RouteButton type="hidden">
+                  <PlusIcon width={14} height={14} color="grey" />
+                </RouteButton>
+              </>
+            }
+          >
+            {folder.title}
+          </Route>
+        </ContextMenu>
       </div>
       <CollapsibleContent>
         <div className="flex flex-col gap-[2.5px] px-2 pl-8">
           {filesFolder.map((file) => {
             return (
-              <Route
-                picker
-                key={file.id}
-                isLink
-                path={`/dashboard/${file.folder_id}/${file.id}`}
-                right={
-                  <>
-                    <RouteButton type="hidden" className="z-[1000] relative">
-                      <DotsHorizontalIcon width={14} height={14} color="grey" />
-                    </RouteButton>
-                  </>
-                }
-                icon={file.icon_id}
-              >
-                {file.title}
-              </Route>
+              <ContextMenu type="file" id={file.id}>
+                <Route
+                  picker
+                  key={file.id}
+                  isLink
+                  path={`/dashboard/${file.folder_id}/${file.id}`}
+                  right={
+                    <>
+                      <RouteButton type="hidden" className="z-[1000] relative">
+                        <DotsHorizontalIcon
+                          width={14}
+                          height={14}
+                          color="grey"
+                        />
+                      </RouteButton>
+                    </>
+                  }
+                  icon={file.icon_id}
+                >
+                  {file.title}
+                </Route>
+              </ContextMenu>
             );
           })}
         </div>

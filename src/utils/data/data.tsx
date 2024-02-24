@@ -1,5 +1,5 @@
-import { ActivityIcon, BellIcon, CalendarIcon, LanguagesIcon, ReceiptIcon, Settings2Icon, StarIcon, UserIcon } from "lucide-react";
-import { Chat, Collaborators, File, Folder, Item, User, Workspace } from ".";
+import { ActivityIcon, BellIcon, CalendarIcon, CopyIcon, EditIcon, LanguagesIcon, LinkIcon, PlusIcon, ReceiptIcon, Settings2Icon, StarIcon, TrashIcon, UserIcon } from "lucide-react";
+import { Chat, Collaborators, File, Folder, Item, User, Workspace, OptionsContext } from ".";
 
 export const user: User = {
   id: "2404719e-8483-4ebf-a4e3-03d03d011eac",
@@ -10,6 +10,96 @@ export const user: User = {
   payment_method: "",
   updated_at: "",
 };
+
+export const options_context: OptionsContext = [
+  {
+    type: "file",
+    group: [
+      {
+        _: [
+          {
+            icon: <StarIcon width={16} height={16} />,
+            title: "Add to favorites",
+          },
+        ]
+      },
+      {
+        _: [
+          {
+            icon: <TrashIcon width={16} height={16} />,
+            title: "Delete",
+          },
+          {
+            icon: <CopyIcon width={16} height={16} />,
+            title: "Duplicate",
+          },
+          {
+            icon: <EditIcon width={16} height={16} />,
+            title: "Edit name",
+          },
+        ],
+      },
+      {
+        _: [
+          {
+            icon: <LinkIcon width={16} height={16} />,
+            title: "Copy on clipboard",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    type: "folder",
+    group: [
+      {
+        _: [
+          {
+            icon: <StarIcon width={16} height={16} />,
+            title: "Add to favorites",
+          },
+        ]
+      },
+      {
+        _: [
+          {
+            icon: <TrashIcon width={16} height={16} />,
+            title: "Delete",
+            warning: true,
+          },
+          {
+            icon: <CopyIcon width={16} height={16} />,
+            title: "Duplicate",
+            _: [
+              {
+                title: "Keep content",
+              },
+              {
+                title: "Empty",
+              },
+            ],
+          },
+          {
+            icon: <PlusIcon width={16} height={16} />,
+            title: "Add new file",
+          },
+          {
+            icon: <EditIcon width={16} height={16} />,
+            title: "Edit name",
+          },
+        ],
+      },
+      {
+        _: [
+          {
+            icon: <LinkIcon width={16} height={16} />,
+            title: "Copy on clipboard",
+          },
+        ],
+      },
+    ],
+  },
+];
 
 export const routes: Item[] = [
   {
@@ -164,3 +254,4 @@ export const files: File[] = [
     created_at: "",
   },
 ];
+

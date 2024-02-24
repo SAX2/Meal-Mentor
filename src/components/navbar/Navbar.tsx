@@ -43,6 +43,7 @@ const Navbar: React.FC<NavbarProps> = ({ params, className }) => {
                 )
               }
               icon={route.icon}
+              iconType="SVG"
             >
               {route.title}
             </Route>

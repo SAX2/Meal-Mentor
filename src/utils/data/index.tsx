@@ -8,6 +8,15 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[];
 
+export type OptionContext = {
+  warning?: boolean | null;
+  title: string | null;
+  icon?: React.ReactNode | null;
+  _?: OptionContext[];
+}
+
+export type OptionsContextTypes = "file" | "folder" | "navbar" | null;
+
 export interface Types {
   public: {
     users: {
@@ -60,6 +69,12 @@ export interface Types {
       folder_id: string | null;
       created_at: string | null;
     };
+    options_context: {
+      type: OptionsContextTypes;
+      group: {
+        _: OptionContext[];
+      }[];
+    }[];
   };
 }
 
@@ -70,3 +85,4 @@ export type Workspace = Types["public"]["workspaces"];
 export type Collaborators = Types["public"]["collaborators"];
 export type Folder = Types["public"]["folder"];
 export type File = Types["public"]["files"];
+export type OptionsContext = Types["public"]["options_context"];
