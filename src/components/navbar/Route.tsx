@@ -18,10 +18,11 @@ interface RouteProps {
   };
   optionsHidden?: boolean;
   picker?: boolean;
+  iconType?: 'SVG' | undefined;
 }
 
 export const routeClassname =
-  "group px-[7px] py-1 hover:bg-white-2-sec cursor-pointer rounded-sm flex gap-[6px] text-sm font-medium items-center transition-colors ease-in-out duration-75";
+  "relative group px-[7px] py-1 hover:bg-white-2-sec cursor-pointer rounded-sm flex gap-[6px] text-sm font-medium items-center transition-colors ease-in-out duration-75";
 
 const Route: React.FC<RouteProps> = ({
   children,
@@ -31,8 +32,10 @@ const Route: React.FC<RouteProps> = ({
   isLink,
   image,
   left,
-  picker
+  picker,
+  iconType
 }) => {
+  
   const renderContent = (
     <>
       <div className="flex gap-[6px] items-center h-full">
@@ -46,14 +49,15 @@ const Route: React.FC<RouteProps> = ({
               </AvatarFallback>
             </Avatar>
           )}
-          {(icon && !picker) && <Emoji icon={icon.toString()} className="w-4 h-4"/>}
+          {(icon && iconType == 'SVG') && icon}
+          {(icon && !picker && !iconType) && <Emoji icon={icon.toString()} className="w-4 h-4"/>}
           {(icon && picker) && <EmojiRoute icon={icon.toString()}/>}
           {image === undefined && icon == undefined && <div>•</div>}
           {children}
         </div>
       </div>
       {right && (
-        <div className="flex items-center gap-[2.5px] relative z-50">
+        <div className="flex items-center gap-[2.5px]">
           {right}
         </div>
       )}
@@ -65,7 +69,7 @@ const Route: React.FC<RouteProps> = ({
       {isLink ? (
         <Link
           href={path}
-          className={clsx(routeClassname, "justify-between relative z-0")}
+          className={clsx(routeClassname, "justify-between")}
         >
           {renderContent}
         </Link>
@@ -92,7 +96,7 @@ const RouteButton: React.FC<{
   return (
     <div
       className={clsx(
-        "h-5 w-5 flex items-center justify-center rounded-md transition-colors ease-in-out duration-150",
+        "h-5 w-5 flex items-center justify-center rounded-md transition-colors ease-in-out duration-150 relative z-50 cursor-pointer",
         isFixed,
         isHidden,
         isHover,

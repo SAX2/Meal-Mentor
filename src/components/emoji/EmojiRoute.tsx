@@ -12,7 +12,7 @@ const EmojiRoute = ({ icon }: { icon: string }) => {
           className="w-4 h-4"
         />
       </PopoverTrigger>
-      <PopoverContent className="h-[200px] ml-6">
+      <PopoverContent className="h-[200px] ml-6 p-0 bg-white-2 shadow-pop">
         <EmojiPicker />
       </PopoverContent>
     </Popover>
