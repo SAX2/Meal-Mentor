@@ -14,7 +14,7 @@ import { OptionContext, OptionsContextTypes } from "@/utils/data";
 
 interface ContextMenuProps {
   children: React.ReactNode;
-  type: "file" | "folder" | "navbar";
+  type: OptionsContextTypes;
   id: string | null;
 }
 
