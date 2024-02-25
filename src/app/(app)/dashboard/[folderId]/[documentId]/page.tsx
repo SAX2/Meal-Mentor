@@ -1,11 +1,25 @@
-import { files } from '@/utils/data/data';
-import EmojiRoute from '@/components/emoji/EmojiRoute';
 import React from 'react'
+import EmojiRoute from '@/components/emoji/EmojiRoute';
+import { files } from '@/utils/data/data';
+import { layoutProps } from '../layout';
+import { Metadata } from 'next';
 
 const fetchFile = ({ id }: { id: string }) => {
   const res = files.filter(file => file.id === id)
   const data = res.length >= 1 ? res[0] : null;
   return data;
+}
+
+export async function generateMetadata({
+  params,
+}: layoutProps): Promise<Metadata> {
+  const fileId = params.documentId;
+
+  const data = files.find((file) => file.id === fileId);
+
+  return {
+    title: data?.title,
+  };
 }
 
 const page = ({ params }: { params: { documentId: string } }) => {

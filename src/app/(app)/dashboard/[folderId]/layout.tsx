@@ -1,14 +1,12 @@
 import React from 'react'
 import DocumentTopBar from '@/components/topbar/DocumentTopBar';
 
-interface layoutProps {
+export interface layoutProps {
   children: React.ReactNode;
   params: { documentId: string, folderId: string };
 }
 
-
 const layout:React.FC<layoutProps> = ({ children, params }) => {
-
   return (
     <div className="w-full">
       <DocumentTopBar />
