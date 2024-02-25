@@ -1,14 +1,16 @@
 "use client";
 
-import { File, Folder } from "@/utils/data";
+import clsx from "clsx";
+import ContextMenu from "../context-menu/ContextMenu";
 import React, { useState } from "react";
+import { File, Folder } from "@/utils/data";
 import { Collapsible, CollapsibleTrigger } from "../ui/collapsible";
 import { Route, RouteButton } from "./Route";
-import { ChevronDownIcon, PlusIcon } from "lucide-react";
-import clsx from "clsx";
+import { ChevronDownIcon, GripVerticalIcon, PlusIcon } from "lucide-react";
 import { CollapsibleContent } from "@radix-ui/react-collapsible";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import ContextMenu from "../context-menu/ContextMenu";
+import { useDragAndDrop } from "@formkit/drag-and-drop/react";
+import { animations } from "@formkit/drag-and-drop";
 
 interface CollapsibleFolderProps {
   files: File[];
@@ -24,6 +26,16 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
   const onOpenTransition = open ? "" : "rotate-[-90deg]";
 
   const filesFolder = files.filter((file) => file.folder_id === folder.id);
+
+  const [filesListRef, fileList] = useDragAndDrop<HTMLUListElement, File>(
+    filesFolder,
+    {
+      group: "filesListRef",
+      plugins: [animations({
+        duration: 50
+      })],
+    }
+  );
 
   return (
     <Collapsible onOpenChange={setOpen}>
@@ -62,46 +74,52 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
         </ContextMenu>
       </div>
       <CollapsibleContent>
-        <div className="flex flex-col gap-[2.5px] px-2">
-          {filesFolder.map((file) => {
+        <ul className="flex flex-col gap-[2.5px] px-2" ref={filesListRef}>
+          {fileList.map((file) => {
             return (
-              <ContextMenu type="file" id={file.id}>
-                <Route
-                  picker
-                  key={file.id}
-                  isLink
-                  path={`/dashboard/${file.folder_id}/${file.id}`}
-                  left={
-                    <div className="opacity-0">
-                      <RouteButton type="hover">
-                        <ChevronDownIcon
-                          width={14}
-                          height={14}
-                          color="grey"
-                          className={clsx(onOpenTransition, "transition-all")}
-                        />
-                      </RouteButton>
-                    </div>
-                  }
-                  right={
-                    <>
-                      <RouteButton type="hidden" className="z-[1000] relative">
-                        <DotsHorizontalIcon
-                          width={14}
-                          height={14}
-                          color="grey"
-                        />
-                      </RouteButton>
-                    </>
-                  }
-                  icon={file.icon_id}
-                >
-                  {file.title}
-                </Route>
-              </ContextMenu>
+              <li key={file.id} className="item">
+                <ContextMenu type="file" id={file.id}>
+                  <Route
+                    picker
+                    isLink
+                    path={`/dashboard/${file.folder_id}/${file.id}`}
+                    left={
+                      <div className="opacity-0">
+                        <RouteButton
+                          type="hidden"
+                          className="z-[1000] relative"
+                        >
+                          <GripVerticalIcon
+                            width={14}
+                            height={14}
+                            color="grey"
+                          />
+                        </RouteButton>
+                      </div>
+                    }
+                    right={
+                      <>
+                        <RouteButton
+                          type="hidden"
+                          className="z-[1000] relative"
+                        >
+                          <DotsHorizontalIcon
+                            width={14}
+                            height={14}
+                            color="grey"
+                          />
+                        </RouteButton>
+                      </>
+                    }
+                    icon={file.icon_id}
+                  >
+                    {file.title}
+                  </Route>
+                </ContextMenu>
+              </li>
             );
           })}
-        </div>
+        </ul>
       </CollapsibleContent>
     </Collapsible>
   );

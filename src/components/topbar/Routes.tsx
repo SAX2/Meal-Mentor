@@ -42,7 +42,7 @@ const Routes = ({
                 icon={item.icon_id}
                 key={item.id}
               >
-                <p className="truncate">{item.title}</p>
+                {item.title}
               </Route>
             </ContextMenu>
             {items.length > 1 && items.indexOf(item) < items.length - 1 && (
