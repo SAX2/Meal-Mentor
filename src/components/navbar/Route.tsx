@@ -87,7 +87,7 @@ const RouteButton: React.FC<{
   type: "hidden" | "fixed" | "hover";
   className?: string;
 }> = ({ children, className, type }) => {
-  const isFixed = type == "fixed" && "bg-white-2-sec-2";
+  const isFixed = type == "fixed" && "bg-white-2-sec-2 px-1";
   const isHidden =
     type == "hidden" &&
     "transition-opacity ease-in-out duration-150 opacity-0 group-hover:opacity-100 bg-transparent hover:bg-white-2-sec-2";
@@ -96,7 +96,7 @@ const RouteButton: React.FC<{
   return (
     <div
       className={clsx(
-        "h-5 w-5 flex items-center justify-center rounded-md transition-colors ease-in-out duration-150 relative z-50 cursor-pointer",
+        "h-[18px] min-w-[18px] w-fit  flex items-center justify-center rounded-md transition-colors ease-in-out duration-150 relative z-50 cursor-pointer",
         isFixed,
         isHidden,
         isHover,
