@@ -108,7 +108,7 @@ export const routes: Item[] = [
     type: "notifications",
     title: "Notifications",
     icon: <BellIcon width={16} height={16}/>,
-    additional: 4,
+    additional: 7,
   },
   {
     isLink: true,
@@ -176,17 +176,19 @@ export const chats: Chat[] = [
   {
     id: "f739b7f0-d914-4099-a05a-1181122da0e1",
     title: "HealthyEaters Club",
-    avatar_url: "https://jackcityfitness.com/wp-content/uploads/shutterstock_1351783832-1.jpg"
+    avatar_url: "https://jackcityfitness.com/wp-content/uploads/shutterstock_1351783832-1.jpg",
+    aditional: 11
   },
   {
     id: "d4b73c18-399e-4d44-9c80-b8e001147db0",
     title: "Radiant Crew",
-    avatar_url: ''
+    avatar_url: 'null',
   },
   {
     id: "8971ac3c-24d5-4b06-922e-4624ab16b435",
     title: "Sophia Miller",
-    avatar_url: "https://www.workbc.ca/sites/default/files/styles/hero_image/public/NTI5NzE_WBtwVGtmKPv8pNus-3132-NOC.jpg?itok=FrrP-vVb"
+    avatar_url: "https://www.workbc.ca/sites/default/files/styles/hero_image/public/NTI5NzE_WBtwVGtmKPv8pNus-3132-NOC.jpg?itok=FrrP-vVb",
+    aditional: 2
   },
 ]
 

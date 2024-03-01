@@ -40,6 +40,7 @@ export interface Types {
       title: string | null;
       avatar_url: string;
       id: string | null;
+      aditional?: number | null;
     };
     collaborators: {
       id: string | null;
