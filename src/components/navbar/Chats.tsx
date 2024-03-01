@@ -41,6 +41,13 @@ const Chats = ({ userId }: { userId: string }) => {
                   fallback: chat.title?.charAt(0),
                 }}
                 key={chat.id}
+                right={
+                  chat.aditional == null ? null : (
+                    <RouteButton type="fixed">
+                      <p className="text-xs text-grey">{chat.aditional}</p>
+                    </RouteButton>
+                  )
+                }
               >
                 {chat.title}
               </Route>
