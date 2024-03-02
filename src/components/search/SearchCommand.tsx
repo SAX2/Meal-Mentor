@@ -12,6 +12,7 @@ import { Route, RouteButton } from "../navbar/Route";
 import React from "react";
 import { ArrowDownIcon, ArrowUpIcon } from "lucide-react";
 import { CommandDisplay } from "../navbar/Search";
+import { useRouter } from "next/navigation";
 
 type Commands = {
   title: string;
@@ -28,6 +29,8 @@ export const SearchCommand = ({
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   open: boolean;
 }) => {
+
+  const router = useRouter();
   
   const commands: Commands[] = [
     {
@@ -103,6 +106,10 @@ export const SearchCommand = ({
 
   sort();
 
+  const onSelect = () => {
+    return 
+  }
+
   return (
     <CommandDialog onOpenChange={setOpen} open={open} modal>
       <CommandInput placeholder={`Search...`} className="" />
@@ -123,35 +130,38 @@ export const SearchCommand = ({
             }`;
 
             return (
-              <CommandItem className="!p-0 bg-transparent hover:bg-none rounded-md">
-                <div onClick={onClick} className="w-full">
-                  <Route
-                    isLink
-                    path={path}
-                    image={
-                      item.avatar_url && {
-                        src: item.avatar_url,
-                        fallback: item.title?.charAt(0),
-                      }
+              <CommandItem
+                className="!p-0 bg-transparent hover:bg-none rounded-md"
+                onSelect={() => {
+                  router.push(path);
+                  onClick();
+                }}
+              >
+                <Route
+                  isLink={false}
+                  path={path}
+                  image={
+                    item.avatar_url && {
+                      src: item.avatar_url,
+                      fallback: item.title?.charAt(0),
                     }
-                    icon={item.icon_id && item.icon_id}
-                    key={item.id}
-                    right={
-                      item.aditional == null ? null : (
-                        <RouteButton type="fixed">
-                          <p className="text-xs text-grey">{item.aditional}</p>
-                        </RouteButton>
-                      )
-                    }
-                  >
-                    {item.title}
-                  </Route>
-                </div>
+                  }
+                  icon={item.icon_id && item.icon_id}
+                  key={item.id}
+                  right={
+                    item.aditional == null ? null : (
+                      <RouteButton type="fixed">
+                        <p className="text-xs text-grey">{item.aditional}</p>
+                      </RouteButton>
+                    )
+                  }
+                >
+                  {item.title}
+                </Route>
               </CommandItem>
             );
           })}
         </CommandGroup>
-        <CommandGroup heading="Settings"></CommandGroup>
       </CommandList>
       <CommandSeparator />
       <div className="w-full py-2 pb-[10px] px-2 flex gap-5">

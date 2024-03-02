@@ -16,7 +16,7 @@ const Search = () => {
       >
         <div className="pl-[2px] flex gap-[7px] items-center">
           <SearchIcon width={16} height={16} color="grey" />
-          <p className="text-sm text-grey">Search...</p>
+          <p className="text-sm text-grey select-none">Search...</p>
         </div>
         <CommandDisplay>
           <p className="text-[10px] text-grey font-medium">Ctrl+K</p>
@@ -45,8 +45,6 @@ export const CommandDisplay = ({
     }
   }, [divRef]);
 
-  console.log(divHeight)
-
   if (variant == "key") {
     return (
       <div className="flex flex-col relative" ref={divRef}>
@@ -61,7 +59,7 @@ export const CommandDisplay = ({
   }
 
   return (
-    <div className="py-[1px] px-[3px] rounded-sm bg-white-2 border-[1px] flex items-center">
+    <div className="py-[1px] px-[3px] rounded-sm bg-white-2 border-[1px] flex items-center select-none">
       {children}
     </div>
   );

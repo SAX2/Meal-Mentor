@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import React from "react";
 
 interface EmojiProps {
@@ -9,7 +10,7 @@ const Emoji: React.FC<EmojiProps> = ({ icon, className }) => {
   return (
     <img
       src={`https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/${icon}.png`}
-      className={className}
+      className={cn(className, 'select-none')}
     />
   );
 };
