@@ -112,6 +112,7 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
                       </>
                     }
                     icon={file.icon_id}
+                    key={file.id}
                   >
                     {file.title}
                   </Route>

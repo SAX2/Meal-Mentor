@@ -11,6 +11,7 @@ const Sidebar = () => {
             isLink
             path={`/dashboard/settings${route.path}`}
             icon={route.icon}
+            key={route.path}
           >
             {route.title}
           </Route>

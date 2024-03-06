@@ -39,13 +39,14 @@ const RenderContextMenu = ({ type }: { type: OptionsContextTypes }) => {
         ?.group?.map((group, index) => {
           return (
             <>
-              <ContextMenuGroup className="flex flex-col gap-0 p-[5px]">
+              <ContextMenuGroup className="flex flex-col gap-0 p-[5px]" key={index}>
                 {group._?.map((option) => {
                   return (
-                    <ContextMenuItem content={option}>
-                      <ContextMenuButton
-                        key={`${option.title}_${Math.random() * 40}`}
-                      >
+                    <ContextMenuItem
+                      content={option}
+                      key={`${option.title}_${Math.random() * 40}`}
+                    >
+                      <ContextMenuButton>
                         {option.icon && (
                           <div className="text-black">{option.icon}</div>
                         )}
