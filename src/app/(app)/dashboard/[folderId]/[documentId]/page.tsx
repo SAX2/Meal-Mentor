@@ -3,6 +3,7 @@ import EmojiRoute from '@/components/emoji/EmojiRoute';
 import { files } from '@/utils/data/data';
 import { layoutProps } from '../layout';
 import { Metadata } from 'next';
+import QuillEditor from '@/components/quill-editor/QuillEditor';
 
 const fetchFile = ({ id }: { id: string }) => {
   const res = files.filter(file => file.id === id)
@@ -27,12 +28,13 @@ const page = ({ params }: { params: { documentId: string } }) => {
   const data = fetchFile({ id: documentId });
 
   return (
-    <div key={data?.id}>
-      <div className="flex gap-3 items-center">
+    <>
+      <div className="flex gap-3 items-center max-w-[1000px] w-full px-3">
         <EmojiRoute icon={data?.icon_id} customSize="w-11 h-11" />
         <h1 className="text-4xl font-extrabold truncate">{data?.title}</h1>
       </div>
-    </div>
+      <QuillEditor />
+    </>
   );
 }
 
