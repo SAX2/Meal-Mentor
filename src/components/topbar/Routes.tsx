@@ -3,6 +3,14 @@ import { Route } from "../navbar/Route";
 import { files, folders } from "@/utils/data/data";
 import { ChevronRightIcon } from "lucide-react";
 import ContextMenu from "../context-menu/ContextMenu";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
 
 const Routes = ({
   folderId,
@@ -27,31 +35,45 @@ const Routes = ({
   }
 
   return (
-    <div className="w-fit flex gap-3 items-center">
-      {items.map((item) => {
-        return (
-          <>
+    <Breadcrumb>
+      <BreadcrumbList>
+        {items.map((item, index) => {
+          const renderItem = (
             <ContextMenu id={item.id} type={item.type}>
               <Route
-                isLink
-                path={
-                  item.type == "file"
-                    ? `/dashboard/${folderId}/${item.id}`
-                    : `/dashboard/${item.id}`
-                }
+                isLink={false}
+                path={item.id}
                 icon={item.icon_id}
                 key={item.id}
               >
                 {item.title}
               </Route>
             </ContextMenu>
-            {items.length > 1 && items.indexOf(item) < items.length - 1 && (
-              <ChevronRightIcon width={14} height={14} className="text-grey" />
-            )}
-          </>
-        );
-      })}
-    </div>
+          );
+
+          return (
+            <>
+              <BreadcrumbItem>
+                {items.length - 1 === index ? (
+                  <BreadcrumbPage>{renderItem}</BreadcrumbPage>
+                ) : (
+                  <BreadcrumbLink
+                    href={
+                      item.type == "file"
+                        ? `/dashboard/${folderId}/${item.id}`
+                        : `/dashboard/${item.id}`
+                    }
+                  >
+                    {renderItem}
+                  </BreadcrumbLink>
+                )}
+              </BreadcrumbItem>
+              {items.length - 1 !== index && <BreadcrumbSeparator />}
+            </>
+          );
+        })}
+      </BreadcrumbList>
+    </Breadcrumb>
   );
 };
 
