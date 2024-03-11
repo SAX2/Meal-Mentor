@@ -20,7 +20,7 @@ const DocumentTopBar = () => {
 
 
   return (
-    <div className="px-8 py-[5px] border-b flex justify-between">
+    <div className="px-8 py-[5px] border-b flex justify-between z-[999]">
       <div className="h-[46px] flex items-center">
         <Routes documentId={params.documentId} folderId={params.folderId} />
       </div>

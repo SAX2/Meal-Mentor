@@ -95,6 +95,10 @@
   @apply bg-background;
 }
 
+#editor {
+  @apply relative;
+}
+
 .ce-toolbar__content,
 .ce-block__content {
   max-width: 750px;
@@ -114,7 +118,7 @@
 }
 
 .ql-toolbar {
-  @apply flex flex-wrap items-center justify-center bg-white/40 backdrop-blur-md z-40 sticky top-0 !border-none left-0 right-0;
+  @apply flex flex-wrap items-center bg-white/40 backdrop-blur-md rounded-md shadow-button border !border-outline w-fit h-fit !p-0;
 }
 
 .ql-formats {
@@ -123,6 +127,10 @@
 
 .ql-container {
   @apply !border-none;
+}
+
+.ql-toolbar_item {
+  @apply hover:!bg-slate-50 !rounded-sm 
 }
 
 /* .ql-editor > p,
