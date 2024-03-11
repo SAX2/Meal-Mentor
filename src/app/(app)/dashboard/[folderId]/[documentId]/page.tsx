@@ -4,6 +4,7 @@ import { files } from '@/utils/data/data';
 import { layoutProps } from '../layout';
 import { Metadata } from 'next';
 import QuillEditor from '@/components/quill-editor/QuillEditor';
+import { setCookie } from '../actions';
 
 const fetchFile = ({ id }: { id: string }) => {
   const res = files.filter(file => file.id === id)
@@ -23,8 +24,9 @@ export async function generateMetadata({
   };
 }
 
-const page = ({ params }: { params: { documentId: string } }) => {
+const page = ({ params }: { params: { documentId: string, folderId: string } }) => {
   const { documentId } = params;
+  setCookie(`/${params.folderId}/${params.documentId}`);
   const data = fetchFile({ id: documentId });
 
   return (
