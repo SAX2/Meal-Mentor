@@ -59,7 +59,7 @@ export interface Types {
       icon_id: string;
       id: string | null;
       workspace_id: string | null;
-      created_at: string | null;
+      created_at: string;
     };
     files: {
       id: string | null;
@@ -68,7 +68,7 @@ export interface Types {
       data: string | null;
       workspace_id: string | null;
       folder_id: string | null;
-      created_at: string | null;
+      created_at: string;
     };
     options_context: {
       type: OptionsContextTypes;

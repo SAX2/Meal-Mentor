@@ -14,7 +14,7 @@ const layout:React.FC<layoutProps> = ({ children, params }) => {
         <DocumentTopBar />
       </div>
       <div className="p-8 flex justify-center">
-        <div className="max-w-[1100px] w-full flex justify-center flex-col">
+        <div className="max-w-[1100px] w-full flex justify-center flex-col gap-8">
           {children}
         </div>
       </div>
