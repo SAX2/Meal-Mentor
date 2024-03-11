@@ -95,8 +95,8 @@
   @apply bg-background;
 }
 
-#editor {
-  @apply relative;
+.ql-editor {
+  @apply !relative !z-0;
 }
 
 .ce-toolbar__content,
@@ -118,7 +118,7 @@
 }
 
 .ql-toolbar {
-  @apply flex flex-wrap items-center bg-white/40 backdrop-blur-md rounded-md shadow-button border !border-outline w-fit h-fit !p-0;
+  @apply !z-0 !relative flex flex-wrap items-center bg-white/40 backdrop-blur-md rounded-md shadow-button border !border-outline w-fit h-fit !p-0;
 }
 
 .ql-formats {

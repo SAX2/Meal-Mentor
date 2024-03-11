@@ -1,4 +1,5 @@
 'use client';
+
 import React, {
   useCallback,
   useEffect,
@@ -7,13 +8,10 @@ import React, {
   useState,
 } from 'react';
 import 'quill/dist/quill.snow.css';
-import EmojiRoute from '../emoji/EmojiRoute';
 import { File, Folder } from '@/utils/data';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
-import Selector from './Selector';
 import SelectorDropdown from './Selector';
-import { AlignCenter, AlignJustify, AlignLeft, AlignRight } from 'lucide-react';
+import { AlignCenter, AlignJustify, AlignLeft, AlignRight, Sparkles  } from 'lucide-react';
+import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 
 interface QuillEditorProps {
   dirDetails?: File | Folder;
@@ -22,12 +20,17 @@ interface QuillEditorProps {
 }
 
 type ToolbarOptions = {
-  type: 'button' | 'select';
+  type: "button" | "select";
   items: {
     content: string;
-    value?: string;
-  }[]
-}
+    value?: string | {
+      content: string;
+      hex?: string;
+    };
+  title?: string;
+  icon?: React.ReactElement;
+  }[];
+};
 
 const TOOLBAR_OPTIONS: ToolbarOptions[] = [
   {
@@ -41,10 +44,13 @@ const TOOLBAR_OPTIONS: ToolbarOptions[] = [
   },
   {
     type: "button",
-    items: [{ content: "blockquote" }, { content: "code-block", value: 'javascript' }],
-  }, // toggled buttons
-
-  // [{ header: 1 }, { header: 2 }], // custom button values
+    items: [
+      { content: "blockquote" },
+      { content: "code-block", value: "javascript" },
+      { content: "header", value: "1" },
+      { content: "header", value: "2" },
+    ],
+  },
   {
     type: "button",
     items: [
@@ -64,21 +70,62 @@ const TOOLBAR_OPTIONS: ToolbarOptions[] = [
   {
     type: "select",
     items: [
-      { content: "align", value: "" },
-      { content: "align", value: "center" },
-      { content: "align", value: "right" },
-      { content: "align", value: "justify" },
+      {
+        content: "align",
+        value: "",
+        icon: <AlignLeft width={18} height={18} className="text-black" />,
+      },
+      {
+        content: "align",
+        value: "center",
+        icon: <AlignCenter width={18} height={18} className="text-black" />,
+      },
+      {
+        content: "align",
+        value: "right",
+        icon: <AlignRight width={18} height={18} className="text-black" />,
+      },
+      {
+        content: "align",
+        value: "justify",
+        icon: <AlignJustify width={18} height={18} className="text-black" />,
+      },
     ],
   },
   {
     type: "select",
     items: [
-      { content: "font", value: "" },
-      { content: "font", value: "serif" },
-      { content: "font", value: "monospace" },
+      { content: "font", value: "", title: "Sans serif" },
+      { content: "font", value: "serif", title: "Serif" },
+      { content: "font", value: "monospace", title: "Monospace" },
     ],
   },
-  // // [{ direction: 'rtl' }], // text direction
+  {
+    type: "select",
+    items: [
+      { content: "color", value: { content: "black", hex: "#0A0A0A" } },
+      { content: "color", value: { content: "dark-gray", hex: "#FFFFFF" } },
+      { content: "color", value: { content: "blue", hex: "#000080" } },
+      { content: "color", value: { content: "forest-green", hex: "#006400" } },
+      { content: "color", value: { content: "maroon", hex: "#800000" } },
+      { content: "color", value: { content: "purple", hex: "#800080" } },
+      { content: "color", value: { content: "light-gray", hex: "#cccccc" } },
+      { content: "color", value: { content: "light-blue", hex: "#00ffff" } },
+      { content: "color", value: { content: "lime-green", hex: "#00ff00" } },
+    ],
+  },
+  {
+    type: "select",
+    items: [
+      { content: "background", value: { content: "white", hex: "#fff" } },
+      { content: "background", value: { content: "black", hex: "#000" } },
+      { content: "background", value: { content: "grey", hex: "#ccc" } },
+      { content: "background", value: { content: "light-blue", hex: "#defbff" } },
+      { content: "background", value: { content: "light-green", hex: "#dcedc8" } },
+      { content: "background", value: { content: "light-yellow", hex: "#ffffcc" } },
+    ],
+  },
+  // [{ direction: 'rtl' }], // text direction
 
   // [{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
   // [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -128,55 +175,6 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       setQuill(q);
     }
   }, []);
-
-  const align = {
-    items: [
-      {
-        content: "align",
-        value: "",
-        function: () => quill.format("align", ""),
-        icon: <AlignLeft width={18} height={18} className='text-black'/>
-      },
-      {
-        content: "align",
-        value: "center",
-        function: () => quill.format("align", "center"),
-        icon: <AlignCenter  width={18} height={18} className='text-black'/>
-      },
-      {
-        content: "align",
-        value: "right",
-        function: () => quill.format("align", "right"),
-        icon: <AlignRight  width={18} height={18} className='text-black'/>
-      },
-      {
-        content: "align",
-        value: "justify",
-        function: () => quill.format("align", "justify"),
-        icon: <AlignJustify  width={18} height={18} className='text-black'/>
-      },
-    ],
-  };
-
-  const font = {
-    items: [
-      {
-        content: "font",
-        value: "sans-serif",
-        function: () => quill.format("font", ""),
-      },
-      {
-        content: "font",
-        value: "serif",
-        function: () => quill.format("font", "serif"),
-      },
-      {
-        content: "font",
-        value: "monospace",
-        function: () => quill.format("font", "monospace"),
-      },
-    ],
-  };
 
 
   // useEffect(() => {
@@ -230,25 +228,30 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   return (
     <>
       <div id="toolbar">
+        <div className="flex p-1 border-r">
+          <button
+            className={"outline-0 rounded-sm hover:!bg-white-2-sec"}
+          >
+            <Sparkles width={18} height={18} className="text-black" />
+          </button>
+        </div>
         {TOOLBAR_OPTIONS.map((toolbarGroup, index) => {
           if (toolbarGroup.type === "button") {
             return (
               <ul
                 key={`${toolbarGroup.type}_${index}`}
-                className={`flex p-1 ${
-                  index < TOOLBAR_OPTIONS.length - 1 && "border-r"
-                }`}
+                className={`flex p-1 border-r`}
               >
                 {toolbarGroup.items.map((toolbarItem) => {
                   return (
                     <ToolbarItem
                       key={
                         toolbarItem.value
-                          ? toolbarItem.value
+                          ? toolbarItem.value.toString()
                           : toolbarItem.content
                       }
                       type={toolbarItem.content}
-                      value={toolbarItem.value && toolbarItem.value}
+                      value={toolbarItem.value && toolbarItem.value.toString()}
                     />
                   );
                 })}
@@ -259,42 +262,23 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
             return (
               <ul
                 key={`${toolbarGroup.type}_${index}`}
-                className={`flex p-1 ${
-                  index < TOOLBAR_OPTIONS.length - 1 && "border-r"
-                }`}
+                className={`flex p-1 border-r`}
               >
-                {toolbarGroup.items.filter((item) => item.content === "align")
-                  .length > 0 && (
-                  <SelectorDropdown
-                    defaultValue={align.items[0]}
-                    items={align.items}
-                  />
-                )}
-                {toolbarGroup.items.filter((item) => item.content === "font")
-                  .length > 0 && (
-                  <SelectorDropdown
-                    defaultValue={font.items[0]}
-                    items={font.items}
-                  />
-                )}
+                <SelectorDropdown
+                  defaultValue={toolbarGroup.items[0]}
+                  items={toolbarGroup.items}
+                  quill={quill}
+                />
               </ul>
             );
           }
           return;
         })}
-        {/* <!-- Add font size dropdown --> */}
-        {/* <select className="ql-size">
-          <option value="small"></option>
-          <option selected></option>
-          <option value="large"></option>
-          <option value="huge"></option>
-        </select>
-        <div className="flex">
-          <button className="hover:!bg-white-2-sec !rounded-sm ql-bold"></button>
-          <button className="hover:!bg-white-2-sec !rounded-sm ql-italic"></button>
-          <button className="hover:!bg-white-2-sec !rounded-sm ql-underline"></button>
-          <button className="hover:!bg-white-2-sec !rounded-sm ql-strike"></button>
-        </div> */}
+        <div className="flex p-1">
+          <button className={"outline-0 rounded-sm hover:!bg-white-2-sec"}>
+            <DotsHorizontalIcon width={18} height={18} className="text-black" />
+          </button>
+        </div>
       </div>
       <div className="flex justify-center items-center flex-col relative w-full">
         <div id="container" className="w-full" ref={wrapperRef}></div>
