@@ -10,8 +10,23 @@ import React, {
 import 'quill/dist/quill.snow.css';
 import { File, Folder } from '@/utils/data';
 import SelectorDropdown from './Selector';
-import { AlignCenter, AlignJustify, AlignLeft, AlignRight, Sparkles  } from 'lucide-react';
+import {
+  AlignCenter,
+  AlignJustify,
+  AlignLeft,
+  AlignRight,
+  Redo,
+  Sparkles,
+  Undo,
+  Heading1,
+  Heading2,
+  Heading3,
+  Heading4,
+  Heading5,
+  Heading6
+} from "lucide-react";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import { Changa_One } from 'next/font/google';
 
 interface QuillEditorProps {
   dirDetails?: File | Folder;
@@ -70,26 +85,10 @@ const TOOLBAR_OPTIONS: ToolbarOptions[] = [
   {
     type: "select",
     items: [
-      {
-        content: "align",
-        value: "",
-        icon: <AlignLeft width={18} height={18} className="text-black" />,
-      },
-      {
-        content: "align",
-        value: "center",
-        icon: <AlignCenter width={18} height={18} className="text-black" />,
-      },
-      {
-        content: "align",
-        value: "right",
-        icon: <AlignRight width={18} height={18} className="text-black" />,
-      },
-      {
-        content: "align",
-        value: "justify",
-        icon: <AlignJustify width={18} height={18} className="text-black" />,
-      },
+      { content: "align", value: "", icon: <AlignLeft width={18} height={18} className="text-black" /> },
+      { content: "align", value: "center", icon: <AlignCenter width={18} height={18} className="text-black" /> },
+      { content: "align", value: "right", icon: <AlignRight width={18} height={18} className="text-black" /> },
+      { content: "align", value: "justify", icon: <AlignJustify width={18} height={18} className="text-black" />, },
     ],
   },
   {
@@ -98,6 +97,17 @@ const TOOLBAR_OPTIONS: ToolbarOptions[] = [
       { content: "font", value: "", title: "Sans serif" },
       { content: "font", value: "serif", title: "Serif" },
       { content: "font", value: "monospace", title: "Monospace" },
+    ],
+  },
+  {
+    type: "select",
+    items: [
+      { content: "header", value: "1", icon: <Heading1 width={18} height={18} className="text-black" /> },
+      { content: "header", value: "2", icon: <Heading2 width={18} height={18} className="text-black" /> },
+      { content: "header", value: "3", icon: <Heading3 width={18} height={18} className="text-black" /> },
+      { content: "header", value: "4", icon: <Heading4 width={18} height={18} className="text-black" /> },
+      { content: "header", value: "5", icon: <Heading5 width={18} height={18} className="text-black" /> },
+      { content: "header", value: "6", icon: <Heading6 width={18} height={18} className="text-black" /> },
     ],
   },
   {
@@ -120,9 +130,25 @@ const TOOLBAR_OPTIONS: ToolbarOptions[] = [
       { content: "background", value: { content: "white", hex: "#fff" } },
       { content: "background", value: { content: "black", hex: "#000" } },
       { content: "background", value: { content: "grey", hex: "#ccc" } },
-      { content: "background", value: { content: "light-blue", hex: "#defbff" } },
-      { content: "background", value: { content: "light-green", hex: "#dcedc8" } },
-      { content: "background", value: { content: "light-yellow", hex: "#ffffcc" } },
+      {
+        content: "background",
+        value: { content: "light-blue", hex: "#defbff" },
+      },
+      {
+        content: "background",
+        value: { content: "light-green", hex: "#dcedc8" },
+      },
+      {
+        content: "background",
+        value: { content: "light-yellow", hex: "#ffffcc" },
+      },
+    ],
+  },
+  {
+    type: "button",
+    items: [
+      { content: "history", value: "undo", icon: <Undo width={18} height={18} className="text-black" /> },
+      { content: "history", value: "redo", icon: <Redo width={18} height={18} className="text-black" /> },
     ],
   },
   // [{ direction: 'rtl' }], // text direction
@@ -252,6 +278,8 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
                       }
                       type={toolbarItem.content}
                       value={toolbarItem.value && toolbarItem.value.toString()}
+                      icon={toolbarItem.icon}
+                      quill={quill}
                     />
                   );
                 })}
@@ -292,12 +320,27 @@ export const ToolbarItem = ({
   value,
   disabled,
   noHover,
+  icon,
+  quill
 }: {
   type: string;
   value?: string;
   disabled?: boolean;
   noHover?: boolean;
+  icon?: React.ReactElement;
+  quill: any;
 }) => {
+  const handleClick = (option: any) => {
+    if (type === 'history') { 
+      switch (option.value) {
+        case "undo":
+          return quill.history.undo();
+        case "redo": 
+          return quill.history.redo();
+      }
+    }
+  }
+
   return (
     <button
       className={`!outline-0 !rounded-sm ql-${type} ${
@@ -305,7 +348,10 @@ export const ToolbarItem = ({
       }`}
       disabled={disabled}
       value={value}
-    ></button>
+      onClick={() => handleClick({ type, value })}
+    >
+      {icon && icon}
+    </button>
   );
 };
 

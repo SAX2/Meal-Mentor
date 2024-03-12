@@ -22,10 +22,9 @@ const SelectorDropdown: React.FC<SelectorDropdownProps> = ({
   const [selectedOption, setSelectedOption] = useState(defaultValue);
 
   const handleSelect = (option: any) => {
-    console.log(`bg-[${option.value.hex}]`)
     setSelectedOption(option);
   
-    if (option.content === 'font' || option.content === 'align') {
+    if (option.content === 'font' || option.content === 'align' || option.content === 'header') {
       return quill.format(option.content, option.value);
     }
 
@@ -40,7 +39,7 @@ const SelectorDropdown: React.FC<SelectorDropdownProps> = ({
         <div className={cn("flex items-center gap-1", classname)}>
           {selectedOption ? (
             <div className="flex gap-1 items-center">
-              {selectedOption.content === "align" && <>{selectedOption.icon}</>}
+              {(selectedOption.content === "align" || selectedOption.content === "header" ) && <>{selectedOption.icon}</>}
               {selectedOption.content === "font" && (
                 <p
                   className={`cursor-pointer select-none ${
@@ -83,7 +82,7 @@ const SelectorDropdown: React.FC<SelectorDropdownProps> = ({
                 onClick={() => handleSelect(option)}
                 className="p-1 hover:bg-white-2-sec rounded-sm transition-colors"
               >
-                {option.content === "align" && <>{option.icon}</>}
+                {(option.content === "align" || option.content === "header" ) && <>{option.icon}</>}
                 {option.content === "font" && (
                   <p
                     className={`cursor-pointer select-none ${
@@ -95,14 +94,10 @@ const SelectorDropdown: React.FC<SelectorDropdownProps> = ({
                     {option.value.length <= 0 ? "Sans Serif" : option.value}
                   </p>
                 )}
-                {option.content === "color" && (
+                {(option.content === "color" ||
+                  option.content === "background") && (
                   <div
                     className={`w-4 h-4 rounded-full bg-[${option.value.hex}] border border-black/10 cursor-pointer`}
-                  ></div>
-                )}
-                {option.content === "background" && (
-                  <div
-                    className={`w-4 h-4 rounded-full bg-[${option.value.hex}] border border-outline cursor-pointer`}
                   ></div>
                 )}
               </div>
