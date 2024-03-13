@@ -40,6 +40,7 @@
     "quill-cursors": "^4.0.2",
     "react": "^18",
     "react-dom": "^18",
+    "supabase": "^1.148.6",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7"
   },
