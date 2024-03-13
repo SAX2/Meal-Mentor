@@ -1,41 +1,46 @@
 import React from 'react'
 import EmojiRoute from '@/components/emoji/EmojiRoute';
-import { files } from '@/utils/data/data';
+import { user } from '@/utils/data/data';
 import { layoutProps } from '../layout';
 import { Metadata } from 'next';
 import QuillEditor from '@/components/quill-editor/QuillEditor';
-// import { setCookie } from '../actions';
-
-const fetchFile = ({ id }: { id: string }) => {
-  const res = files.filter(file => file.id === id)
-  const data = res.length >= 1 ? res[0] : null;
-  return data;
-}
+import { getFileDetails } from '@/lib/supabase/queries';
 
 export async function generateMetadata({
   params,
 }: layoutProps): Promise<Metadata> {
   const fileId = params.documentId;
 
-  const data = files.find((file) => file.id === fileId);
+  const { data, error } = await getFileDetails({ fileId, userId: user.id });
 
   return {
-    title: data?.title,
+    title: data && data[0]?.title,
   };
 }
 
-const page = ({ params }: { params: { documentId: string, folderId: string } }) => {
+const page = async ({ params }: { params: { documentId: string, folderId: string } }) => {
   const { documentId } = params;
-  // setCookie(`/${params.folderId}/${params.documentId}`);
-  const data = fetchFile({ id: documentId });
+  const { data, error } = await getFileDetails({ fileId: documentId, userId: user.id });
+
+  if (error) {
+    return (
+      <>
+        <div className="w-full h-dvh flex justify-center items-center">
+          <h1 className="font-normal">{error}</h1>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
-      <div className="flex gap-3 items-center max-w-[1000px] w-full px-3">
-        <EmojiRoute icon={data?.icon_id} customSize="w-11 h-11" />
-        <h1 className="text-4xl font-extrabold truncate">{data?.title}</h1>
-      </div>
-      <QuillEditor />
+      {data && (
+        <div className="flex gap-3 items-center max-w-[1000px] w-full px-3">
+          <EmojiRoute icon={data[0]?.iconId} customSize="w-11 h-11" />
+          <h1 className="text-4xl font-extrabold truncate">{data[0]?.title}</h1>
+        </div>
+      )}
+      <QuillEditor dirType="file" fileId={data ? data[0].id : ""} />
     </>
   );
 }

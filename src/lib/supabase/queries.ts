@@ -48,6 +48,20 @@ export const getFolderDetails = async ({ folderId, userId }: { folderId: string,
   }
 };
 
+export const updateFolderData = async ({ folderId, data }: { folderId: string, data: string }) => {
+  try {
+    await db
+      .update(folders)
+      .set({ data })
+      .where(eq(folders.id, folderId));
+    return { data: null, error: null };
+  } catch (error) {
+    console.log(error);
+    return { data: null, error: 'Error' };
+  }
+};
+
+
 export const createFile = async (file: File) => {
   try {
     await db.insert(files).values(file);
@@ -82,6 +96,19 @@ export const getFileDetails = async ({ fileId, userId }: { fileId: string; userI
   try {
     const response = await db.select().from(files).where(and(eq(files.id, fileId), eq(files.fileOwner, userId)));
     return { data: response, error: null };
+  } catch (error) {
+    console.log(error);
+    return { data: null, error: 'Error' };
+  }
+};
+
+export const updateFileData = async ({ fileId, data }: { fileId: string, data: string }) => {
+  try {
+    await db
+      .update(files)
+      .set({ data })
+      .where(eq(files.id, fileId));
+    return { data: null, error: null };
   } catch (error) {
     console.log(error);
     return { data: null, error: 'Error' };

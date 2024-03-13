@@ -27,11 +27,14 @@ import {
 } from "lucide-react";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { Changa_One } from 'next/font/google';
+import { user } from '@/utils/data/data';
+import { getFileDetails, getFolderDetails, updateFileData, updateFolderData } from '@/lib/supabase/queries';
+import { useRouter } from 'next/navigation';
 
 interface QuillEditorProps {
   dirDetails?: File | Folder;
-  fileId?: string;
-  dirType?: 'folder' | 'file';
+  fileId: string;
+  dirType: 'folder' | 'file';
 }
 
 type ToolbarOptions = {
@@ -171,6 +174,8 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   const [quill, setQuill] = useState<any>(null);
   const [saving, setSaving] = useState(false);
   const saveTimerRef = useRef<ReturnType<typeof setTimeout>>();
+  const [localCursors, setLocalCursors] = useState<any>([]);
+  const router =  useRouter()
   // const { state, workspaceId, folderId, dispatch } = useAppState();
 
   //
@@ -202,54 +207,72 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
     }
   }, []);
 
+  useEffect(() => {
+    let selectedDir;
+    const fetchInformation = async () => {
+      if (dirType === 'file') {
+        const { data: selectedDir, error } = await getFileDetails({ fileId, userId: user.id });
+        if (error) {
+          return router.replace(`/dashboard`);
+        }
+        if (quill === null) return;
+        if (!selectedDir) return;
+        quill.setContents(
+          selectedDir ? JSON.parse(selectedDir[0].data || "") : ""
+        );
 
-  // useEffect(() => {
-  //   if (quill === null || !fileId) return;
+      }
+      if (dirType === 'folder') {
+        const { data: selectedDir, error } = await getFolderDetails({ folderId: fileId, userId: user.id });
+        if (quill === null) return;
+        if (!selectedDir) return;
+        if (selectedDir) {
+          
+        }
+        quill.setContents(selectedDir ? JSON.parse(selectedDir[0].data || "") : "");
+      }
+    };
+    fetchInformation();
+  }, [fileId, dirType, quill]);
 
-  //   const quillHandler = (delta: any, oldDelta: any, source: any) => {
-  //     if (source !== "user") return;
-  //     if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
-  //     setSaving(true);
-  //     const contents = quill.getContents();
-  //     const quillLength = quill.getLength();
-  //     saveTimerRef.current = setTimeout(async () => {
-  //       if (contents && quillLength !== 1 && fileId) {
-  //         // if (dirType == 'folder') {
-  //         //   if (!workspaceId) return;
-  //         //   dispatch({
-  //         //     type: 'UPDATE_FOLDER',
-  //         //     payload: {
-  //         //       folder: { data: JSON.stringify(contents) },
-  //         //       workspaceId,
-  //         //       folderId: fileId,
-  //         //     },
-  //         //   });
-  //         //   await updateFolder({ data: JSON.stringify(contents) }, fileId);
-  //         // }
-  //         if (dirType == 'file') {
-  //           if (!workspaceId || !folderId) return;
-  //           dispatch({
-  //             type: 'UPDATE_FILE',
-  //             payload: {
-  //               file: { data: JSON.stringify(contents) },
-  //               workspaceId,
-  //               folderId: folderId,
-  //               fileId,
-  //             },
-  //           });
-  //           await updateFile({ data: JSON.stringify(contents) }, fileId);
-  //         }
-  //       }
-  //       setSaving(false);
-  //     }, 850);
-  //   };
-  //   quill.on("text-change", quillHandler);
+  useEffect(() => {
+    if (
+      quill === null ||
+      // socket === null ||
+      !fileId ||
+      !dirType ||
+      !user
+    )
+      return;
+    const quillHandler = (delta: any, oldDelta: any, source: any) => {
+      if (source !== 'user') return;
+      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+      setSaving(true);
+      const contents = quill.getContents();
+      const quillLength = quill.getLength();
 
-  //   return () => {
-  //     quill.off("text-change", quillHandler);
-  //     if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
-  //   };
-  // }, [quill, fileId]);
+      saveTimerRef.current = setTimeout(async () => {
+        if (contents && quillLength !== 1 && fileId) {
+          if (dirType === "folder") {
+            await updateFolderData({
+              folderId: fileId,
+              data: JSON.stringify(contents),
+            });
+          }
+          if (dirType === "file") {
+            await updateFileData({ fileId, data: JSON.stringify(contents) });
+          }
+        }
+        setSaving(false);
+      }, 850);
+    };
+    quill.on('text-change', quillHandler);
+
+    return () => {
+      quill.off('text-change', quillHandler);
+      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    };
+  }, [quill, fileId, user]);
 
   return (
     <>
