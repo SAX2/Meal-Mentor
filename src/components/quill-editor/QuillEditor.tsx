@@ -208,7 +208,6 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   }, []);
 
   useEffect(() => {
-    let selectedDir;
     const fetchInformation = async () => {
       if (dirType === 'file') {
         const { data: selectedDir, error } = await getFileDetails({ fileId, userId: user.id });
@@ -229,7 +228,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
         if (selectedDir) {
           
         }
-        quill.setContents(selectedDir ? JSON.parse(selectedDir[0].data || "") : "");
+        quill.setContents(selectedDir[0].data ? JSON.parse(selectedDir[0].data || "") : "");
       }
     };
     fetchInformation();

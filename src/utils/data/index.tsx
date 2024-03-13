@@ -15,7 +15,7 @@ export type OptionContext = {
   _?: OptionContext[];
 }
 
-export type OptionsContextTypes = "file" | "folder" | "navbar" | null;
+export type OptionsContextTypes = "file" | "folder" | "navbar" | null | string;
 
 export interface Types {
   public: {
