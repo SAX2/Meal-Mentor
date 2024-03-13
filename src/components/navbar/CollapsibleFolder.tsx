@@ -2,8 +2,8 @@
 
 import clsx from "clsx";
 import ContextMenu from "../context-menu/ContextMenu";
-import React, { useState } from "react";
-import { File, Folder } from "@/utils/data";
+import React, { useEffect, useState } from "react";
+import { File, Folder } from '@/lib/supabase/supabase.types'
 import { Collapsible, CollapsibleTrigger } from "../ui/collapsible";
 import { Route, RouteButton } from "./Route";
 import { ChevronDownIcon, GripVerticalIcon, PlusIcon } from "lucide-react";
@@ -11,24 +11,45 @@ import { CollapsibleContent } from "@radix-ui/react-collapsible";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { useDragAndDrop } from "@formkit/drag-and-drop/react";
 import { animations } from "@formkit/drag-and-drop";
+import { getFiles, getFolderDetails } from "@/lib/supabase/queries";
 
 interface CollapsibleFolderProps {
-  files: File[];
-  folder: Folder;
+  folderId: string;
+  userId: string;
 }
 
 const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
-  files,
-  folder,
+  folderId,
+  userId
 }) => {
   const [open, setOpen] = useState(false);
+  const [files, setFiles] = useState<File[] | null>(null);
+  const [folder, setFolder] = useState<Folder | null>(null);
 
+  useEffect(() => {
+    const getFolderFunction = async () => {
+      const { data, error } = await getFolderDetails({ folderId, userId });
+      if (!error && data) {
+        setFolder(data[0]);
+      }
+    }
+    getFolderFunction()
+  }, [folderId, userId])
+
+  useEffect(() => {
+    const getFilesFunction = async () => {
+      const { data, error } = await getFiles(folderId);
+      if (!error) {
+        setFiles(data);
+      }
+    }
+    getFilesFunction()
+  }, [folder])
+  
   const onOpenTransition = open ? "" : "rotate-[-90deg]";
 
-  const filesFolder = files.filter((file) => file.folder_id === folder.id);
-
   const [filesListRef, fileList] = useDragAndDrop<HTMLUListElement, File>(
-    filesFolder,
+    files || [],
     {
       group: "filesListRef",
       plugins: [animations({
@@ -40,12 +61,12 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
   return (
     <Collapsible onOpenChange={setOpen}>
       <div className="px-2">
-        <ContextMenu type="folder" id={folder.id}>
+        <ContextMenu type="folder" id={folder?.id}>
           <Route
             picker
             isLink
-            path={`/dashboard/${folder.id}`}
-            icon={folder.icon_id}
+            path={`/dashboard/${folder?.id}`}
+            icon={folder?.iconId}
             left={
               <CollapsibleTrigger>
                 <RouteButton type="hover">
@@ -69,7 +90,7 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
               </>
             }
           >
-            {folder.title}
+            {folder?.title}
           </Route>
         </ContextMenu>
       </div>
@@ -82,7 +103,7 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
                   <Route
                     picker
                     isLink
-                    path={`/dashboard/${file.folder_id}/${file.id}`}
+                    path={`/dashboard/${file.folderId}/${file.id}`}
                     left={
                       <div className="opacity-0">
                         <RouteButton
@@ -111,7 +132,7 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
                         </RouteButton>
                       </>
                     }
-                    icon={file.icon_id}
+                    icon={file.iconId}
                     key={file.id}
                   >
                     {file.title}

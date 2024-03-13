@@ -12,13 +12,20 @@ import {
   DialogOverlay,
   DialogTrigger,
 } from "../ui/dialog";
+import CreateFolder from "./CreateFolder";
+import { getFolders } from "@/lib/supabase/queries";
+import { Folder } from "@/lib/supabase/supabase.types";
 
 interface NavbarProps {
   params?: { workspaceId: string };
   className?: string;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ params, className }) => {
+
+
+const Navbar: React.FC<NavbarProps> = async ({ params, className }) => {
+  const { data: folders, error: foldersError } = await getFolders(user.id); 
+
   return (
     <nav className="max-w-[300px] w-full bg-white-2 border-r h-full">
       <div className="p-[5px]">
@@ -67,15 +74,19 @@ const Navbar: React.FC<NavbarProps> = ({ params, className }) => {
       </div>
       <ul className="p-[5px] flex flex-col gap-[2.5px]">
         <li>
-          {folders.map((folder) => {
-            return (
-              <CollapsibleFolder
-                files={files}
-                folder={folder}
-                key={folder.id}
-              />
-            );
-          })}
+          {folders &&
+            folders.map((folder: Folder) => {
+              return (
+                <CollapsibleFolder
+                  userId={user.id}
+                  folderId={folder.id}
+                  key={folder.id}
+                />
+              );
+            })}
+        </li>
+        <li>
+          <CreateFolder />
         </li>
       </ul>
     </nav>
