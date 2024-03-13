@@ -1,8 +1,9 @@
 import { ActivityIcon, BellIcon, CalendarIcon, CopyIcon, EditIcon, LanguagesIcon, LinkIcon, PlusIcon, ReceiptIcon, Settings2Icon, StarIcon, TrashIcon, UserIcon } from "lucide-react";
-import { Chat, Collaborators, File, Folder, Item, User, Workspace, OptionsContext } from ".";
+import { Chat, Collaborators, Item, User, Workspace, OptionsContext } from ".";
+import { File, Folder } from '../../lib/supabase/supabase.types'
 
 export const user: User = {
-  id: "2404719e-8483-4ebf-a4e3-03d03d011eac",
+  id: "c30f03a4-f13b-45f1-967c-9bcc235fe6fe",
   full_name: "Santino Degra",
   avatar_url: "",
   email: "santinodegra73@gmail.com",
@@ -213,17 +214,19 @@ export const collaborators: Collaborators[] = [
 export const folders: Folder[] = [
   {
     id: "1f693609-0496-444d-a32e-04bfcca6c806",
-    icon_id: "1f423",
+    iconId: "1f423",
     title: "Workouts",
-    workspace_id: "5ae778c2-cfac-4767-ad57-f46539f497c4",
-    created_at: "",
+    createdAt: "",
+    data: null,
+    folderOwner: 'bd4b29e6-2a7a-4e0a-af40-0518b0dbe263'
   },
   {
     id: "3cfbff41-a704-453e-baba-6154243fe3ef",
-    icon_id: "1f3ef",
+    iconId: "1f3ef",
     title: "Meal Plan",
-    workspace_id: "5ae778c2-cfac-4767-ad57-f46539f497c4",
-    created_at: "",
+    createdAt: "",
+    data: null,
+    folderOwner: 'bd4b29e6-2a7a-4e0a-af40-0518b0dbe263'
   },
 ];
 
@@ -232,28 +235,35 @@ export const files: File[] = [
     id: "0b536308-55f3-4b74-a34e-4510e0a434d4",
     title: "Menu generator",
     data: "",
-    icon_id: "1f30b",  
-    folder_id: "3cfbff41-a704-453e-baba-6154243fe3ef",
-    workspace_id: "5ae778c2-cfac-4767-ad57-f46539f497c4",
-    created_at: "",
+    iconId: "1f30b",  
+    folderId: "3cfbff41-a704-453e-baba-6154243fe3ef",
+    createdAt: "",
+    fileOwner: 'bd4b29e6-2a7a-4e0a-af40-0518b0dbe263'
   },
   {
     id: "5efb1924-11de-476b-86ca-4d0c5f31a392",
     title: "Recipes",
     data: "",
-    icon_id: "1f1e6-1f1f4",
-    folder_id: "3cfbff41-a704-453e-baba-6154243fe3ef",
-    workspace_id: "5ae778c2-cfac-4767-ad57-f46539f497c4",
-    created_at: "",
+    iconId: "1f1e6-1f1f4",
+    folderId: "3cfbff41-a704-453e-baba-6154243fe3ef",
+    createdAt: "",
+    fileOwner: 'bd4b29e6-2a7a-4e0a-af40-0518b0dbe263'
   },
   {
     id: "35186ba1-cd2b-44da-bd72-16c461b38293",
     title: "Calorie Counter",
     data: "",
-    icon_id: "1f33e",
-    folder_id: "3cfbff41-a704-453e-baba-6154243fe3ef",
-    workspace_id: "5ae778c2-cfac-4767-ad57-f46539f497c4",
-    created_at: "",
+    iconId: "1f33e",
+    folderId: "3cfbff41-a704-453e-baba-6154243fe3ef",
+    createdAt: "",
+    fileOwner: 'bd4b29e6-2a7a-4e0a-af40-0518b0dbe263'
   },
 ];
 
+export const dialogs = {
+  createFolder: {
+    title: "Create new folder",
+    description:
+      "Create new folder and share with people to work together in the same folder workspace",
+  },
+};

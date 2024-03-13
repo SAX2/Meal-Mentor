@@ -15,7 +15,7 @@ import { OptionContext, OptionsContextTypes } from "@/utils/data";
 interface ContextMenuProps {
   children: React.ReactNode;
   type: OptionsContextTypes;
-  id: string | null;
+  id?: string;
 }
 
 const ContextMenu: React.FC<ContextMenuProps> = ({ children, type }) => {
