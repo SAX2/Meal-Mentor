@@ -1,0 +1,27 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1710277475773,
+      "tag": "0000_groovy_golden_guardian",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1710290050824,
+      "tag": "0001_brainy_kat_farrell",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1710290305951,
+      "tag": "0002_same_tyger_tiger",
+      "breakpoints": true
+    }
+  ]
+}
