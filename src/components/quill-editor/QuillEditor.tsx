@@ -23,13 +23,19 @@ import {
   Heading3,
   Heading4,
   Heading5,
-  Heading6
+  Heading6,
+  Table
 } from "lucide-react";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { Changa_One } from 'next/font/google';
 import { user } from '@/utils/data/data';
 import { getFileDetails, getFolderDetails, updateFileData, updateFolderData } from '@/lib/supabase/queries';
 import { useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
+import QuillSkeleton from '../skeletons/QuillSkeleton';
+import MagicUrl from 'quill-magic-url'
+
+//@ts-ignore
+import * as QuillBetterTable from 'quill-better-table'
 
 interface QuillEditorProps {
   dirDetails?: File | Folder;
@@ -61,6 +67,7 @@ const TOOLBAR_OPTIONS: ToolbarOptions[] = [
     ],
   },
   {
+
     type: "button",
     items: [
       { content: "blockquote" },
@@ -150,6 +157,12 @@ const TOOLBAR_OPTIONS: ToolbarOptions[] = [
   {
     type: "button",
     items: [
+      { content: "table", value: "table", icon: <Table width={18} height={18} className="text-black" /> },
+    ],
+  },
+  {
+    type: "button",
+    items: [
       { content: "history", value: "undo", icon: <Undo width={18} height={18} className="text-black" /> },
       { content: "history", value: "redo", icon: <Redo width={18} height={18} className="text-black" /> },
     ],
@@ -172,9 +185,11 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   fileId,
 }) => {
   const [quill, setQuill] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [saving, setSaving] = useState(false);
   const saveTimerRef = useRef<ReturnType<typeof setTimeout>>();
   const [localCursors, setLocalCursors] = useState<any>([]);
+  const [quillInitialized, setQuillInitialized] = useState(false);
   const router =  useRouter()
   // const { state, workspaceId, folderId, dispatch } = useAppState();
 
@@ -186,21 +201,26 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       wrapper.innerHTML = '';
       const editor = document.createElement('div');
       wrapper.append(editor);
-      
+            
       const Quill = (await import('quill')).default;
       const QuillCursors = (await import('quill-cursors')).default;
+      const QuillMagicUrl = (await import('quill-magic-url')).default;
+      // const QuillBetterTable = (await Quill.import('quill-better-table'));
       
       Quill.register('modules/cursors', QuillCursors);
-      
+      Quill.register('modules/magicUrl', QuillMagicUrl)
+      // Quill.register({'modules/better-table': QuillBetterTable}, true);
+            
       const q = new Quill(editor, {
-        theme: 'snow',
+        theme: "snow",
         modules: {
-          toolbar: '#toolbar',
+          toolbar: "#toolbar",
           cursors: {
             transformOnTextChange: true,
           },
+          table: false,          
         },
-        placeholder: "Start typing your text here..."
+        placeholder: "Start typing your text here...",
       });
       
       setQuill(q);
@@ -208,31 +228,43 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   }, []);
 
   useEffect(() => {
+    if (quill !== null) {
+      setQuillInitialized(true);
+    }
+  }, [quill]);
+
+  useEffect(() => {
+    setIsLoading(true)
     const fetchInformation = async () => {
       if (dirType === 'file') {
-        const { data: selectedDir, error } = await getFileDetails({ fileId, userId: user.id });
+        const { data: selectedDir, error } = await getFileDetails({
+          fileId,
+          userId: user.id,
+        });
         if (error) {
           return router.replace(`/dashboard`);
         }
-        if (quill === null) return;
-        if (!selectedDir) return;
+        if (quill === null || !selectedDir || selectedDir[0].data === null) {
+          setIsLoading(false);
+          return;
+        }
         quill.setContents(
           selectedDir ? JSON.parse(selectedDir[0].data || "") : ""
         );
-
+        setIsLoading(false);
       }
       if (dirType === 'folder') {
         const { data: selectedDir, error } = await getFolderDetails({ folderId: fileId, userId: user.id });
-        if (quill === null) return;
-        if (!selectedDir) return;
-        if (selectedDir) {
-          
-        }
+        if (quill === null || !selectedDir || selectedDir[0].data === null) {
+          setIsLoading(false);
+          return;
+        };
         quill.setContents(selectedDir[0].data ? JSON.parse(selectedDir[0].data || "") : "");
-      }
+        setIsLoading(false);
+    }
     };
     fetchInformation();
-  }, [fileId, dirType, quill]);
+  }, [fileId, dirType, quillInitialized]);
 
   useEffect(() => {
     if (
@@ -277,9 +309,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
     <>
       <div id="toolbar">
         <div className="flex p-1 border-r">
-          <button
-            className={"outline-0 rounded-sm hover:!bg-white-2-sec"}
-          >
+          <button className={"outline-0 rounded-sm hover:!bg-white-2-sec"}>
             <Sparkles width={18} height={18} className="text-black" />
           </button>
         </div>
@@ -330,8 +360,9 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
           </button>
         </div>
       </div>
+      {isLoading && <QuillSkeleton />}
       <div className="flex justify-center items-center flex-col relative w-full">
-        <div id="container" className="w-full" ref={wrapperRef}></div>
+        <div id="container" className={cn("w-full", isLoading && 'opacity-0')} ref={wrapperRef}></div>
       </div>
     </>
   );
@@ -360,6 +391,12 @@ export const ToolbarItem = ({
         case "redo": 
           return quill.history.redo();
       }
+    }
+
+    if (type === 'table') {
+      // const table = quill.getModule('better-table');
+      // return table.insertTable(3, 3)
+      console.log(quill)
     }
   }
 
