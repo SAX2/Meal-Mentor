@@ -106,10 +106,6 @@ export const SearchCommand = ({
 
   sort();
 
-  const onSelect = () => {
-    return 
-  }
-
   return (
     <CommandDialog onOpenChange={setOpen} open={open} modal>
       <CommandInput placeholder={`Search...`} className="" />
@@ -136,7 +132,8 @@ export const SearchCommand = ({
                   router.push(path);
                   onClick();
                 }}
-              >
+                key={item.id}
+                >
                 <Route
                   isLink={false}
                   path={path}
@@ -147,7 +144,6 @@ export const SearchCommand = ({
                     }
                   }
                   icon={item.icon_id && item.icon_id}
-                  key={item.id}
                   right={
                     item.aditional == null ? null : (
                       <RouteButton type="fixed">

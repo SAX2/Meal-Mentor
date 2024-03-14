@@ -1,6 +1,17 @@
 import { ActivityIcon, BellIcon, CalendarIcon, CopyIcon, EditIcon, LanguagesIcon, LinkIcon, PlusIcon, ReceiptIcon, Settings2Icon, StarIcon, TrashIcon, UserIcon } from "lucide-react";
 import { Chat, Collaborators, Item, User, Workspace, OptionsContext } from ".";
 import { File, Folder } from '../../lib/supabase/supabase.types'
+import GoogleLogo from '../../../public/providers/Google.svg'
+import MetaLogo from '../../../public/providers/Meta.svg'
+import AppleLogo from '../../../public/providers/Apple.svg'
+import Image from "next/image";
+
+export type AuthProvider = "google" | "facebook" | "apple";
+interface AuthProviderInfo {
+  title: string;
+  classname: string;
+  icon?: React.ReactElement | string;
+}
 
 export const user: User = {
   id: "c30f03a4-f13b-45f1-967c-9bcc235fe6fe",
@@ -265,5 +276,57 @@ export const dialogs = {
     title: "Create new folder",
     description:
       "Create new folder and share with people to work together in the same folder workspace",
+  },
+  login: {
+    title: "Welcome back",
+    description:
+      "Sign in and collaborate with others within the shared workspace folder.",
+  },
+  register: {
+    title: "Welcome to MealMentor",
+    description:
+      "Sign up now and begin collaborating with others in the shared workspace folder.",
+  },
+};
+
+export const authProviders: Record<AuthProvider, AuthProviderInfo> = {
+  google: {
+    title: "Continue with Google",
+    classname: "border-google/30 bg-google/25 text-black",
+    icon: (
+      <Image
+        src={GoogleLogo}
+        width={16}
+        height={16}
+        alt="google"
+        className="h-full w-auto"
+      />
+    ),
+  },
+  facebook: {
+    title: "Continue with Facebook",
+    classname: "border-meta/30 bg-meta/25 text-black",
+    icon: (
+      <Image
+        src={MetaLogo}
+        width={16}
+        height={16}
+        alt="meta"
+        className="h-full w-auto max-h-4"
+      />
+    ),
+  },
+  apple: {
+    title: "Continue with Google",
+    classname: "!border-none bg-apple text-white",
+    icon: (
+      <Image
+        src={AppleLogo}
+        width={16}
+        height={16}
+        alt="apple"
+        className="h-full w-auto"
+      />
+    ),
   },
 };
