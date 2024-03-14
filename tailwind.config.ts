@@ -58,7 +58,10 @@ const config = {
         "white-2-sec": "#F4F5F7",
         "white-2-sec-2": '#E9EBEF',
         "outline": "#EEEEEE",
-        "grey": "#8B8B8B"
+        "grey": "#8B8B8B",
+        "google": "#FBBC05",
+        "meta": "#0064E1",
+        "apple": "#0A0A0A"
       },
       borderRadius: {
         lg: "var(--radius)",
