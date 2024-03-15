@@ -1,10 +1,25 @@
-import { ActivityIcon, BellIcon, CalendarIcon, CopyIcon, EditIcon, LanguagesIcon, LinkIcon, PlusIcon, ReceiptIcon, Settings2Icon, StarIcon, TrashIcon, UserIcon } from "lucide-react";
+import {
+  ActivityIcon,
+  BellIcon,
+  CalendarIcon,
+  CopyIcon,
+  EditIcon,
+  LanguagesIcon,
+  LinkIcon,
+  PlusIcon,
+  ReceiptIcon,
+  Settings2Icon,
+  StarIcon,
+  TrashIcon,
+  UserIcon,
+} from "lucide-react";
 import { Chat, Collaborators, Item, User, Workspace, OptionsContext } from ".";
-import { File, Folder } from '../../lib/supabase/supabase.types'
-import GoogleLogo from '../../../public/providers/Google.svg'
-import MetaLogo from '../../../public/providers/Meta.svg'
-import AppleLogo from '../../../public/providers/Apple.svg'
+import { File, Folder } from "../../lib/supabase/supabase.types";
+import GoogleLogo from "../../../public/providers/Google.svg";
+import MetaLogo from "../../../public/providers/Meta.svg";
+import AppleLogo from "../../../public/providers/Apple.svg";
 import Image from "next/image";
+import { actionDeleteFolder, actionDuplicateFolder } from "@/components/context-menu/actions";
 
 export type AuthProvider = "google" | "facebook" | "apple";
 interface AuthProviderInfo {
@@ -33,7 +48,7 @@ export const options_context: OptionsContext = [
             icon: <StarIcon width={16} height={16} />,
             title: "Add to favorites",
           },
-        ]
+        ],
       },
       {
         _: [
@@ -70,7 +85,7 @@ export const options_context: OptionsContext = [
             icon: <StarIcon width={16} height={16} />,
             title: "Add to favorites",
           },
-        ]
+        ],
       },
       {
         _: [
@@ -78,6 +93,7 @@ export const options_context: OptionsContext = [
             icon: <TrashIcon width={16} height={16} />,
             title: "Delete",
             warning: true,
+            function: (id: string) => actionDeleteFolder(id),
           },
           {
             icon: <CopyIcon width={16} height={16} />,
@@ -88,8 +104,10 @@ export const options_context: OptionsContext = [
               },
               {
                 title: "Empty",
+                function: (id: string) => actionDuplicateFolder(id),
               },
             ],
+            function: (id: string) => actionDuplicateFolder(id),
           },
           {
             icon: <PlusIcon width={16} height={16} />,
@@ -119,14 +137,14 @@ export const routes: Item[] = [
     path: "/notifications",
     type: "notifications",
     title: "Notifications",
-    icon: <BellIcon width={16} height={16}/>,
+    icon: <BellIcon width={16} height={16} />,
     additional: 7,
   },
   {
     isLink: true,
     path: "/progress-tracking",
     title: "Progress Tracking",
-    icon: <ActivityIcon width={16} height={16}/>,
+    icon: <ActivityIcon width={16} height={16} />,
     additional: null,
   },
   {
@@ -149,34 +167,34 @@ export const routes: Item[] = [
 export const routesSettings: Item[] = [
   {
     isLink: true,
-    path: '/user',
+    path: "/user",
     title: "User",
     icon: <UserIcon width={16} height={16} />,
-    additional: null
+    additional: null,
   },
   {
-    isLink: true, 
+    isLink: true,
     path: "/bill-management",
     title: "Bill management",
     icon: <ReceiptIcon width={16} height={16} />,
     additional: null,
   },
   {
-    isLink: true, 
+    isLink: true,
     path: "/subscription",
     title: "Subscription",
     icon: <StarIcon width={16} height={16} />,
     additional: null,
   },
   {
-    isLink: true, 
+    isLink: true,
     path: "/notifications",
     title: "Notifications",
     icon: <BellIcon width={16} height={16} />,
     additional: null,
   },
   {
-    isLink: true, 
+    isLink: true,
     path: "/language-settings",
     title: "Language settings",
     icon: <LanguagesIcon width={16} height={16} />,
@@ -188,21 +206,23 @@ export const chats: Chat[] = [
   {
     id: "f739b7f0-d914-4099-a05a-1181122da0e1",
     title: "HealthyEaters Club",
-    avatar_url: "https://jackcityfitness.com/wp-content/uploads/shutterstock_1351783832-1.jpg",
-    aditional: 11
+    avatar_url:
+      "https://jackcityfitness.com/wp-content/uploads/shutterstock_1351783832-1.jpg",
+    aditional: 11,
   },
   {
     id: "d4b73c18-399e-4d44-9c80-b8e001147db0",
     title: "Radiant Crew",
-    avatar_url: 'null',
+    avatar_url: "null",
   },
   {
     id: "8971ac3c-24d5-4b06-922e-4624ab16b435",
     title: "Sophia Miller",
-    avatar_url: "https://www.workbc.ca/sites/default/files/styles/hero_image/public/NTI5NzE_WBtwVGtmKPv8pNus-3132-NOC.jpg?itok=FrrP-vVb",
-    aditional: 2
+    avatar_url:
+      "https://www.workbc.ca/sites/default/files/styles/hero_image/public/NTI5NzE_WBtwVGtmKPv8pNus-3132-NOC.jpg?itok=FrrP-vVb",
+    aditional: 2,
   },
-]
+];
 
 export const workspaces: Workspace[] = [
   {
@@ -229,7 +249,7 @@ export const folders: Folder[] = [
     title: "Workouts",
     createdAt: "",
     data: null,
-    folderOwner: 'bd4b29e6-2a7a-4e0a-af40-0518b0dbe263'
+    folderOwner: "bd4b29e6-2a7a-4e0a-af40-0518b0dbe263",
   },
   {
     id: "3cfbff41-a704-453e-baba-6154243fe3ef",
@@ -237,7 +257,7 @@ export const folders: Folder[] = [
     title: "Meal Plan",
     createdAt: "",
     data: null,
-    folderOwner: 'bd4b29e6-2a7a-4e0a-af40-0518b0dbe263'
+    folderOwner: "bd4b29e6-2a7a-4e0a-af40-0518b0dbe263",
   },
 ];
 
@@ -246,10 +266,10 @@ export const files: File[] = [
     id: "0b536308-55f3-4b74-a34e-4510e0a434d4",
     title: "Menu generator",
     data: "",
-    iconId: "1f30b",  
+    iconId: "1f30b",
     folderId: "3cfbff41-a704-453e-baba-6154243fe3ef",
     createdAt: "",
-    fileOwner: 'bd4b29e6-2a7a-4e0a-af40-0518b0dbe263'
+    fileOwner: "bd4b29e6-2a7a-4e0a-af40-0518b0dbe263",
   },
   {
     id: "5efb1924-11de-476b-86ca-4d0c5f31a392",
@@ -258,7 +278,7 @@ export const files: File[] = [
     iconId: "1f1e6-1f1f4",
     folderId: "3cfbff41-a704-453e-baba-6154243fe3ef",
     createdAt: "",
-    fileOwner: 'bd4b29e6-2a7a-4e0a-af40-0518b0dbe263'
+    fileOwner: "bd4b29e6-2a7a-4e0a-af40-0518b0dbe263",
   },
   {
     id: "35186ba1-cd2b-44da-bd72-16c461b38293",
@@ -267,7 +287,7 @@ export const files: File[] = [
     iconId: "1f33e",
     folderId: "3cfbff41-a704-453e-baba-6154243fe3ef",
     createdAt: "",
-    fileOwner: 'bd4b29e6-2a7a-4e0a-af40-0518b0dbe263'
+    fileOwner: "bd4b29e6-2a7a-4e0a-af40-0518b0dbe263",
   },
 ];
 

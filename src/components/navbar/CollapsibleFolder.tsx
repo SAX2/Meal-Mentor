@@ -1,7 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import ContextMenu from "../context-menu/ContextMenu";
+import ContextMenu, { ContextMenuOnClick } from "../context-menu/ContextMenu";
 import React, { useEffect, useState } from "react";
 import { File, Folder } from '@/lib/supabase/supabase.types'
 import { Collapsible, CollapsibleTrigger } from "../ui/collapsible";
@@ -81,9 +81,11 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
             }
             right={
               <>
-                <RouteButton type="hidden" className="">
-                  <DotsHorizontalIcon width={14} height={14} color="grey" />
-                </RouteButton>
+                <ContextMenuOnClick type="folder" id={folder?.id}>
+                  <RouteButton type="hidden" className="">
+                    <DotsHorizontalIcon width={14} height={14} color="grey" />
+                  </RouteButton>
+                </ContextMenuOnClick>
                 <RouteButton type="hidden">
                   <PlusIcon width={14} height={14} color="grey" />
                 </RouteButton>

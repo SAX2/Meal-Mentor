@@ -13,6 +13,7 @@ export type OptionContext = {
   title: string | null;
   icon?: React.ReactNode | null;
   _?: OptionContext[];
+  function?: (id: string) => void;
 }
 
 export type OptionsContextTypes = "file" | "folder" | "navbar" | null | string;

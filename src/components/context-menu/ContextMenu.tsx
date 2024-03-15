@@ -11,6 +11,7 @@ import {
 import { options_context } from '@/utils/data/data';
 import { Separator } from '../ui/separator';
 import { OptionContext, OptionsContextTypes } from "@/utils/data";
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 
 interface ContextMenuProps {
   children: React.ReactNode;
@@ -18,20 +19,35 @@ interface ContextMenuProps {
   id?: string;
 }
 
-const ContextMenu: React.FC<ContextMenuProps> = ({ children, type }) => {
+type typeOfRender = 'popover' | 'context'
+
+const ContextMenu: React.FC<ContextMenuProps> = ({ children, type, id }) => {
   return (
     <Menu>
       <ContextMenuTrigger>{children}</ContextMenuTrigger>
-      <ContextMenuContent className='p-0 bg-white-2 shadow-pop rounded-sm'>
-        {type == "file" && <ContextMenuFile />}
-        {type == "folder" && <ContextMenuFolder />}
-        {type == "navbar" && <ContextMenuFile />}
+      <ContextMenuContent className="p-0 bg-white-2 shadow-pop rounded-sm">
+        {type == "file" && <ContextMenuFile type="context" id={id} />}
+        {type == "folder" && <ContextMenuFolder type="context" id={id} />}
+        {type == "navbar" && <ContextMenuFile type="context" id={id} />}
       </ContextMenuContent>
     </Menu>
   );
 };
 
-const RenderContextMenu = ({ type }: { type: OptionsContextTypes }) => {
+export const ContextMenuOnClick: React.FC<ContextMenuProps> = ({ children, type, id }) => {
+  return (
+    <Popover>
+      <PopoverTrigger>{children}</PopoverTrigger>
+      <PopoverContent className="p-0 bg-white-2 shadow-pop rounded-sm w-fit">
+        {type == "file" && <ContextMenuFile type="popover" id={id} />}
+        {type == "folder" && <ContextMenuFolder type="popover" id={id} />}
+        {type == "navbar" && <ContextMenuFile type="popover" id={id} />}
+      </PopoverContent>
+    </Popover>
+  );
+}
+
+const RenderContextMenu = ({ type, typeOfRender, id }: { type: OptionsContextTypes, typeOfRender: typeOfRender, id?: string }) => {
   return (
     <>
       {options_context
@@ -39,23 +55,51 @@ const RenderContextMenu = ({ type }: { type: OptionsContextTypes }) => {
         ?.group?.map((group, index) => {
           return (
             <>
-              <ContextMenuGroup className="flex flex-col gap-0 p-[5px]" key={index}>
-                {group._?.map((option) => {
-                  return (
-                    <ContextMenuItem
-                      content={option}
-                      key={`${option.title}_${Math.random() * 40}`}
-                    >
-                      <ContextMenuButton>
-                        {option.icon && (
-                          <div className="text-black">{option.icon}</div>
-                        )}
-                        {option.title}
-                      </ContextMenuButton>
-                    </ContextMenuItem>
-                  );
-                })}
-              </ContextMenuGroup>
+              {typeOfRender == "context" && (
+                <ContextMenuGroup
+                  className="flex flex-col gap-0 p-[5px]"
+                  key={index}
+                >
+                  {group._?.map((option) => {
+                    return (
+                      <div onClick={() => option.function && option.function(id ? id : '')}>
+                        <ContextMenuItem
+                          content={option}
+                          key={`${option.title}_${Math.random() * 40}`}
+                        >
+                          <ContextMenuButton>
+                            {option.icon && (
+                              <div className="text-black">{option.icon}</div>
+                            )}
+                            {option.title}
+                          </ContextMenuButton>
+                        </ContextMenuItem>
+                      </div>
+                    );
+                  })}
+                </ContextMenuGroup>
+              )}
+              {typeOfRender == "popover" && (
+                <div
+                  className="flex flex-col gap-0 p-[5px]"
+                  key={index}
+                >
+                  {group._?.map((option) => {
+                    return (
+                      <div
+                        key={`${option.title}_${Math.random() * 40}`}
+                      >
+                        <ContextMenuButton>
+                          {option.icon && (
+                            <div className="text-black">{option.icon}</div>
+                          )}
+                          {option.title}
+                        </ContextMenuButton>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
               {index !==
                 options_context.filter((o) => o.type === "file")[0]?.group
                   ?.length -
@@ -67,14 +111,14 @@ const RenderContextMenu = ({ type }: { type: OptionsContextTypes }) => {
   );
 }
 
-const ContextMenuFile = () => {
+const ContextMenuFile = ({ type, id }: { type: typeOfRender, id?: string }) => {
   const lastUpdateText = 'Last time updated by Santino Degra at'
   const lastUpdateDate = '31 may 2023, 23:31'
 
 
   return (
     <div className="flex flex-col w-[200px]">
-      <RenderContextMenu type="file" />
+      <RenderContextMenu type="file" typeOfRender={type} id={id} />
       <Separator />
       <div className="p-[5px]">
         <p className="text-xs text-grey p-[6px]">
@@ -86,13 +130,13 @@ const ContextMenuFile = () => {
   );
 }
 
-const ContextMenuFolder = () => {
+const ContextMenuFolder = ({ type, id }: { type: typeOfRender, id?: string }) => {
   const lastUpdateText = 'Last time updated by Santino Degra at'
   const lastUpdateDate = '31 may 2023, 23:31'
 
   return (
     <div className="flex flex-col w-[200px]">
-      <RenderContextMenu type="folder" />
+      <RenderContextMenu type="folder" typeOfRender={type} id={id} />
       <Separator />
       <div className="p-[5px]">
         <p className="text-xs text-grey p-[6px]">
