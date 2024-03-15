@@ -37,10 +37,7 @@ const Route: React.FC<RouteProps> = ({
 }) => {
   
   const renderContent = (
-    <>
-      <div className="flex gap-[6px] items-center h-full">
-        {left && <>{left}</>}
-        <div className="flex gap-[7px] items-center justify-start">
+    <div className="flex gap-[7px] items-center justify-start">
           {image && (
             <Avatar className="w-5 h-5 rounded-sm">
               <AvatarImage src={image.src} className="object-cover" />
@@ -55,27 +52,35 @@ const Route: React.FC<RouteProps> = ({
           {image === undefined && icon == undefined && <div>•</div>}
           <p className="truncate">{children}</p>
         </div>
-      </div>
-      {right && (
-        <div className="flex items-center gap-[2.5px]">
-          {right}
-        </div>
-      )}
-    </>
-  );
+  )
 
   return (
     <>
       {isLink ? (
-        <Link
-          href={path}
-          className={clsx(routeClassname, "justify-between")}
-        >
-          {renderContent}
-        </Link>
+        <>
+          <div className={clsx(routeClassname, "justify-between relative")}>
+            <Link
+              href={path}
+              className="absolute top-0 left-0 w-full h-full z-0"
+            ></Link>
+            <div className="flex gap-[6px] items-center h-full">
+              {left && <div className="z-50">{left}</div>}
+              {renderContent}
+            </div>
+            {right && (
+              <div className="flex items-center gap-[2.5px] z-50">{right}</div>
+            )}
+          </div>
+        </>
       ) : (
         <div className={clsx(routeClassname, "justify-between")}>
-          {renderContent}
+          <div className="flex gap-[6px] items-center h-full">
+            {left && <>{left}</>}
+            {renderContent}
+          </div>
+          {right && (
+            <div className="flex items-center gap-[2.5px]">{right}</div>
+          )}
         </div>
       )}
     </>
