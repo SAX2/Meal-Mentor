@@ -56,16 +56,6 @@ const Navbar: React.FC<NavbarProps> = async ({ params, className }) => {
             </Route>
           );
 
-          // if (route.path === "/settings") {
-          //   return (
-          //     <Dialog>
-          //       <DialogTrigger>{routeElement}</DialogTrigger>
-          //       <DialogContent className="max-w-3xl min-h-[450px] h-fit p-0">
-          //       </DialogContent>
-          //     </Dialog>
-          //   );
-          // }
-
           return routeElement;
         })}
       </ul>
