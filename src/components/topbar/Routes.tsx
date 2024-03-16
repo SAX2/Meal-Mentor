@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/breadcrumb"
 import { getFileDetails, getFolderDetails } from "@/lib/supabase/queries";
 import { File, Folder } from "@/lib/supabase/supabase.types";
+import { useAuth } from "@clerk/nextjs";
 
 const Routes = ({
   folderId,
@@ -23,6 +24,8 @@ const Routes = ({
   folderId?: string;
   documentId?: string;
 }) => {
+  const { userId } = useAuth();
+  const userIdValue = userId ?? '';
   const [items, setItems] = useState<(Folder & { type: string } | File & { type: string })[]>([]);
 
   useEffect(() => {
@@ -30,7 +33,7 @@ const Routes = ({
       if (folderId) {
         const { data: folder, error: folderError } = await getFolderDetails({
           folderId,
-          userId: user.id,
+          userId: userIdValue,
         });
   
         if (!folderError) {
@@ -43,7 +46,7 @@ const Routes = ({
             if (documentId) {
               const { data: file, error: fileError } = await getFileDetails({
                 fileId: documentId,
-                userId: user.id,
+                userId: userIdValue,
               });
   
               if (!fileError) {
@@ -64,7 +67,7 @@ const Routes = ({
     };
   
     fetchItems();
-  }, [folderId, documentId, user.id]);
+  }, [folderId, documentId, userIdValue]);
 
 
   return (

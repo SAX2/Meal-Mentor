@@ -1,24 +1,15 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { authMiddleware  } from "@clerk/nextjs";
 
-
-export async function middleware(request: NextRequest) {
-  const response = NextResponse.next();
-
-  // if (request.nextUrl.pathname.startsWith('/dashboard')) {
-  //   if (!session) {
-  //     return NextResponse.redirect(new URL('/login', request.url))
-  //   }
-  // }
-
-  // if (['/login', '/signup'].includes(request.nextUrl.pathname)) {
-  //   if (session) {
-  //     return NextResponse.redirect(new URL('/dashboard', request.url))
-  //   }
-  // }
-
-  if (request.nextUrl.pathname == "/") {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
-  }
-  return response;
-} 
+export default authMiddleware({
+  // Routes that can be accessed while signed out
+  publicRoutes: ["/sign-up", "/sign-in"],
+});
+ 
+export const config = {
+  // Protects all routes, including api/trpc.
+  // See https://clerk.com/docs/references/nextjs/auth-middleware
+  // for more information about configuring your Middleware
+  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+};

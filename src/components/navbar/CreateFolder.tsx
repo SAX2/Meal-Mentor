@@ -15,16 +15,15 @@ import { createFolder } from '@/lib/supabase/queries';
 import { v4 } from 'uuid';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { user } from '@/utils/data/data';
 
-const CreateFolder = ({ userId }: { userId?: string }) => {
+const CreateFolder = ({ userId }: { userId: string }) => {
   return (
     <CustomDialog
       title={dialogs.createFolder.title}
       description={dialogs.createFolder.description}
       classname="w-full"
       classnameContent="w-fit !max-w-[400px]"
-      content={<DialogContent />}
+      content={<DialogContent userId={userId}/>}
     >
       <div className={cn(routeClassname, "mt-2 w-full")}>
         <PlusIcon width={16} height={16} className="text-black" />
@@ -34,7 +33,7 @@ const CreateFolder = ({ userId }: { userId?: string }) => {
   );
 };
 
-const DialogContent = ({ userId }: { userId?: string }) => {
+const DialogContent = ({ userId }: { userId: string }) => {
   const [seletedEmoji, setSeletedEmoji] = useState<string>(
     emojis ? emojis[Math.floor(Math.random() * emojis.length)] : ""
   );  
@@ -51,7 +50,7 @@ const DialogContent = ({ userId }: { userId?: string }) => {
     const newFolder: Folder = {
       id: uuid,
       data: null,
-      folderOwner: user.id,
+      folderOwner: userId,
       iconId: seletedEmoji,
       title: title,
       createdAt: new Date().toISOString(),
@@ -59,8 +58,6 @@ const DialogContent = ({ userId }: { userId?: string }) => {
 
     const res = await createFolder(newFolder);
     
-    console.log(res)
-
     if (!res.error) {
       toast.success("Folder create successfully");
       setIsLoading(false);

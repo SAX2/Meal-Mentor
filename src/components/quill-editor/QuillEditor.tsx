@@ -27,10 +27,10 @@ import {
   Table
 } from "lucide-react";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { user } from '@/utils/data/data';
 import { getFileDetails, getFolderDetails, updateFileData, updateFolderData } from '@/lib/supabase/queries';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@clerk/nextjs';
 import QuillSkeleton from '../skeletons/QuillSkeleton';
 import MagicUrl from 'quill-magic-url'
 
@@ -190,6 +190,8 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   const saveTimerRef = useRef<ReturnType<typeof setTimeout>>();
   const [localCursors, setLocalCursors] = useState<any>([]);
   const [quillInitialized, setQuillInitialized] = useState(false);
+  const { userId } = useAuth();
+  const userIdValue = userId ?? '';
   const router =  useRouter()
   // const { state, workspaceId, folderId, dispatch } = useAppState();
 
@@ -239,7 +241,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       if (dirType === 'file') {
         const { data: selectedDir, error } = await getFileDetails({
           fileId,
-          userId: user.id,
+          userId: userIdValue,
         });
         if (error) {
           return router.replace(`/dashboard`);
@@ -254,7 +256,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
         setIsLoading(false);
       }
       if (dirType === 'folder') {
-        const { data: selectedDir, error } = await getFolderDetails({ folderId: fileId, userId: user.id });
+        const { data: selectedDir, error } = await getFolderDetails({ folderId: fileId, userId: userIdValue });
         if (quill === null || !selectedDir || selectedDir[0].data === null) {
           setIsLoading(false);
           return;
@@ -272,7 +274,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       // socket === null ||
       !fileId ||
       !dirType ||
-      !user
+      !userIdValue
     )
       return;
     const quillHandler = (delta: any, oldDelta: any, source: any) => {
@@ -303,7 +305,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       quill.off('text-change', quillHandler);
       if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
     };
-  }, [quill, fileId, user]);
+  }, [quill, fileId, userIdValue]);
 
   return (
     <>

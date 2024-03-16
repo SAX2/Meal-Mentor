@@ -6,8 +6,8 @@ import { cn } from '@/lib/utils';
 import { AuthProvider, authProviders } from '@/utils/data/data';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
-import { usePathname, useRouter } from 'next/navigation';
-import { toast } from 'sonner';
+import { usePathname } from 'next/navigation';
+import { useSignIn, useSignUp } from '@clerk/nextjs';
 
 interface AuthModalProps {
   children?: React.ReactNode;
@@ -25,6 +25,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
   providersEnabled = true,
 }) => {
   const pathname = usePathname();
+  const route = pathname === "/sign-in" ? "/sign-up" : "/sign-in";
 
   return (
     <div className="flex flex-col gap-3 p-6 rounded-lg border border-outline max-w-[400px]">
@@ -40,6 +41,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
           )}
         </div>
       )}
+
       {providersEnabled && providers && providers?.length > 0 && (
         <>
           <div className="flex flex-col gap-2 mt-2">
@@ -58,15 +60,12 @@ const AuthModal: React.FC<AuthModalProps> = ({
       <div className="mt-2 flex w-full justify-center">
         <div className="flex gap-1 text-sm">
           <span className="text-grey">
-            {pathname === "/login"
+            {pathname === "sign-in"
               ? "You dont have an account?"
               : "Do you have an account?"}
           </span>
-          <Link
-            className="font-medium"
-            href={pathname === "/login" ? "/register" : "login"}
-          >
-            {pathname === "/login" ? "Register" : "Login"}
+          <Link className="font-medium cursor-pointer" href={route}>
+            {pathname === "sign-in" ? "Register" : "Login"}
           </Link>
         </div>
       </div>
@@ -75,7 +74,31 @@ const AuthModal: React.FC<AuthModalProps> = ({
 };
 
 const ContinueProviders = ({ provider }: { provider: AuthProvider }) => {
-  const router = useRouter();
+  const pathname = usePathname();
+  const { isLoaded: isLoadedSignIn, signIn, setActive: setActiveSignIn } = useSignIn()
+  const { isLoaded: isLoadedSignUp , signUp, setActive: setActiveSignUp } = useSignUp()
+
+  const handleClick = async () => {
+    if (pathname == "/sign-in") {
+      if (isLoadedSignIn) {
+        await signIn.authenticateWithRedirect({
+          strategy: `oauth_${provider}`,
+          redirectUrl: "/sso-callback",
+          redirectUrlComplete: "/dashboard",
+        });
+      }
+    }
+    if (pathname == "/sign-up") {
+      if (isLoadedSignUp) {
+        await signUp.authenticateWithRedirect({
+          strategy: `oauth_${provider}`,
+          redirectUrl: "/sso-callback",
+          redirectUrlComplete: "/dashboard",
+        });
+      }
+    }
+  }
+
 
   return (
     <button
@@ -83,6 +106,7 @@ const ContinueProviders = ({ provider }: { provider: AuthProvider }) => {
         "w-full border border-outline rounded-sm px-3 py-1 font-medium flex justify-center items-center select-none gap-2",
         authProviders[provider].classname
       )}
+      onClick={handleClick}
     >
       <div className='h-5 flex items-center'>{authProviders[provider].icon && authProviders[provider].icon}</div>
       {authProviders[provider].title}

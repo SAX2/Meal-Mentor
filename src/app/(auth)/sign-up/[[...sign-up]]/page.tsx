@@ -12,7 +12,11 @@ const page = () => {
     >
       <div className="flex flex-col gap-[10px]">
         <div className="flex gap-[10px]">
-          <InputModal label="First Name" placeholder="Your email" type="email" />
+          <InputModal
+            label="First Name"
+            placeholder="Your email"
+            type="email"
+          />
           <InputModal label="Last Name" placeholder="Your email" type="email" />
         </div>
         <InputModal label="Email *" placeholder="Your email" type="email" />

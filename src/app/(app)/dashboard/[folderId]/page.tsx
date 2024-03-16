@@ -5,12 +5,14 @@ import { getFolderDetails } from "@/lib/supabase/queries";
 import { user } from "@/utils/data/data";
 import EmojiRoute from "@/components/emoji/EmojiRoute";
 import QuillEditor from "@/components/quill-editor/QuillEditor";
+import { auth } from "@clerk/nextjs";
 
 export async function generateMetadata({
   params,
 }: layoutProps): Promise<Metadata> {
-
-  const { data, error } = await getFolderDetails({ folderId: params.folderId, userId: user.id });
+  const { userId } = auth();
+  const userIdValue = userId ?? '';
+  const { data, error } = await getFolderDetails({ folderId: params.folderId, userId: userIdValue });
 
   return {
     title: data && data[0]?.title,
@@ -18,10 +20,15 @@ export async function generateMetadata({
 }
 
 const page = async ({ params }: { params: { folderId: string } }) => {
+  const { userId } = auth();
+  const userIdValue = userId ?? '';
   const { folderId } = params;
-  const { data, error } = await getFolderDetails({ folderId, userId: user.id });
+  const { data, error } = await getFolderDetails({
+    folderId,
+    userId: userIdValue,
+  });
 
-  if (error) {
+  if (error || data?.length === 0) {
     return (
       <>
         <div className="w-full h-dvh flex justify-center items-center">

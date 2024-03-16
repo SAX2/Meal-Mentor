@@ -5,13 +5,16 @@ import { layoutProps } from '../layout';
 import { Metadata } from 'next';
 import QuillEditor from '@/components/quill-editor/QuillEditor';
 import { getFileDetails } from '@/lib/supabase/queries';
+import { auth } from '@clerk/nextjs';
 
 export async function generateMetadata({
   params,
 }: layoutProps): Promise<Metadata> {
   const fileId = params.documentId;
+  const { userId } = auth();
+  const userIdValue = userId ?? '';
 
-  const { data, error } = await getFileDetails({ fileId, userId: user.id });
+  const { data, error } = await getFileDetails({ fileId, userId: userIdValue });
 
   return {
     title: data && data[0]?.title,
@@ -20,7 +23,11 @@ export async function generateMetadata({
 
 const page = async ({ params }: { params: { documentId: string, folderId: string } }) => {
   const { documentId } = params;
-  const { data, error } = await getFileDetails({ fileId: documentId, userId: user.id });
+
+  const { userId } = auth();
+  const userIdValue = userId ?? '';
+
+  const { data, error } = await getFileDetails({ fileId: documentId, userId: userIdValue });
 
   if (error) {
     return (
