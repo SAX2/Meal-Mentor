@@ -13,7 +13,7 @@ const UserCard = async ({ user }: { user: any }) => {
         <div className="hover:bg-white-2-sec w-full max-[860px]:p-1 p-2 rounded-sm flex select-none justify-between items-center cursor-pointer transition-colors ease-in-out duration-75">
           <div className="flex items-center gap-2">
             <Avatar className="rounded-md h-[30px] w-[30px]">
-              <AvatarImage src={user?.imageUrl} />
+              <AvatarImage src={user?.imageUrl} alt={user.id} width={30} height={30}/>
               <AvatarFallback className="rounded-md bg-[#8A655A] text-white text-xl">
                 {user.firstName?.charAt(0)}
               </AvatarFallback>

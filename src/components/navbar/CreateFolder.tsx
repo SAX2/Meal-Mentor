@@ -75,7 +75,7 @@ const DialogContent = ({ userId }: { userId: string }) => {
             Icon
           </Label>
           <div className="p-3 border border-outline bg-transparent rounded-md w-fit">
-            <Emoji icon={seletedEmoji} className="w-12 h-12" />
+            <Emoji icon={seletedEmoji} className="w-12 h-12" width={48} height={48} />
           </div>
         </div>
 

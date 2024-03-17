@@ -1,10 +1,8 @@
-import { User } from "@/utils/data"
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar"
 import { Separator } from "../ui/separator"
 import { LifeBuoyIcon, LogOutIcon, UserRoundPlusIcon } from "lucide-react"
 import { routeClassname } from "./Route"
-import { UserJSON } from "@clerk/types"
-import clsx from "clsx"
+import clsx from "clsx" 
 
 const UserPopover = ({ user }: { user: any }) => {
   return (
@@ -15,7 +13,7 @@ const UserPopover = ({ user }: { user: any }) => {
         </p>
         <div className="flex gap-2 items-center hover:bg-white-2-sec p-1 rounded-sm cursor-pointer select-none">
           <Avatar className="rounded-md h-[35px] w-[35px]">
-            <AvatarImage src="https://github.com/shadcn." />
+            <AvatarImage src={user.imageUrl} alt={user.id} width={35} height={35}/>
             <AvatarFallback className="rounded-md bg-[#8A655A] text-white text-2xl">
               {user.firstName?.charAt(0)}
             </AvatarFallback>
