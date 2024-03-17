@@ -21,8 +21,7 @@ const Navbar: React.FC<NavbarProps> = async ({ params, className }) => {
   const { data: folders, error: foldersError } = await getFolders(
     user?.id ?? ""
   );
-  console.log(user)
-
+  
   return (
     <nav className="max-w-[300px] w-full bg-white-2 border-r h-full">
       <div className="p-[5px]">

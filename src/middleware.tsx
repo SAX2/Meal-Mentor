@@ -1,10 +1,22 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { authMiddleware  } from "@clerk/nextjs";
+import { authMiddleware, redirectToSignIn  } from "@clerk/nextjs";
 
 export default authMiddleware({
   // Routes that can be accessed while signed out
   publicRoutes: ["/sign-up", "/sign-in"],
+  afterAuth(auth, req, evt) {
+    if (!auth.userId && !auth.isPublicRoute) {
+      return redirectToSignIn({ returnBackUrl: req.url });
+    }
+    if (!req.nextUrl.pathname.startsWith('/dashboard')) {
+      if (auth.userId && !auth.isPublicRoute) {
+        return NextResponse.redirect(new URL("/dashboard", req.url));
+      }
+    }
+    return NextResponse.next();
+  },
+
 });
  
 export const config = {
