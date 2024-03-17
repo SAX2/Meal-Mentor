@@ -14,7 +14,8 @@ export type OptionContext = {
   icon?: React.ReactNode | null;
   _?: OptionContext[];
   function?: (id: string) => void;
-}
+  modal?: "edit-title" | "create-file";
+};
 
 export type OptionsContextTypes = "file" | "folder" | "navbar" | null | string;
 

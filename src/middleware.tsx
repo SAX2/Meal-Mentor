@@ -10,7 +10,7 @@ export default authMiddleware({
       return redirectToSignIn({ returnBackUrl: req.url });
     }
     if (!req.nextUrl.pathname.startsWith('/dashboard')) {
-      if (auth.userId && !auth.isPublicRoute) {
+      if (auth.userId) {
         return NextResponse.redirect(new URL("/dashboard", req.url));
       }
     }

@@ -116,6 +116,7 @@ export const options_context: OptionsContext = [
           {
             icon: <EditIcon width={16} height={16} />,
             title: "Edit name",
+            modal: "edit-title",
           },
         ],
       },
@@ -306,6 +307,9 @@ export const dialogs = {
     title: "Welcome to MealMentor",
     description:
       "Sign up now and begin collaborating with others in the shared workspace folder.",
+  },
+  editTitle: {
+    title: "Edit title",
   },
 };
 

@@ -12,6 +12,8 @@ import { options_context } from '@/utils/data/data';
 import { Separator } from '../ui/separator';
 import { OptionContext, OptionsContextTypes } from "@/utils/data";
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { useRouter } from 'next/navigation';
+import EditTitleDialog from '../dialog/EditTitleDialog';
 
 interface ContextMenuProps {
   children: React.ReactNode;
@@ -48,6 +50,15 @@ export const ContextMenuOnClick: React.FC<ContextMenuProps> = ({ children, type,
 }
 
 const RenderContextMenu = ({ type, typeOfRender, id }: { type: OptionsContextTypes, typeOfRender: typeOfRender, id?: string }) => {
+  const router = useRouter();
+
+  const handleClick = (fn: any) => {
+    if (typeof fn === 'function') { // Check if fn is a function
+      fn();
+      router.refresh();
+    }
+  }
+
   return (
     <>
       {options_context
@@ -61,8 +72,15 @@ const RenderContextMenu = ({ type, typeOfRender, id }: { type: OptionsContextTyp
                   key={index}
                 >
                   {group._?.map((option) => {
-                    return (
-                      <div onClick={() => option.function && option.function(id ? id : '')}>
+                    const renderContent = (
+                      <div
+                        onClick={() =>
+                          handleClick(
+                            () =>
+                              option.function && option.function(id ? id : "")
+                          )
+                        }
+                      >
                         <ContextMenuItem
                           content={option}
                           key={`${option.title}_${Math.random() * 40}`}
@@ -76,19 +94,26 @@ const RenderContextMenu = ({ type, typeOfRender, id }: { type: OptionsContextTyp
                         </ContextMenuItem>
                       </div>
                     );
+
+                    if (option.modal == "edit-title")
+                      return (
+                        <EditTitleDialog
+                          id={id ?? ""}
+                          key={`${option.modal}-${id}`}
+                        >
+                          {renderContent}
+                        </EditTitleDialog>
+                      );
+                    
+                    return renderContent;
                   })}
                 </ContextMenuGroup>
               )}
               {typeOfRender == "popover" && (
-                <div
-                  className="flex flex-col gap-0 p-[5px]"
-                  key={index}
-                >
+                <div className="flex flex-col gap-0 p-[5px]" key={index}>
                   {group._?.map((option) => {
                     return (
-                      <div
-                        key={`${option.title}_${Math.random() * 40}`}
-                      >
+                      <div key={`${option.title}_${Math.random() * 40}`}>
                         <ContextMenuButton>
                           {option.icon && (
                             <div className="text-black">{option.icon}</div>
