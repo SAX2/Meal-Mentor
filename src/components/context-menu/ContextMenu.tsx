@@ -8,7 +8,7 @@ import {
   ContextMenuSubTrigger,
   ContextMenuSubContent,
 } from "../ui/context-menu";
-import { options_context } from '@/utils/data/data';
+import { DirType, options_context } from '@/utils/data/data';
 import { Separator } from '../ui/separator';
 import { OptionContext, OptionsContextTypes } from "@/utils/data";
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
@@ -18,6 +18,13 @@ import EditTitleDialog from '../dialog/EditTitleDialog';
 interface ContextMenuProps {
   children: React.ReactNode;
   type: OptionsContextTypes;
+  id?: string;
+}
+
+interface RenderContextMenupProps {
+  type: OptionsContextTypes;
+  typeOfRender: typeOfRender;
+  dirType: DirType;
   id?: string;
 }
 
@@ -49,15 +56,21 @@ export const ContextMenuOnClick: React.FC<ContextMenuProps> = ({ children, type,
   );
 }
 
-const RenderContextMenu = ({ type, typeOfRender, id }: { type: OptionsContextTypes, typeOfRender: typeOfRender, id?: string }) => {
+const RenderContextMenu: React.FC<RenderContextMenupProps> = ({
+  type,
+  typeOfRender,
+  id,
+  dirType
+}) => {
   const router = useRouter();
 
   const handleClick = (fn: any) => {
-    if (typeof fn === 'function') { // Check if fn is a function
+    if (typeof fn === "function") {
+      // Check if fn is a function
       fn();
       router.refresh();
     }
-  }
+  };
 
   return (
     <>
@@ -98,13 +111,14 @@ const RenderContextMenu = ({ type, typeOfRender, id }: { type: OptionsContextTyp
                     if (option.modal == "edit-title")
                       return (
                         <EditTitleDialog
+                          dirType={dirType}
                           id={id ?? ""}
                           key={`${option.modal}-${id}`}
                         >
                           {renderContent}
                         </EditTitleDialog>
                       );
-                    
+
                     return renderContent;
                   })}
                 </ContextMenuGroup>
@@ -134,7 +148,7 @@ const RenderContextMenu = ({ type, typeOfRender, id }: { type: OptionsContextTyp
         })}
     </>
   );
-}
+};
 
 const ContextMenuFile = ({ type, id }: { type: typeOfRender, id?: string }) => {
   const lastUpdateText = 'Last time updated by Santino Degra at'
@@ -143,7 +157,7 @@ const ContextMenuFile = ({ type, id }: { type: typeOfRender, id?: string }) => {
 
   return (
     <div className="flex flex-col w-[200px]">
-      <RenderContextMenu type="file" typeOfRender={type} id={id} />
+      <RenderContextMenu type="file" typeOfRender={type} id={id} dirType='file' />
       <Separator />
       <div className="p-[5px]">
         <p className="text-xs text-grey p-[6px]">
@@ -155,13 +169,13 @@ const ContextMenuFile = ({ type, id }: { type: typeOfRender, id?: string }) => {
   );
 }
 
-const ContextMenuFolder = ({ type, id }: { type: typeOfRender, id?: string }) => {
+const ContextMenuFolder = ({ type, id }: { type: typeOfRender, id?: string}) => {
   const lastUpdateText = 'Last time updated by Santino Degra at'
   const lastUpdateDate = '31 may 2023, 23:31'
 
   return (
     <div className="flex flex-col w-[200px]">
-      <RenderContextMenu type="folder" typeOfRender={type} id={id} />
+      <RenderContextMenu type="folder" typeOfRender={type} id={id} dirType='folder'/>
       <Separator />
       <div className="p-[5px]">
         <p className="text-xs text-grey p-[6px]">
