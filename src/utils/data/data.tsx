@@ -21,7 +21,9 @@ import AppleLogo from "../../../public/providers/Apple.svg";
 import Image from "next/image";
 import { actionDeleteFolder, actionDuplicateFolder } from "@/components/context-menu/actions";
 
+export type DirType = "folder" | "file";
 export type AuthProvider = "google" | "facebook" | "apple";
+
 interface AuthProviderInfo {
   title: string;
   classname: string;
@@ -310,6 +312,8 @@ export const dialogs = {
   },
   editTitle: {
     title: "Edit title",
+    description:
+      "Easily update folder or file titles for better organization.",
   },
 };
 

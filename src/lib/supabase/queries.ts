@@ -28,6 +28,7 @@ export const deleteFolder = async (folderId: string) => {
 };
 
 export const getFolders = async (userId: string) => {
+  if (!userId || userId.length === 0) return;
   try {
     const response = await db.select().from(folders).where(eq(folders.folderOwner, userId)) as Folder[];
     return { data: response, error: null };
@@ -39,6 +40,7 @@ export const getFolders = async (userId: string) => {
 };
 
 export const getFolderDetails = async ({ folderId, userId }: { folderId: string, userId: string }) => {
+  if (!userId || userId.length === 0) return;
   try {
     const response = await db.select().from(folders).where(and(eq(folders.id, folderId), eq(folders.folderOwner, userId))).limit(1) as Folder[];
     return { data: response, error: null };
@@ -48,11 +50,11 @@ export const getFolderDetails = async ({ folderId, userId }: { folderId: string,
   }
 };
 
-export const updateFolderData = async ({ folderId, data }: { folderId: string, data: string }) => {
+export const updateFolderData = async ({ folderId, data }: { folderId: string, data: any }) => {
   try {
     await db
       .update(folders)
-      .set({ data })
+      .set({ ...data })
       .where(eq(folders.id, folderId));
     return { data: null, error: null };
   } catch (error) {
@@ -60,7 +62,6 @@ export const updateFolderData = async ({ folderId, data }: { folderId: string, d
     return { data: null, error: 'Error' };
   }
 };
-
 
 export const createFile = async (file: File) => {
   try {
@@ -102,11 +103,11 @@ export const getFileDetails = async ({ fileId, userId }: { fileId: string; userI
   }
 };
 
-export const updateFileData = async ({ fileId, data }: { fileId: string, data: string }) => {
+export const updateFileData = async ({ fileId, data }: { fileId: string, data: any }) => {
   try {
     await db
       .update(files)
-      .set({ data })
+      .set({ ...data })
       .where(eq(files.id, fileId));
     return { data: null, error: null };
   } catch (error) {

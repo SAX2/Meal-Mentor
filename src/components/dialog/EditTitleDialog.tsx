@@ -6,53 +6,79 @@ import { Input } from '../ui/input';
 import { dialogs } from '@/utils/data/data';
 import { useRouter } from 'next/navigation';
 import { Collaborators } from '@/lib/supabase/supabase.types';
-import { useAuth } from '@clerk/nextjs';
+import { updateFileData, updateFolderData } from '@/lib/supabase/queries';
+import { toast } from 'sonner';
 
-const EditTitleDialog = ({ children, id }: { children: React.ReactNode, id: string }) => {
-  const { userId } = useAuth();
+type DirType = "folder" | "file";
 
-  return <CustomDialog
-    title={dialogs.editTitle.title}
-    classname="w-full"
-    classnameContent="w-fit !max-w-[400px]"
-    content={<EditTitleContent userId={userId ?? ""} id={id} />}
-  >
-    {children}
-  </CustomDialog>;
+interface EditDialogProps {
+  children: React.ReactNode;
+  id: string;
+  dirType: DirType;
+}
+
+interface EditTitleContentProps {
+  id: string;
+  dirType: DirType;
+}
+
+const EditTitleDialog: React.FC<EditDialogProps> = ({ children, id, dirType }) => {
+  return (
+    <CustomDialog
+      title={dialogs.editTitle.title}
+      description={dialogs.editTitle.description}
+      classname="w-full"
+      classnameContent="w-fit !max-w-[400px]"
+      content={
+        <EditTitleContent id={id} dirType={dirType} />
+      }
+    >
+      {children}
+    </CustomDialog>
+  );
 };
 
-const EditTitleContent = ({ userId, id }: { userId: string, id: string }) => {
+const EditTitleContent: React.FC<EditTitleContentProps> = ({ id, dirType }) => {
   const [title, setTitle] = useState<string | null>();
-  const [collborators, setCollborators] = useState<Collaborators[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const router = useRouter()
-  
+  const router = useRouter();
+
   const handleSubmit = async () => {
     setIsLoading(true);
     if (!title) return setIsLoading(false);
 
-    // const res = await createFolder(newFolder);
-    
-    // if (!res.error) {
-    //   toast.success("Folder create successfully");
-    //   setIsLoading(false);
-    //   setIsOpen(false);
-    //   return router.refresh();
-    // }
-    // toast.error("Error while creating folder");
-    // return setIsLoading(false);
-  }
+    if (dirType == 'folder') {
+      const res = await updateFolderData({ folderId: id, data: { title: title } })
+      if (!res.error) {
+        toast.success("Folder title updated successfully");
+        setIsLoading(false);
+        return router.refresh();
+      }
+      toast.error("Error while editing folder title");
+      return setIsLoading(false);
+    } 
+    if (dirType == 'file') {
+      const res = await updateFileData({ fileId: id, data: { title: title } })
+      if (!res.error) {
+        toast.success("File title updated successfully");
+        setIsLoading(false);
+        return router.refresh();
+      }
+      toast.error("Error while editing file title");
+      return setIsLoading(false);
+    }
+  };
 
   return (
     <div className="mt-2">
       <div className="flex flex-col gap-4">
         <div className="grid w-full items-center gap-1.5">
           <Label htmlFor="email" className="text-grey">
-            Title
+            New title
           </Label>
           <Input
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="Folder title"
+            placeholder="title"
             className="shadow-none border-outline"
           />
         </div>
