@@ -38,20 +38,20 @@ const Route: React.FC<RouteProps> = ({
   
   const renderContent = (
     <div className="flex gap-[7px] items-center justify-start">
-          {image && (
-            <Avatar className="w-5 h-5 rounded-sm">
-              <AvatarImage src={image.src} className="object-cover" alt={path} width={20} height={20} />
-              <AvatarFallback className="rounded-sm bg-green-800 text-white text-xs">
-                {image.fallback}
-              </AvatarFallback>
-            </Avatar>
-          )}
-          {(icon && iconType == 'SVG') && icon}
-          {(icon && !picker && !iconType) && <Emoji icon={icon.toString()} className="w-4 h-4" width={16} height={16}/>}
-          {(icon && picker) && <EmojiRoute icon={icon.toString()}/>}
-          {image === undefined && icon == undefined && <div>•</div>}
-          <p className="truncate">{children}</p>
-        </div>
+      {image && (
+        <Avatar className="w-5 h-5 rounded-sm">
+          <AvatarImage src={image.src} className="object-cover" alt={path} width={20} height={20} />
+          <AvatarFallback className="rounded-sm bg-green-800 text-white text-xs">
+            {image.fallback}
+          </AvatarFallback>
+        </Avatar>
+      )}
+      {(icon && iconType == 'SVG') && icon}
+      {(icon && !picker && !iconType) && <Emoji icon={icon.toString()} className="w-4 h-4" width={16} height={16}/>}
+      {(icon && picker) && <EmojiRoute icon={icon.toString()}/>}
+      {image === undefined && icon == undefined && <div>•</div>}
+      <p className="truncate">{children}</p>
+    </div>
   )
 
   return (

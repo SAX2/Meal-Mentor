@@ -256,12 +256,12 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
         setIsLoading(false);
       }
       if (dirType === 'folder') {
-        const { data: selectedDir, error } = await getFolderDetails({ folderId: fileId, userId: userIdValue });
-        if (quill === null || !selectedDir || selectedDir[0].data === null) {
+        const response = await getFolderDetails({ folderId: fileId, userId: userIdValue });
+        if (quill === null || !response?.data || response.data[0].data === null) {
           setIsLoading(false);
           return;
         };
-        quill.setContents(selectedDir[0].data ? JSON.parse(selectedDir[0].data || "") : "");
+        quill.setContents(response.data[0].data ? JSON.parse(response.data[0].data || "") : "");
         setIsLoading(false);
     }
     };
@@ -289,11 +289,14 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
           if (dirType === "folder") {
             await updateFolderData({
               folderId: fileId,
-              data: JSON.stringify(contents),
+              data: { data: JSON.stringify(contents) },
             });
           }
           if (dirType === "file") {
-            await updateFileData({ fileId, data: JSON.stringify(contents) });
+            await updateFileData({
+              fileId,
+              data: { data: JSON.stringify(contents) },
+            });
           }
         }
         setSaving(false);
