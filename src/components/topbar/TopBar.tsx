@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Routes from "./Routes";
 import { useParams, usePathname } from "next/navigation";
 import { routes as routeList } from "@/utils/data/data";
-import { Item } from "@/utils/data";
+import { Item } from "@/utils/types";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "../ui/breadcrumb";
 import { Route } from "../navbar/Route";
 

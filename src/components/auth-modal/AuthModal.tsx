@@ -3,7 +3,8 @@
 import React from 'react'
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { AuthProvider, authProviders } from '@/utils/data/data';
+import { authProviders } from '@/utils/data/data';
+import { AuthProvider } from '@/utils/types'
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { usePathname } from 'next/navigation';

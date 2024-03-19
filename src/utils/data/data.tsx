@@ -13,16 +13,13 @@ import {
   TrashIcon,
   UserIcon,
 } from "lucide-react";
-import { Chat, Collaborators, Item, User, Workspace, OptionsContext } from ".";
 import { File, Folder } from "../../lib/supabase/supabase.types";
+import { actionDeleteFolder, actionDuplicateFolder } from "@/components/context-menu/actions";
+import { AuthProvider, Item, OptionsContext, Chat, Collaborators, User, Workspace } from "../types";
 import GoogleLogo from "../../../public/providers/Google.svg";
 import MetaLogo from "../../../public/providers/Meta.svg";
 import AppleLogo from "../../../public/providers/Apple.svg";
 import Image from "next/image";
-import { actionDeleteFolder, actionDuplicateFolder } from "@/components/context-menu/actions";
-
-export type DirType = "folder" | "file";
-export type AuthProvider = "google" | "facebook" | "apple";
 
 interface AuthProviderInfo {
   title: string;
@@ -40,7 +37,7 @@ export const user: User = {
   updated_at: "",
 };
 
-export const options_context: OptionsContext = [
+export const options_context: OptionsContext[] = [
   {
     type: "file",
     group: [

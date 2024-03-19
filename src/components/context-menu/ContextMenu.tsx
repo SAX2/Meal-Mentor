@@ -8,9 +8,10 @@ import {
   ContextMenuSubTrigger,
   ContextMenuSubContent,
 } from "../ui/context-menu";
-import { DirType, options_context } from '@/utils/data/data';
+import { options_context } from '@/utils/data/data';
+import { DirType } from '@/utils/types';
 import { Separator } from '../ui/separator';
-import { OptionContext, OptionsContextTypes } from "@/utils/data";
+import { OptionContext, OptionsContextTypes } from "@/utils/types";
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { useRouter } from 'next/navigation';
 import EditTitleDialog from '../dialog/EditTitleDialog';
