@@ -16,7 +16,7 @@ export const createFolder = async (folder: Folder) => {
 };
 
 export const deleteFolder = async (folderId: string) => {
-  if (!folderId) return;
+  if (!folderId) return { data: null, error: true };
 
   try {
     await db.delete(folders).where(eq(folders.id, folderId));
@@ -28,7 +28,7 @@ export const deleteFolder = async (folderId: string) => {
 };
 
 export const getFolders = async (userId: string) => {
-  if (!userId || userId.length === 0) return;
+  if (!userId || userId.length === 0) return { data: null, error: true };
   try {
     const response = await db.select().from(folders).where(eq(folders.folderOwner, userId)) as Folder[];
     return { data: response, error: null };
@@ -40,7 +40,7 @@ export const getFolders = async (userId: string) => {
 };
 
 export const getFolderDetails = async ({ folderId, userId }: { folderId: string, userId: string }) => {
-  if (!userId || userId.length === 0) return;
+  if (!userId || userId.length === 0) return { data: null, error: true };
   try {
     const response = await db.select().from(folders).where(and(eq(folders.id, folderId), eq(folders.folderOwner, userId))).limit(1) as Folder[];
     return { data: response, error: null };
