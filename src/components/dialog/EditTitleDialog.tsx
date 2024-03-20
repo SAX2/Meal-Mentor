@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import CustomDialog from './CustomDialog';
 import { Label } from '../ui/label';
-import { Loader, PlusIcon } from 'lucide-react';
+import { Loader } from 'lucide-react';
 import { Input } from '../ui/input';
 import { dialogs } from '@/utils/data/data';
-import { useRouter } from 'next/navigation';
-import { Collaborators } from '@/lib/supabase/supabase.types';
-import { updateFileData, updateFolderData } from '@/lib/supabase/queries';
+import { usePathname } from 'next/navigation';
 import { toast } from 'sonner';
+import { updateFileTitle, updateFolderTitle } from './actions';
 
 type DirType = "folder" | "file";
 
@@ -41,30 +40,28 @@ const EditTitleDialog: React.FC<EditDialogProps> = ({ children, id, dirType }) =
 const EditTitleContent: React.FC<EditTitleContentProps> = ({ id, dirType }) => {
   const [title, setTitle] = useState<string | null>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const router = useRouter();
+  const pathname = usePathname();
 
   const handleSubmit = async () => {
     setIsLoading(true);
     if (!title) return setIsLoading(false);
 
     if (dirType == 'folder') {
-      const res = await updateFolderData({ folderId: id, data: { title: title } })
-      if (!res.error) {
-        toast.success("Folder title updated successfully");
-        setIsLoading(false);
-        return router.refresh();
+      const { status } = await updateFolderTitle({ folderId: id, pathname, title });
+      if (status === 'error') {
+        toast.error("Error while editing folder title");
+        return setIsLoading(false);
       }
-      toast.error("Error while editing folder title");
+      toast.success("Folder title updated successfully");
       return setIsLoading(false);
     } 
     if (dirType == 'file') {
-      const res = await updateFileData({ fileId: id, data: { title: title } })
-      if (!res.error) {
-        toast.success("File title updated successfully");
-        setIsLoading(false);
-        return router.refresh();
+      const { status } = await updateFileTitle({ fileId: id, pathname, title });
+      if (status === 'error') {
+        toast.error("Error while editing file title");
+        return setIsLoading(false);
       }
-      toast.error("Error while editing file title");
+      toast.success("File title updated successfully");
       return setIsLoading(false);
     }
   };
