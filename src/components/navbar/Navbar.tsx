@@ -1,7 +1,7 @@
 import { files, folders, routes } from "@/utils/data/data";
 import { Route, RouteButton, routeClassname } from "./Route";
 import React from "react";
-import UserCard from "./UserCard";
+import UserCard from "./user/UserCard";
 import { Separator } from "../ui/separator";
 import Search from "./Search";
 import Chats from "./Chats";
@@ -10,6 +10,8 @@ import CreateFolder from "./CreateFolder";
 import { getFolders } from "@/lib/supabase/queries";
 import { Folder } from "@/lib/supabase/supabase.types";
 import { currentUser } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
+import FolderListSkeleton from "../skeletons/FolderListSkeleton";
 
 interface NavbarProps {
   params?: { workspaceId: string };
@@ -18,9 +20,12 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = async ({ params, className }) => {
   const user = await currentUser();
-  const { data: folders, error: foldersError } = await getFolders(
-    user?.id ?? ""
-  );
+
+  if (!user) return;
+
+  const { data: folders, error: foldersError } = await getFolders(user?.id);
+
+  if (foldersError) redirect('/dashboard');
   
   return (
     <nav className="max-w-[300px] w-full bg-white-2 border-r h-full">
@@ -60,12 +65,14 @@ const Navbar: React.FC<NavbarProps> = async ({ params, className }) => {
       </div>
       <ul className="p-[5px] flex flex-col gap-[2.5px]">
         <li>
+          {!folders && <FolderListSkeleton />}
           {folders &&
             folders.map((folder: Folder) => {
               return (
                 <CollapsibleFolder
                   userId={user?.id ?? ""}
                   folderId={folder.id}
+                  folder={folder}
                   key={folder.id}
                 />
               );

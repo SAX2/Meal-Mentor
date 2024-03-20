@@ -15,26 +15,22 @@ import { getFiles, getFolderDetails } from "@/lib/supabase/queries";
 
 interface CollapsibleFolderProps {
   folderId: string;
+  folder: Folder;
   userId: string;
 }
 
 const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
   folderId,
+  folder,
   userId
 }) => {
   const [open, setOpen] = useState(false);
   const [files, setFiles] = useState<File[] | null>(null);
-  const [folder, setFolder] = useState<Folder | null>(null);
+  const [folderData, setFolderData] = useState<Folder | null>(null);
 
   useEffect(() => {
-    const getFolderFunction = async () => {
-      const { data, error } = await getFolderDetails({ folderId, userId });
-      if (!error && data) {
-        setFolder(data[0]);
-      }
-    }
-    getFolderFunction()
-  }, [folderId, userId])
+    setFolderData(folder);
+  }, []);
 
   useEffect(() => {
     const getFilesFunction = async () => {
@@ -42,31 +38,35 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
       if (!error) {
         setFiles(data);
       }
+    };
+    if (open) {
+      getFilesFunction();
     }
-    getFilesFunction()
-  }, [folder])
-  
+  }, [folderData]);
+
   const onOpenTransition = open ? "" : "rotate-[-90deg]";
 
   const [filesListRef, fileList] = useDragAndDrop<HTMLUListElement, File>(
     files || [],
     {
       group: "filesListRef",
-      plugins: [animations({
-        duration: 50
-      })],
+      plugins: [
+        animations({
+          duration: 50,
+        }),
+      ],
     }
   );
 
   return (
     <Collapsible onOpenChange={setOpen}>
       <div className="px-2">
-        <ContextMenu type="folder" id={folder?.id}>
+        <ContextMenu type="folder" id={folderData?.id}>
           <Route
             picker
             isLink
-            path={`/dashboard/${folder?.id}`}
-            icon={folder?.iconId}
+            path={`/dashboard/${folderData?.id}`}
+            icon={folderData?.iconId}
             left={
               <CollapsibleTrigger>
                 <RouteButton type="hover">
@@ -81,7 +81,7 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
             }
             right={
               <>
-                <ContextMenuOnClick type="folder" id={folder?.id}>
+                <ContextMenuOnClick type="folder" id={folderData?.id}>
                   <RouteButton type="hidden" className="">
                     <DotsHorizontalIcon width={14} height={14} color="grey" />
                   </RouteButton>
@@ -92,7 +92,7 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
               </>
             }
           >
-            {folder?.title}
+            {folderData?.title}
           </Route>
         </ContextMenu>
       </div>

@@ -28,46 +28,46 @@ const Routes = ({
   const userIdValue = userId ?? '';
   const [items, setItems] = useState<(Folder & { type: string } | File & { type: string })[]>([]);
 
-  useEffect(() => {
-    const fetchItems = async () => {
-      if (folderId) {
-        const { data: folder, error: folderError } = await getFolderDetails({
-          folderId,
-          userId: userIdValue,
-        });
+  // useEffect(() => {
+  //   const fetchItems = async () => {
+  //     if (folderId) {
+  //       const { data: folder, error: folderError } = await getFolderDetails({
+  //         folderId,
+  //         userId: userIdValue,
+  //       });
   
-        if (!folderError) {
-          if (folder) {
-            const combinedItems: (Folder & { type: string } | File & { type: string })[] = folder.map(item => ({
-              ...item,
-              type: 'folder',
-            }));
+  //       if (!folderError) {
+  //         if (folder) {
+  //           const combinedItems: (Folder & { type: string } | File & { type: string })[] = folder.map(item => ({
+  //             ...item,
+  //             type: 'folder',
+  //           }));
   
-            if (documentId) {
-              const { data: file, error: fileError } = await getFileDetails({
-                fileId: documentId,
-                userId: userIdValue,
-              });
+  //           if (documentId) {
+  //             const { data: file, error: fileError } = await getFileDetails({
+  //               fileId: documentId,
+  //               userId: userIdValue,
+  //             });
   
-              if (!fileError) {
-                if (file) {
-                  const filesWithTypes: (File & { type: string })[] = file.map((fileItem) => ({
-                    ...fileItem,
-                    type: "file",
-                  }));                  
-                  combinedItems.push(...filesWithTypes);
-                }
-              }
-            }
+  //             if (!fileError) {
+  //               if (file) {
+  //                 const filesWithTypes: (File & { type: string })[] = file.map((fileItem) => ({
+  //                   ...fileItem,
+  //                   type: "file",
+  //                 }));                  
+  //                 combinedItems.push(...filesWithTypes);
+  //               }
+  //             }
+  //           }
   
-            setItems(combinedItems);
-          }
-        }
-      }
-    };
+  //           setItems(combinedItems);
+  //         }
+  //       }
+  //     }
+  //   };
   
-    fetchItems();
-  }, [folderId, documentId, userIdValue]);
+  //   fetchItems();
+  // }, [folderId, documentId, userIdValue]);
 
 
   return (
