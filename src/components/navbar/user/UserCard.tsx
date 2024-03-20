@@ -23,6 +23,7 @@ const UserCard = async ({ user }: { user: any }) => {
                     alt={user.id}
                     width={30}
                     height={30}
+                    className="object-cover"
                   />
                   <AvatarFallback className="rounded-md bg-[#8A655A] text-white text-xl">
                     {user.firstName?.charAt(0)}

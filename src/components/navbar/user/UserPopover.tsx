@@ -19,6 +19,7 @@ const UserPopover = ({ user, userNameDisplay }: { user: any, userNameDisplay: st
               alt={user.id}
               width={35}
               height={35}
+              className="object-cover"
             />
             <AvatarFallback className="rounded-md bg-[#8A655A] text-white text-2xl">
               {user.firstName?.charAt(0)}
