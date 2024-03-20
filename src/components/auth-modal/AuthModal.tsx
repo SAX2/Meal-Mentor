@@ -66,7 +66,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
               : "Do you have an account?"}
           </span>
           <Link className="font-medium cursor-pointer" href={route}>
-            {pathname === "sign-in" ? "Register" : "Login"}
+            {pathname === "/sign-in" ? "Register" : "Login"}
           </Link>
         </div>
       </div>
@@ -76,8 +76,8 @@ const AuthModal: React.FC<AuthModalProps> = ({
 
 const ContinueProviders = ({ provider }: { provider: AuthProvider }) => {
   const pathname = usePathname();
-  const { isLoaded: isLoadedSignIn, signIn, setActive: setActiveSignIn } = useSignIn()
-  const { isLoaded: isLoadedSignUp , signUp, setActive: setActiveSignUp } = useSignUp()
+  const { isLoaded: isLoadedSignIn, signIn } = useSignIn()
+  const { isLoaded: isLoadedSignUp , signUp } = useSignUp()
 
   const handleClick = async () => {
     if (pathname == "/sign-in") {

@@ -8,7 +8,7 @@ dotenv.config({ path: '.env' })
 if (!process.env.DATABASE_URL) console.log('🛑Cannot find Database')
 
 // Disable prefetch as it is not supported for "Transaction" pool mode
-export const client = postgres(process.env.DATABASE_URL as string, { max: 1 })
+export const client = postgres(process.env.DATABASE_URL as string)
 const db = drizzle(client, { schema });
 
 // const migrateDb = async () => {

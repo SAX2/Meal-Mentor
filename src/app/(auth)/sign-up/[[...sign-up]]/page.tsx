@@ -8,7 +8,7 @@ const page = () => {
       providersEnabled
       description={dialogs.register.description}
       title={dialogs.register.title}
-      providers={["google", "facebook"]}
+      providers={["google", "facebook", "apple"]}
     >
       <div className="flex flex-col gap-[10px]">
         <div className="flex gap-[10px]">

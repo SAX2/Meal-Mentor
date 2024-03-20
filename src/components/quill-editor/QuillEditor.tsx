@@ -8,7 +8,7 @@ import React, {
   useState,
 } from 'react';
 import 'quill/dist/quill.snow.css';
-import { File, Folder } from '@/utils/data';
+import { File, Folder } from '@/lib/supabase/supabase.types';
 import SelectorDropdown from './Selector';
 import {
   AlignCenter,

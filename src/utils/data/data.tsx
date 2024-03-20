@@ -342,7 +342,7 @@ export const authProviders: Record<AuthProvider, AuthProviderInfo> = {
     ),
   },
   apple: {
-    title: "Continue with Google",
+    title: "Continue with Apple",
     classname: "!border-none bg-apple text-white",
     icon: (
       <Image
@@ -350,7 +350,7 @@ export const authProviders: Record<AuthProvider, AuthProviderInfo> = {
         width={16}
         height={16}
         alt="apple"
-        className="h-full w-auto"
+        className="h-full w-auto max-h-[18px]"
       />
     ),
   },

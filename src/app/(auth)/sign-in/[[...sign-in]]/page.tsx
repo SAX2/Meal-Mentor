@@ -8,7 +8,7 @@ const page = () => {
       providersEnabled
       description={dialogs.login.description}
       title={dialogs.login.title}
-      providers={["google", "facebook"]}
+      providers={["google", "facebook", "apple"]}
     >
       <div className='flex flex-col gap-[10px]'>
         <InputModal label="Email" placeholder="Your email" type="email" />

@@ -15,7 +15,7 @@ const layout:React.FC<layoutProps> = ({ children, params }) => {
   return (
     <ScrollArea className="w-full h-dvh">
       <div className="sticky top-0 bg-white">
-        <TopBar folderAndDocs={true}>
+        <TopBar folderAndDocs={true} >
           <div className="h-fit flex items-center gap-1">
             <div className={clsx(routeClassname, "text-grey")}>
               <ShareIcon width={16} height={16} />
