@@ -38,7 +38,7 @@ const Sidebar = () => {
 
                   if (route.items) {
                     return (
-                      <Collapsible className="w-full">
+                      <Collapsible className="w-full" key={route.path}>
                         <CollapsibleTrigger className="w-full">
                           {renderContent}
                         </CollapsibleTrigger>

@@ -42,8 +42,8 @@ const page = async ({ params }: { params: { folderId: string } }) => {
     <>
       {data && (
         <div className="flex gap-3 items-center max-w-[1000px] w-full px-3">
-          <EmojiRoute icon={data[0]?.iconId} customSize="w-11 h-11" dirType="folder" id={data[0].id}/>
-          <h1 className="text-4xl font-extrabold truncate">{data[0]?.title}</h1>
+          <EmojiRoute icon={data[0]?.iconId} customSize="w-11 h-11 max-[800px]:w-[32px] max-[800px]:h-[32px]" dirType="folder" id={data[0].id}/>
+          <h1 className="text-4xl max-[800px]:text-2xl  font-extrabold truncate">{data[0]?.title}</h1>
         </div>
       )}
       <QuillEditor dirType="folder" fileId={data ? data[0].id : ""}/>

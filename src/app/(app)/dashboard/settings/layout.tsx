@@ -1,3 +1,4 @@
+import Navbar from '@/components/navbar/Navbar';
 import Sidebar from '@/components/settings/Sidebar';
 import TopBar from '@/components/topbar/TopBar';
 import { currentUser } from '@clerk/nextjs';
@@ -8,7 +9,7 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="w-full h-dvh">
       <div className="sticky top-0 bg-white">
-        <TopBar />
+        <TopBar sheet={<Navbar />}/>
       </div>
       <div className="p-8 flex justify-center">
         <div className="max-w-[1100px] w-full flex flex-col gap-8">

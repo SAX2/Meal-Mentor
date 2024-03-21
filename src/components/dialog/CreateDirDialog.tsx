@@ -17,7 +17,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { DirType } from '@/utils/types';
 
-interface CreateFolderProps {
+interface CreateDirProps {
   children: React.ReactNode;
   userId: string;
   dirType: DirType;
@@ -25,13 +25,13 @@ interface CreateFolderProps {
   classname?: string;
 }
 
-const CreateDir: React.FC<CreateFolderProps> = ({ userId, dirType, id, children, classname }) => {
+const CreateDir: React.FC<CreateDirProps> = ({ userId, dirType, id, children, classname }) => {
   return (
     <CustomDialog
       title={dirType === 'folder' ? dialogs.createFolder.title : dialogs.createFile.title}
       description={dirType === 'folder' ? dialogs.createFolder.description : dialogs.createFile.description}
       classname={classname}
-      classnameContent="w-fit !max-w-[400px]"
+      classnameContent="w-fit !max-w-[400px] max-[800px]:!max-w-full"
       content={<DialogContent userId={userId} dirType={dirType} id={id} dialogData={dirType === 'folder' ? dialogs.createFolder : dialogs.createFile} />}
     >
       {children}

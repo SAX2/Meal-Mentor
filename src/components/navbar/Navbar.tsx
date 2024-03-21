@@ -25,7 +25,7 @@ const Navbar = async () => {
   if (foldersError) redirect('/dashboard');
   
   return (
-    <nav className="max-w-[300px] w-full bg-white-2 border-r h-full">
+    <nav className="max-w-[300px] w-full max-[800px]:max-w-full bg-white-2 border-r h-full">
       <div className="p-[5px]">
         <UserCard />
       </div>

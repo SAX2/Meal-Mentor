@@ -105,7 +105,7 @@ const RouteButton: React.FC<{
   const isFixed = type == "fixed" && "bg-white-2-sec-2 px-1";
   const isHidden =
     type == "hidden" &&
-    "transition-opacity ease-in-out duration-150 opacity-0 group-hover:opacity-100 bg-transparent hover:bg-white-2-sec-2";
+    "transition-opacity ease-in-out duration-150 opacity-0 group-hover:opacity-100 bg-transparent hover:bg-white-2-sec-2 max-[800px]:!opacity-100";
   const isHover = type == "hover" && "bg-transparent hover:bg-white-2-sec-2";
 
   return (
