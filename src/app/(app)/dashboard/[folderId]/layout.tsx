@@ -14,7 +14,7 @@ export interface layoutProps {
 const layout:React.FC<layoutProps> = ({ children, params }) => {
   return (
     <ScrollArea className="w-full h-dvh">
-      <div className="sticky top-0 bg-white">
+      <div className="sticky top-0 z-[900] bg-white">
         <TopBar folderAndDocs={true} >
           <div className="h-fit flex items-center gap-1">
             <div className={clsx(routeClassname, "text-grey")}>

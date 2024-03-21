@@ -67,7 +67,6 @@ const RenderContextMenu: React.FC<RenderContextMenupProps> = ({
 
   const handleClick = (fn: any) => {
     if (typeof fn === "function") {
-      // Check if fn is a function
       fn();
       router.refresh();
     }

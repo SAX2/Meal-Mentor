@@ -95,10 +95,6 @@
   @apply bg-background;
 }
 
-.ql-editor {
-  @apply !relative !z-0;
-}
-
 .ce-toolbar__content,
 .ce-block__content {
   max-width: 750px;
@@ -108,17 +104,12 @@
   @apply border-none outline-none;
 }
 
-/* .dotPattern {
-  background-image: radial-gradient(rgb(25, 25, 25) 1px, transparent 1px);
-  background-size: 30px 30px;
-} */
-
 .ql-toolbar::-webkit-scrollbar {
   display: none;
 }
 
 .ql-toolbar {
-  @apply !z-0 !relative flex flex-wrap items-center bg-white/40 backdrop-blur-md rounded-md shadow-button border !border-outline w-fit h-fit !p-0;
+  @apply z-[99] !sticky top-16 flex flex-wrap items-center bg-white/80 backdrop-blur-xl rounded-md shadow-button border !border-outline w-fit h-fit !p-0;
 }
 
 .ql-formats {
@@ -126,15 +117,9 @@
 }
 
 .ql-container {
-  @apply !border-none;
+  @apply !border-none z-10;
 }
 
 .ql-toolbar_item {
   @apply hover:!bg-slate-50 !rounded-sm 
 }
-
-/* .ql-editor > p,
-ol,
-ul {
-  @apply ;
-} */

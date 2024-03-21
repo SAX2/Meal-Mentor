@@ -31,7 +31,7 @@ const TopBar: React.FC<TopBarProps> = ({ children, folderAndDocs }) => {
   }, [])
 
   return (
-    <div className="px-8 py-[5px] border-b flex justify-between z-[999]">
+    <div className="px-8 py-[5px] border-b flex justify-between">
       <div className="h-[46px] flex items-center">
         {folderAndDocs ? (
           <Routes documentId={documentId} folderId={folderId} />
