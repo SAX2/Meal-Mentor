@@ -12,7 +12,7 @@ const DialogIntersection = ({ children }: { children?: React.ReactNode }) => {
     if (open === false) {
       return router.back()
     }
-  }, [open])
+  }, [open, router])
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

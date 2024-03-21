@@ -29,7 +29,7 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
 
   useEffect(() => {
     setFolderData(folder);
-  }, []);
+  }, [folder]);
 
   useEffect(() => {
     const getFilesFunction = async () => {
@@ -40,7 +40,7 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
       }
     };
     getFilesFunction();
-  }, [folder]);
+  }, [folderId]);
 
   const onOpenTransition = open ? "" : "rotate-[-90deg]";
 

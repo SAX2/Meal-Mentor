@@ -118,7 +118,7 @@ const DialogContent = ({ userId, dirType, id, dialogData }: { userId: string, di
       <div className="flex flex-col gap-4">
         {dialogData.inputs.map((input: any) => {
           return (
-            <InputWithLabel label={input.label}>
+            <InputWithLabel label={input.label} key={input.label}>
               {input.type === "icon" && (
                 <div className="p-3 border border-outline bg-transparent rounded-md w-fit">
                   <EmojiRoute

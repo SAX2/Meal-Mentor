@@ -7,7 +7,6 @@ import { ScrollArea } from "../ui/scroll-area";
 import { SearchIcon, StarsIcon } from "lucide-react";
 import { DirType } from "@/utils/types";
 import { useRouter } from "next/navigation";
-import { revalidatePath } from "next/cache";
 import { updateFileData, updateFolderData } from "@/lib/supabase/queries";
 
 const EmojiPicker = ({
@@ -65,7 +64,7 @@ const EmojiPicker = ({
                 onClick={() => handleClick(emoji)}
               >
                 <div className="w-fit p-1 hover:bg-white-2-sec-2 transition-colors rounded-md">
-                  <img
+                  <Image
                     src={`https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/${emoji}.png`}
                     alt={emoji}
                     className="h-6 w-6"
