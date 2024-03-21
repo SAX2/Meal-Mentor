@@ -63,6 +63,7 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
       <div className="px-2">
         <ContextMenu type="folder" id={folderData?.id}>
           <Route
+            dirType="folder"
             picker
             isLink
             path={`/dashboard/${folderData?.id}`}
@@ -103,6 +104,7 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
               <li key={file.id} className="item">
                 <ContextMenu type="file" id={file.id}>
                   <Route
+                    dirType="file"
                     picker
                     isLink
                     path={`/dashboard/${file.folderId}/${file.id}`}

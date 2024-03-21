@@ -4,6 +4,7 @@ import React from "react";
 import EmojiRoute from "../emoji/EmojiRoute";
 import Emoji from "../emoji/Emoji";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { DirType } from "@/utils/types";
 
 interface RouteProps {
   children?: React.ReactNode;
@@ -19,6 +20,7 @@ interface RouteProps {
   optionsHidden?: boolean;
   picker?: boolean;
   iconType?: 'SVG' | undefined;
+  dirType?: DirType;
 }
 
 export const routeClassname =
@@ -33,11 +35,12 @@ const Route: React.FC<RouteProps> = ({
   image,
   left,
   picker,
-  iconType
+  iconType,
+  dirType
 }) => {
   
   const renderContent = (
-    <div className="flex gap-[7px] items-center justify-start">
+    <>
       {image && (
         <Avatar className="w-5 h-5 rounded-sm">
           <AvatarImage src={image.src} className="object-cover" alt={path} width={20} height={20} />
@@ -48,10 +51,9 @@ const Route: React.FC<RouteProps> = ({
       )}
       {(icon && iconType == 'SVG') && icon}
       {(icon && !picker && !iconType) && <Emoji icon={icon.toString()} className="w-4 h-4" width={16} height={16}/>}
-      {(icon && picker) && <EmojiRoute icon={icon.toString()}/>}
+      {(icon && picker) && <EmojiRoute icon={icon.toString()} dirType={dirType}/>}
       {image === undefined && icon == undefined && <div className="w-4 h-4 opacity-0" >•</div>}
-      <p className="truncate">{children}</p>
-    </div>
+    </>
   )
 
   return (
@@ -65,7 +67,10 @@ const Route: React.FC<RouteProps> = ({
             ></Link>
             <div className="flex gap-[6px] items-center h-full">
               {left && <div className="z-50">{left}</div>}
-              {renderContent}
+              <div className="flex gap-[7px] items-center justify-start">
+                <div className="z-50">{renderContent}</div>
+                <p className="truncate">{children}</p>
+              </div>
             </div>
             {right && (
               <div className="flex items-center gap-[2.5px] z-50">{right}</div>
@@ -76,7 +81,10 @@ const Route: React.FC<RouteProps> = ({
         <div className={clsx(routeClassname, "justify-between")}>
           <div className="flex gap-[6px] items-center h-full">
             {left && <>{left}</>}
-            {renderContent}
+            <div className="flex gap-[7px] items-center justify-start">
+              <div className="z-50">{renderContent}</div>
+              <p className="truncate">{children}</p>
+            </div>
           </div>
           {right && (
             <div className="flex items-center gap-[2.5px]">{right}</div>
