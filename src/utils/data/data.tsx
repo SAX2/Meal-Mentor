@@ -7,12 +7,10 @@ import {
   CopyIcon,
   EditIcon,
   FileClock,
-  LanguagesIcon,
   LayoutGrid,
   LinkIcon,
   Mail,
   PlusIcon,
-  ReceiptIcon,
   Settings,
   Settings2Icon,
   Shield,
@@ -22,8 +20,21 @@ import {
   WalletCards,
 } from "lucide-react";
 import { File, Folder } from "../../lib/supabase/supabase.types";
-import { actionDeleteFolder, actionDuplicateFolder } from "@/components/context-menu/actions";
-import { AuthProvider, Item, OptionsContext, Chat, Collaborators, User, Workspace } from "../types";
+import {
+  actionDeleteFile,
+  actionDeleteFolder,
+  actionDuplicateFolder,
+  actionDuplicateFile
+} from "@/components/context-menu/actions";
+import {
+  AuthProvider,
+  Item,
+  OptionsContext,
+  Chat,
+  Collaborators,
+  User,
+  Workspace,
+} from "../types";
 import GoogleLogo from "../../../public/providers/Google.svg";
 import MetaLogo from "../../../public/providers/Meta.svg";
 import AppleLogo from "../../../public/providers/Apple.svg";
@@ -67,14 +78,17 @@ export const options_context: OptionsContext[] = [
           {
             icon: <TrashIcon width={16} height={16} />,
             title: "Delete",
+            function: (id: string) => actionDeleteFile(id),
           },
           {
             icon: <CopyIcon width={16} height={16} />,
             title: "Duplicate",
+            function: (id: string) => actionDuplicateFile(id),
           },
           {
             icon: <EditIcon width={16} height={16} />,
             title: "Edit name",
+            modal: "edit-title",
           },
         ],
       },
@@ -113,13 +127,14 @@ export const options_context: OptionsContext[] = [
             _: [
               {
                 title: "Keep content",
+                function: (id: string) => actionDuplicateFolder(id, null),
               },
               {
                 title: "Empty",
-                function: (id: string) => actionDuplicateFolder(id),
+                function: (id: string) => actionDuplicateFolder(id, "empty"),
               },
             ],
-            function: (id: string) => actionDuplicateFolder(id),
+            function: (id: string) => actionDuplicateFolder(id, null),
           },
           {
             icon: <PlusIcon width={16} height={16} />,
@@ -368,6 +383,46 @@ export const dialogs = {
     title: "Create new folder",
     description:
       "Create new folder and share with people to work together in the same folder workspace",
+    buttonSubmit: "Create folder",
+    inputs: [
+      {
+        label: "Icon",
+        type: "icon",
+      },
+      {
+        label: "Title",
+        placeholder: "Folder title",
+        type: "text",
+      },
+      // {
+      //   label: "Collaborators",
+      //   type: "collaborators",
+      // },
+    ],
+  },
+  createFile: {
+    title: "Create new file",
+    description:
+      "Create a new file to share with others for collaborative work within the same workspace",
+    buttonSubmit: "Create file",
+    inputs: [
+      {
+        id: "icon",
+        label: "Icon",
+        type: "icon",
+      },
+      {
+        id: "title",
+        label: "Title",
+        placeholder: "File title",
+        type: "text",
+      },
+      // {
+      //   id: 'collaborators',
+      //   label: "Collaborators",
+      //   type: "collaborators",
+      // },
+    ],
   },
   login: {
     title: "Welcome back",
@@ -381,8 +436,7 @@ export const dialogs = {
   },
   editTitle: {
     title: "Edit title",
-    description:
-      "Easily update folder or file titles for better organization.",
+    description: "Easily update folder or file titles for better organization.",
   },
 };
 
