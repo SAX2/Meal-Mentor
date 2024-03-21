@@ -21,6 +21,7 @@ interface RouteProps {
   picker?: boolean;
   iconType?: 'SVG' | undefined;
   dirType?: DirType;
+  id?: string;
 }
 
 export const routeClassname =
@@ -36,7 +37,8 @@ const Route: React.FC<RouteProps> = ({
   left,
   picker,
   iconType,
-  dirType
+  dirType,
+  id
 }) => {
   
   const renderContent = (
@@ -51,7 +53,7 @@ const Route: React.FC<RouteProps> = ({
       )}
       {(icon && iconType == 'SVG') && icon}
       {(icon && !picker && !iconType) && <Emoji icon={icon.toString()} className="w-4 h-4" width={16} height={16}/>}
-      {(icon && picker) && <EmojiRoute icon={icon.toString()} dirType={dirType}/>}
+      {(icon && picker) && <EmojiRoute icon={icon.toString()} dirType={dirType} id={id ?? ""}/>}
       {image === undefined && icon == undefined && <div className="w-4 h-4 opacity-0" >•</div>}
     </>
   )
@@ -109,7 +111,7 @@ const RouteButton: React.FC<{
   return (
     <div
       className={clsx(
-        "h-[18px] min-w-[18px] w-fit  flex items-center justify-center rounded-md transition-colors ease-in-out duration-150 relative z-50 cursor-pointer",
+        "h-[18px] min-w-[18px] w-fit flex items-center justify-center rounded-md transition-colors ease-in-out duration-150 relative z-50 cursor-pointer",
         isFixed,
         isHidden,
         isHover,

@@ -1,3 +1,5 @@
+"use client"
+
 import React from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import EmojiPicker from "./EmojiPicker";
@@ -9,9 +11,12 @@ interface EmojiRouteProps {
   icon: string | undefined;
   customSize?: string;
   dirType?: DirType;
+  id: string;
+  pickOnly?: boolean;
+  setOnClick?: (emoji: string) => void;
 }
 
-const EmojiRoute: React.FC<EmojiRouteProps> = ({ icon, customSize, dirType }) => {
+const EmojiRoute: React.FC<EmojiRouteProps> = ({ icon, customSize, dirType, id, pickOnly, setOnClick }) => {
   return (
     <Popover>
       <PopoverTrigger className={clsx("hover:bg-white-2-sec-2 flex justify-center items-center transition-colors ease-in-out duration-150 rounded-md w-fit h-fit p-[2.5px]")}>
@@ -25,7 +30,7 @@ const EmojiRoute: React.FC<EmojiRouteProps> = ({ icon, customSize, dirType }) =>
         />
       </PopoverTrigger>
       <PopoverContent className="h-[200px] ml-6 p-0 bg-white-2 shadow-pop">
-        <EmojiPicker dirType={dirType ?? "file"}/>
+        <EmojiPicker dirType={dirType ?? "file"} id={id} pickOnly={pickOnly} onClickFuntion={(emoji) => setOnClick && setOnClick(emoji)}/>
       </PopoverContent>
     </Popover>
   );
