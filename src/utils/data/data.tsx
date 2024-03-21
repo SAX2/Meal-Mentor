@@ -1,17 +1,25 @@
 import {
   ActivityIcon,
   BellIcon,
+  Brush,
+  Building2,
   CalendarIcon,
   CopyIcon,
   EditIcon,
+  FileClock,
   LanguagesIcon,
+  LayoutGrid,
   LinkIcon,
+  Mail,
   PlusIcon,
   ReceiptIcon,
+  Settings,
   Settings2Icon,
+  Shield,
   StarIcon,
   TrashIcon,
   UserIcon,
+  WalletCards,
 } from "lucide-react";
 import { File, Folder } from "../../lib/supabase/supabase.types";
 import { actionDeleteFolder, actionDuplicateFolder } from "@/components/context-menu/actions";
@@ -25,6 +33,11 @@ interface AuthProviderInfo {
   title: string;
   classname: string;
   icon?: React.ReactElement | string;
+}
+
+interface SidebarSettings {
+  title: string | null;
+  routes: (Item & { items?: Item[] })[];
 }
 
 export const user: User = {
@@ -164,41 +177,100 @@ export const routes: Item[] = [
   },
 ];
 
-export const routesSettings: Item[] = [
+export const routesSetting: SidebarSettings[] = [
   {
-    isLink: true,
-    path: "/user",
-    title: "User",
-    icon: <UserIcon width={16} height={16} />,
-    additional: null,
+    title: null,
+    routes: [
+      {
+        isLink: true,
+        path: "/settings/profile",
+        title: "Public profile",
+        icon: <Settings width={16} height={16} />,
+      },
+      {
+        isLink: true,
+        path: "/settings/account",
+        title: "Account",
+        icon: <UserIcon width={16} height={16} />,
+      },
+      {
+        isLink: true,
+        path: "/settings/appearence",
+        title: "Appearence",
+        icon: <Brush width={16} height={16} />,
+      },
+      {
+        isLink: true,
+        path: "/settings/notifications",
+        title: "Notifications",
+        icon: <BellIcon width={16} height={16} />,
+      },
+    ],
   },
   {
-    isLink: true,
-    path: "/bill-management",
-    title: "Bill management",
-    icon: <ReceiptIcon width={16} height={16} />,
-    additional: null,
+    title: "Access",
+    routes: [
+      {
+        isLink: false,
+        path: "/settings/billing-and-plans",
+        title: "Billing and plans",
+        icon: <WalletCards width={16} height={16} />,
+        items: [
+          {
+            isLink: false,
+            path: "/settings/billing-and-plans/plans-and-usage",
+            title: "Plans and usage",
+            icon: <Settings width={16} height={16} />,
+          },
+          {
+            isLink: false,
+            path: "/settings/billing-and-plans/payment-information",
+            title: "Payment information",
+            icon: <Settings width={16} height={16} />,
+          },
+        ],
+      },
+      {
+        isLink: true,
+        path: "/settings/emails",
+        title: "Emails",
+        icon: <Mail width={16} height={16} />,
+      },
+      {
+        isLink: true,
+        path: "/settings/password",
+        title: "Password and authentication",
+        icon: <Shield width={16} height={16} />,
+      },
+      {
+        isLink: true,
+        path: "/settings/teams-and-orgs",
+        title: "Teams and organizations",
+        icon: <Building2 width={16} height={16} />,
+      },
+    ],
   },
   {
-    isLink: true,
-    path: "/subscription",
-    title: "Subscription",
-    icon: <StarIcon width={16} height={16} />,
-    additional: null,
+    title: "Integrations",
+    routes: [
+      {
+        isLink: true,
+        path: "/settings/applications",
+        title: "Applications",
+        icon: <LayoutGrid width={16} height={16} />,
+      },
+    ],
   },
   {
-    isLink: true,
-    path: "/notifications",
-    title: "Notifications",
-    icon: <BellIcon width={16} height={16} />,
-    additional: null,
-  },
-  {
-    isLink: true,
-    path: "/language-settings",
-    title: "Language settings",
-    icon: <LanguagesIcon width={16} height={16} />,
-    additional: null,
+    title: "Logs",
+    routes: [
+      {
+        isLink: true,
+        path: "/settings/security-logs",
+        title: "Security Logs",
+        icon: <FileClock width={16} height={16} />,
+      },
+    ],
   },
 ];
 
