@@ -1,24 +1,21 @@
-import { files, folders, routes } from "@/utils/data/data";
-import { Route, RouteButton, routeClassname } from "./Route";
 import React from "react";
 import UserCard from "./UserCard";
-import { Separator } from "../ui/separator";
 import Search from "./Search";
 import Chats from "./Chats";
 import CollapsibleFolder from "./CollapsibleFolder";
-import CreateFolder from "./CreateFolder";
+import FolderListSkeleton from "../skeletons/FolderListSkeleton";
+import CreateDir from "../dialog/CreateDirDialog";
+import { Route, RouteButton, routeClassname } from "./Route";
+import { routes } from "@/utils/data/data";
+import { Separator } from "../ui/separator";
 import { getFolders } from "@/lib/supabase/queries";
 import { Folder } from "@/lib/supabase/supabase.types";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import FolderListSkeleton from "../skeletons/FolderListSkeleton";
+import { PlusIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-interface NavbarProps {
-  params?: { workspaceId: string };
-  className?: string;
-}
-
-const Navbar: React.FC<NavbarProps> = async ({ params, className }) => {
+const Navbar = async () => {
   const user = await currentUser();
 
   if (!user) return;
@@ -79,7 +76,12 @@ const Navbar: React.FC<NavbarProps> = async ({ params, className }) => {
             })}
         </li>
         <li>
-          <CreateFolder userId={user?.id ?? ""} />
+          <CreateDir userId={user?.id ?? ""} dirType="folder" classname="w-full">
+            <div className={cn(routeClassname, "mt-2 w-full")}>
+              <PlusIcon width={16} height={16} className="text-black" />
+              Add new folder
+            </div>
+          </CreateDir>
         </li>
       </ul>
     </nav>
