@@ -1,7 +1,7 @@
 import { files, folders, routes } from "@/utils/data/data";
 import { Route, RouteButton, routeClassname } from "./Route";
 import React from "react";
-import UserCard from "./user/UserCard";
+import UserCard from "./UserCard";
 import { Separator } from "../ui/separator";
 import Search from "./Search";
 import Chats from "./Chats";
@@ -30,7 +30,7 @@ const Navbar: React.FC<NavbarProps> = async ({ params, className }) => {
   return (
     <nav className="max-w-[300px] w-full bg-white-2 border-r h-full">
       <div className="p-[5px]">
-        <UserCard user={user} />
+        <UserCard />
       </div>
       <Separator />
       <div className="p-[10px]">

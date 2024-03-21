@@ -49,7 +49,7 @@ const Route: React.FC<RouteProps> = ({
       {(icon && iconType == 'SVG') && icon}
       {(icon && !picker && !iconType) && <Emoji icon={icon.toString()} className="w-4 h-4" width={16} height={16}/>}
       {(icon && picker) && <EmojiRoute icon={icon.toString()}/>}
-      {image === undefined && icon == undefined && <div>•</div>}
+      {image === undefined && icon == undefined && <div className="w-4 h-4 opacity-0" >•</div>}
       <p className="truncate">{children}</p>
     </div>
   )

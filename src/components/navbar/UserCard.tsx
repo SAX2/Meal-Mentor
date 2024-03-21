@@ -1,13 +1,20 @@
+"use client";
+
 import React from "react";
 import UserPopover from "./UserPopover";
-import { AvatarFallback, AvatarImage, Avatar } from "../../ui/avatar";
+import { AvatarFallback, AvatarImage, Avatar } from "../ui/avatar";
 import { ChevronsUpDownIcon, PanelLeftCloseIcon } from "lucide-react";
-import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { useUser } from "@clerk/nextjs";
 
-const UserCard = async ({ user }: { user: any }) => {
+const UserCard = () => {
+  const { user } = useUser();
+
+  if (!user) return;
+
   const usernameDisplay =
     !user?.firstName || user?.firstName == null
-      ? `${user.externalAccounts[0].emailAddress.split('@')[0]} MealMentor`
+      ? `${user?.primaryEmailAddress?.emailAddress.split("@")[0]} MealMentor`
       : `${user?.firstName} ${user?.lastName}'s MealMentor`;
 
   return (
@@ -44,7 +51,7 @@ const UserCard = async ({ user }: { user: any }) => {
             </div>
           </PopoverTrigger>
           <PopoverContent className="bg-white-2 shadow-pop min-w-[325px] ml-2 p-0">
-            <UserPopover user={user} userNameDisplay={usernameDisplay}/>
+            <UserPopover user={user} userNameDisplay={usernameDisplay} />
           </PopoverContent>
         </Popover>
       )}

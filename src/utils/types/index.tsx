@@ -25,7 +25,7 @@ export type Item = {
   path: string;
   title: string | null;
   icon: React.ReactNode | null;
-  additional: number | null;
+  additional?: number | null;
   type?: string | null;
 };
 

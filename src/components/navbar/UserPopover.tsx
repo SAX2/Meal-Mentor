@@ -1,11 +1,16 @@
-import { Avatar, AvatarImage, AvatarFallback } from "../../ui/avatar"
-import { Separator } from "../../ui/separator"
-import { LifeBuoyIcon, UserRoundPlusIcon } from "lucide-react"
-import { routeClassname } from "../Route"
+"use client"
+
+import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar"
+import { Separator } from "../ui/separator"
+import { LifeBuoyIcon, LogOutIcon, UserRoundPlusIcon } from "lucide-react"
+import { routeClassname } from "./Route"
+import { useAuth } from "@clerk/nextjs"
 import clsx from "clsx" 
-import LogOutButton from "./LogOutButton"
+import { redirect } from "next/navigation"
 
 const UserPopover = ({ user, userNameDisplay }: { user: any, userNameDisplay: string }) => {
+  const { signOut } = useAuth();
+
   return (
     <>
       <div className="flex flex-col gap-1 p-2">
@@ -39,7 +44,16 @@ const UserPopover = ({ user, userNameDisplay }: { user: any, userNameDisplay: st
           <UserRoundPlusIcon width={16} height={16} />
           Add an account
         </div>
-        <LogOutButton />
+        <div
+          className={clsx(routeClassname, "w-full")}
+          onClick={() => {
+            signOut();
+            redirect("/sign-in");
+          }}
+        >
+          <LogOutIcon width={16} height={16} />
+          Log out
+        </div>
       </div>
       <Separator />
       <div className="p-2 flex flex-col">

@@ -8,6 +8,10 @@ const nextConfig = {
         port: "",
         pathname: "/npm/emoji-datasource-apple/**",
       },
+      {
+        protocol: "https",
+        hostname: "img.clerk.com",
+      }
     ],
   },
 };
