@@ -367,7 +367,11 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       </div>
       {isLoading && <QuillSkeleton />}
       <div className="flex justify-center items-center flex-col relative w-full">
-        <div id="container" className={cn("w-full", isLoading && 'opacity-0')} ref={wrapperRef}></div>
+        <div
+          id="container"
+          className={cn("w-full", isLoading && "opacity-0")}
+          ref={wrapperRef}
+        ></div>
       </div>
     </>
   );
