@@ -11,7 +11,7 @@ interface EmojiProps {
 
 const Emoji: React.FC<EmojiProps> = ({ icon, className, width, height }) => {
   return (
-    <Image
+    <img
       src={`https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/${icon}.png`}
       className={cn(className, "select-none")}
       alt={icon ?? ""}

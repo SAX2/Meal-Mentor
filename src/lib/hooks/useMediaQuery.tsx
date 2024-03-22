@@ -9,7 +9,7 @@ interface UseMediaQueryProps {
 }
 
 const UseMediaQuery = ({ children, greater, less }: UseMediaQueryProps) => {
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [isSmallScreen, setIsSmallScreen] = useState(true);
 
   useEffect(() => {
     const handleResize = () => {

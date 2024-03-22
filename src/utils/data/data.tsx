@@ -87,7 +87,7 @@ export const options_context: OptionsContext[] = [
           },
           {
             icon: <EditIcon width={16} height={16} />,
-            title: "Edit name",
+            title: "Edit title",
             modal: "edit-title",
           },
         ],
@@ -142,7 +142,7 @@ export const options_context: OptionsContext[] = [
           },
           {
             icon: <EditIcon width={16} height={16} />,
-            title: "Edit name",
+            title: "Edit title",
             modal: "edit-title",
           },
         ],

@@ -64,7 +64,7 @@ const EmojiPicker = ({
                 onClick={() => handleClick(emoji)}
               >
                 <div className="w-fit p-1 hover:bg-white-2-sec-2 transition-colors rounded-md">
-                  <Image
+                  <img
                     src={`https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/${emoji}.png`}
                     alt={emoji}
                     className="h-6 w-6"
