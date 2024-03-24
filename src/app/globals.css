@@ -75,51 +75,72 @@
   }
 }
 
-.ce-popover-item:hover {
-  @apply bg-muted/40 transition-all !important;
+.ProseMirror {
+  padding: 10px;
+  background: transparent;
+  border-radius: 0 0 5px 5px;
+  min-height: 100px;
 }
 
-.ce-popover--opened {
-  @apply bg-card outline-none border-border;
+.ProseMirror > * + * {
+  margin-top: 0.75em;
 }
 
-.ce-popover-item__icon {
-  @apply text-white font-medium shadow-none !important;
+.ProseMirror ul {
+  padding: 0 1rem;
+  list-style: disc !important;
+}
+.ProseMirror ol {
+  padding: 0 2rem;
+  list-style: decimal !important;
 }
 
-.ce-popover-item__title {
-  @apply font-normal;
+.ProseMirror h1 {
+  @apply text-[32px] font-semibold
 }
 
-.cdx-search-field {
-  @apply bg-background;
+.ProseMirror h2 {
+  @apply text-[28px] font-semibold
 }
 
-.ce-toolbar__content,
-.ce-block__content {
-  max-width: 750px;
+.ProseMirror h3 {
+  @apply text-[24px] font-semibold
 }
 
-.editorFocus {
-  @apply border-none outline-none;
+.ProseMirror h4 {
+  @apply text-[20px] font-semibold
 }
 
-.ql-toolbar::-webkit-scrollbar {
-  display: none;
+
+.ProseMirror code {
+  background-color: rgba(#616161, 0.1);
+  color: #616161;
 }
 
-.ql-toolbar {
-  @apply z-[99] !sticky top-16 flex flex-wrap items-center bg-white/80 backdrop-blur-xl rounded-md shadow-button border !border-outline w-fit h-fit !p-0;
+.ProseMirror pre {
+  background: #0d0d0d;
+  color: #fff;
+  font-family: 'JetBrainsMono', monospace;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+}
+.ProseMirror code {
+  color: inherit;
+  padding: 0;
+  @apply text-wrap bg-inherit p-0 text-sm
 }
 
-.ql-formats {
-  @apply flex flex-shrink-0;
+.ProseMirror blockquote {
+  padding-left: 1rem;
+  border-left: 3px solid #999999;
 }
 
-.ql-container {
-  @apply !border-none z-10;
+.ProseMirror hr {
+  border: none;
+  border-top: 3px solid #999999;
+  margin: 2rem 0;
 }
 
-.ql-toolbar_item {
-  @apply hover:!bg-slate-50 !rounded-sm 
+.heading3 {
+  font-size: 15px;
 }

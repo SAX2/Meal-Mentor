@@ -3,27 +3,21 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react'
 import { File, Folder } from "@/lib/supabase/supabase.types";
+import { useEditorContet } from "@/lib/providers/editor-provider";
 import { useAuth } from '@clerk/nextjs';
 import { getFileDetails, getFolderDetails, updateFileData, updateFolderData } from '@/lib/supabase/queries';
 import { useRouter } from 'next/navigation';
-
-import StarterKit from '@tiptap/starter-kit'
-import Document from '@tiptap/extension-document'
-import FontFamily from '@tiptap/extension-font-family'
-import Paragraph from '@tiptap/extension-paragraph'
-import Text from '@tiptap/extension-text'
-import TextStyle from '@tiptap/extension-text-style'
-import Placeholder from '@tiptap/extension-placeholder'
-import TextAlign from '@tiptap/extension-text-align'
-import ListItem from '@tiptap/extension-list-item'
-import BlockQoute from '@tiptap/extension-blockquote'
-import CodeBlock from '@tiptap/extension-code-block'
-import FontSize from 'tiptap-extension-font-size'
-
+import { TOOLBAR_OPTIONS } from "@/utils/data/toolbar";
 import clsx from 'clsx';
 import EditorSkeleton from '../skeletons/EditorSkeleton';
-import { TOOLBAR_OPTIONS } from "@/utils/data/data";
 import Toolbar from "./Toolbar";
+
+//Editor
+import StarterKit from "@tiptap/starter-kit";
+import FontSize from 'tiptap-extension-font-size'
+import Underline from "@tiptap/extension-underline";
+import TextStyle from '@tiptap/extension-text-style'
+import Color from '@tiptap/extension-color'
 
 interface TextEditorProps {
   dirDetails?: File | Folder;
@@ -36,6 +30,7 @@ const TextEditor: React.FC<TextEditorProps> = ({
   fileId,
   dirDetails,
 }) => {
+  const { setIsSaving } = useEditorContet()
   const { userId } = useAuth();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const saveTimerRef = useRef<ReturnType<typeof setTimeout>>();
@@ -44,49 +39,57 @@ const TextEditor: React.FC<TextEditorProps> = ({
   const editor = useEditor({
     extensions: [
       StarterKit,
-      Document,
-      FontFamily,
-      Paragraph,
-      Text,
-      TextStyle,
       FontSize,
-      ListItem,
-      CodeBlock,
-      BlockQoute,
-      Placeholder.configure({
-        placeholder: 'Write something …',
-      }),
-      TextAlign.configure({
-        types: ['heading', 'paragraph',],
-      }),
+      Underline,
+      TextStyle,
+      Color
     ],
     onUpdate: ({ editor }) => {
-      const html = editor.getHTML()
-
+      const html = editor.getHTML();
+      
       if (!userId || !fileId) return;
+      
+      setIsSaving(true);
 
       saveTimerRef.current = setTimeout(async () => {
+        setIsSaving(true)
         if (html && fileId) {
-          if (dirType === "folder") {
-            await updateFolderData({
-              folderId: fileId,
-              data: { data: html },
-            });
-          }
-          if (dirType === "file") {
-            await updateFileData({
-              fileId,
-              data: { data: html },
-            });
+          try {
+            if (dirType === "folder") {
+              await updateFolderData({
+                folderId: fileId,
+                data: { data: html },
+              });
+            }
+            if (dirType === "file") {
+              await updateFileData({
+                fileId,
+                data: { data: html },
+              });
+            }
+          } catch (error) {
+            console.log(error)
+          } finally {
+            setIsSaving(false);
           }
         }
       }, 850);
 
       return () => {
+        setIsSaving(false);
         if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
-      }
+      };
     },
-  })
+    autofocus: true,
+    editable: true,
+    injectCSS: false,
+    editorProps: {
+      attributes: {
+        class:
+          "outline-none",
+      },
+    },
+  });
 
   useEffect(() => {
     if (!editor || !fileId || !dirType || !userId) return;
@@ -142,41 +145,6 @@ const TextEditor: React.FC<TextEditorProps> = ({
   return (
     <>
       <Toolbar options={TOOLBAR_OPTIONS} editor={editor} />
-      {editor && (
-        <BubbleMenu
-          className="p-1 flex gap-1 bg-white rounded-md border border-outline shadow-button"
-          tippyOptions={{ duration: 100 }}
-          editor={editor}
-        >
-          <button
-            onClick={() => editor.chain().focus().toggleBold().run()}
-            className={clsx(
-              bubbleMenuItemStyle,
-              editor.isActive("bold") && "bg-white-2-sec-2"
-            )}
-          >
-            Bold
-          </button>
-          <button
-            onClick={() => editor.chain().focus().toggleItalic().run()}
-            className={clsx(
-              bubbleMenuItemStyle,
-              editor.isActive("italic") && "bg-white-2-sec-2"
-            )}
-          >
-            Italic
-          </button>
-          <button
-            onClick={() => editor.chain().focus().toggleStrike().run()}
-            className={clsx(
-              bubbleMenuItemStyle,
-              editor.isActive("strike") && "bg-white-2-sec-2"
-            )}
-          >
-            Strike
-          </button>
-        </BubbleMenu>
-      )}
       {isLoading && <EditorSkeleton />}
       <EditorContent
         editor={editor}

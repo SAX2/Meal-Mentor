@@ -1,11 +1,12 @@
-import { ToolbarOptions } from '@/utils/data/data'
+import { type ToolbarOption, type ToolbarOptions } from '@/utils/types/index'
+import { type Editor } from "@tiptap/react";
 import React from 'react'
 import SelectorDropdown from './ToolbarItemSelector';
 import clsx from 'clsx';
 
 interface ToolbarProps {
   options: ToolbarOptions[];
-  editor: any;
+  editor: Editor | null;
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({ editor, options }) => {
@@ -29,12 +30,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ editor, options }) => {
                               ? toolbarItem.value.toString()
                               : toolbarItem.content
                           }
-                          type={toolbarItem.content}
-                          value={
-                            toolbarItem.value && toolbarItem.value.toString()
-                          }
-                          icon={toolbarItem.icon}
-                          item={toolbarItem}
+                          option={toolbarItem}
                           editor={editor}
                         />
                       );
@@ -57,6 +53,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ editor, options }) => {
                   </ul>
                 );
               }
+
               return;
             })}
           </div>
@@ -67,38 +64,39 @@ const Toolbar: React.FC<ToolbarProps> = ({ editor, options }) => {
 };
 
 export const ToolbarItem = ({
-  type,
-  value,
   disabled,
   noHover,
-  icon,
   editor,
-  item
+  option
 }: {
-  type: string;
-  value?: string;
   disabled?: boolean;
   noHover?: boolean;
-  icon?: React.ReactElement;
-  editor: any;
-  item: any;
+  editor: Editor;
+  option: any;
 }) => {
   return (
-    <button
-      className={clsx(
-        "outline-0 rounded-sm p-1",
-        noHover ? "hover:!bg-none" : "hover:!bg-white-2-sec",
-        editor.isActive(type) && "bg-white-2-sec"
+    <>
+      {editor && (
+        <button
+          className={clsx(
+            "outline-0 rounded-sm p-1",
+            noHover ? "hover:!bg-none" : "hover:!bg-white-2-sec",
+            editor.isActive(option.content, { level: option.value }) &&
+              "bg-white-2-sec"
+          )}
+          disabled={disabled}
+          value={option.value}
+          onClick={(e) => {
+            e.preventDefault();
+            option.function(editor);
+          }}
+        >
+          {option.icon && option.icon}
+        </button>
       )}
-      disabled={disabled}
-      value={value}
-      onClick={() => item.function(editor)}
-    >
-      {icon && icon}
-    </button>
+    </>
   );
 };
-
 
 
 export default Toolbar

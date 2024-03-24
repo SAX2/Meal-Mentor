@@ -1,7 +1,6 @@
 'use client'
 
-import { useEffect, useState } from "react";
-import { Select, SelectContent, SelectItem, SelectTrigger } from "../ui/select";
+import { useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { ChevronDown, Paintbrush, Palette } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -33,8 +32,8 @@ const SelectorDropdown: React.FC<SelectorDropdownProps> = ({
         <div className={cn("flex items-center gap-1", classname)}>
           {selectedOption ? (
             <div className="flex gap-1 items-center">
-              {(selectedOption.content === "align" || selectedOption.content === "header") && selectedOption.icon}
-              {selectedOption.content === "textStyle" && <FontFamily option={selectedOption}/>}
+              {selectedOption.content === "align" && selectedOption.icon}
+              {(selectedOption.content === "textStyle" ||  selectedOption.content === "heading") && <FontFamily option={selectedOption}/>}
               {selectedOption.content === "color" && <Palette width={18} height={18} className="text-black" />}
               {selectedOption.content === "background" &&  <Paintbrush width={18} height={18} className="text-black" />}
               <ChevronDown width={14} height={14} className="text-grey" />
@@ -65,8 +64,8 @@ const SelectorDropdown: React.FC<SelectorDropdownProps> = ({
                   }) && "bg-white-2-sec"
                 )}
               >
-                {(option.content === "align" || option.content === "header") && <>{option.icon}</>}
-                {option.content === "textStyle" && <FontFamily option={option}/>}
+                {option.content === "align" && option.icon}
+                {(option.content === "textStyle" ||  option.content === "heading" || option.content === "fontSize") && <FontFamily option={option}/>}
                 {(option.content === "color" || option.content === "background") && <ColoPicker option={option} />}
               </div>
             ))}
@@ -80,13 +79,13 @@ const FontFamily = ({ option }: { option: any }) => {
   return (
     <p
       className={clsx(
-        `cursor-pointer select-none`,
+        `cursor-pointer select-none text-sm`,
         option.value == "sans serif" && "font-sans",
         option.value == "serif" && "font-serif",
         option.value == "monospace" && "font-mono"
       )}
     >
-      {option.value}
+      {option.content === 'heading' ? option.title : option.value}
     </p>
   );
 }
