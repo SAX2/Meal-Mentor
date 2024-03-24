@@ -2,10 +2,8 @@ import React from "react";
 import { layoutProps } from "./layout";
 import { Metadata } from "next";
 import { getFolderDetails } from "@/lib/supabase/queries";
-import { user } from "@/utils/data/data";
-import EmojiRoute from "@/components/emoji/EmojiRoute";
-import QuillEditor from "@/components/quill-editor/QuillEditor";
 import { auth } from "@clerk/nextjs";
+import EmojiRoute from "@/components/emoji/EmojiRoute";
 import TextEditor from "@/components/text-editor/TextEditor";
 
 export async function generateMetadata({
