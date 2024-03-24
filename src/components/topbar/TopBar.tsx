@@ -8,8 +8,8 @@ import { Item } from "@/utils/types";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "../ui/breadcrumb";
 import { Route } from "../navbar/Route";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "../ui/sheet";
-import { Menu } from "lucide-react";
-import Navbar from "../navbar/Navbar";
+import { Loader, Menu } from "lucide-react";
+import { useEditorContet } from "@/lib/providers/editor-provider";
 import UseMediaQuery from "@/lib/hooks/useMediaQuery";
 
 interface TopBarProps {
@@ -22,6 +22,7 @@ const TopBar: React.FC<TopBarProps> = ({ children, folderAndDocs, sheet }) => {
   const params = useParams()
   const pathname = usePathname()
 
+  const { isSaving } = useEditorContet()
   const [documentId, setDocumentId] = useState<string>()
   const [folderId, setFolderId] = useState<string>()
   const [routes, setRoutes] = useState<Item[]>()
@@ -61,10 +62,24 @@ const TopBar: React.FC<TopBarProps> = ({ children, folderAndDocs, sheet }) => {
           <RoutesBreadcrum routes={routes ?? null} />
         )}
       </div>
-      <div className="flex items-center h-[46px]">{children}</div>
+      <div className="flex items-center h-[46px] gap-2">
+        {folderAndDocs && <>
+          {isSaving && <Saving />}
+        </>}
+        {children}
+      </div>
     </div>
   );
 };
+
+const Saving = () => {
+  return (
+    <div className="flex items-center gap-1">
+      <Loader width={14} height={14} className="animate-spin text-grey" />
+      <p className="text-grey text-sm">Saving</p>
+    </div>
+  );
+}
 
 const RoutesBreadcrum = ({ routes }: { routes: Item[] | null }) => {
   return (
