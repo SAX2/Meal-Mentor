@@ -6,6 +6,7 @@ import { user } from "@/utils/data/data";
 import EmojiRoute from "@/components/emoji/EmojiRoute";
 import QuillEditor from "@/components/quill-editor/QuillEditor";
 import { auth } from "@clerk/nextjs";
+import TextEditor from "@/components/text-editor/TextEditor";
 
 export async function generateMetadata({
   params,
@@ -46,7 +47,7 @@ const page = async ({ params }: { params: { folderId: string } }) => {
           <h1 className="text-4xl max-[800px]:text-2xl  font-extrabold truncate">{data[0]?.title}</h1>
         </div>
       )}
-      <QuillEditor dirType="folder" fileId={data ? data[0].id : ""}/>
+      <TextEditor dirType="folder" fileId={data ? data[0].id : ""}/>
     </>
   );
 };

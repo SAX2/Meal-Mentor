@@ -1,11 +1,10 @@
 import React from 'react'
 import EmojiRoute from '@/components/emoji/EmojiRoute';
-import { user } from '@/utils/data/data';
 import { layoutProps } from '../layout';
 import { Metadata } from 'next';
-import QuillEditor from '@/components/quill-editor/QuillEditor';
 import { getFileDetails } from '@/lib/supabase/queries';
 import { auth } from '@clerk/nextjs';
+import TextEditor from '@/components/text-editor/TextEditor';
 
 export async function generateMetadata({
   params,
@@ -47,7 +46,7 @@ const page = async ({ params }: { params: { documentId: string, folderId: string
           <h1 className="text-4xl font-extrabold truncate">{data[0]?.title}</h1>
         </div>
       )}
-      <QuillEditor dirType="file" fileId={data ? data[0].id : ""} />
+      <TextEditor dirType="file" fileId={data ? data[0].id : ""} />
     </>
   );
 }

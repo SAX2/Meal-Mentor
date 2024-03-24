@@ -1,21 +1,42 @@
 import {
   ActivityIcon,
+  AlignCenter,
+  AlignJustify,
+  AlignLeft,
+  AlignRight,
   BellIcon,
+  Bold,
   Brush,
   Building2,
   CalendarIcon,
+  Code,
   CopyIcon,
   EditIcon,
   FileClock,
+  Heading1,
+  Heading2,
+  Heading3,
+  Heading4,
+  Heading5,
+  Heading6,
+  Indent,
+  Italic,
   LayoutGrid,
   LinkIcon,
+  ListOrdered,
   Mail,
   PlusIcon,
+  Quote,
+  Redo,
   Settings,
   Settings2Icon,
   Shield,
   StarIcon,
+  Strikethrough,
+  Table,
   TrashIcon,
+  Underline,
+  Undo,
   UserIcon,
   WalletCards,
 } from "lucide-react";
@@ -39,6 +60,7 @@ import GoogleLogo from "../../../public/providers/Google.svg";
 import MetaLogo from "../../../public/providers/Meta.svg";
 import AppleLogo from "../../../public/providers/Apple.svg";
 import Image from "next/image";
+import { ListBulletIcon } from "@radix-ui/react-icons";
 
 interface AuthProviderInfo {
   title: string;
@@ -50,6 +72,20 @@ interface SidebarSettings {
   title: string | null;
   routes: (Item & { items?: Item[] })[];
 }
+
+export type ToolbarOptions = {
+  type: "button" | "select";
+  items: {
+    content: string;
+    value?: string | {
+      content: string;
+      hex?: string;
+    };
+    function?: (editor: any) => void;
+  title?: string;
+  icon?: React.ReactElement;
+  }[];
+};
 
 export const user: User = {
   id: "c30f03a4-f13b-45f1-967c-9bcc235fe6fe",
@@ -154,6 +190,266 @@ export const options_context: OptionsContext[] = [
             title: "Copy on clipboard",
           },
         ],
+      },
+    ],
+  },
+];
+
+export const TOOLBAR_OPTIONS: ToolbarOptions[] = [
+  {
+    type: "button",
+    items: [
+      {
+        content: "bold",
+        icon: <Bold width={18} height={18} className="text-black" />,
+        function: (editor: any) => editor.chain().focus().toggleBold().run(),
+      },
+      {
+        content: "italic",
+        icon: <Italic width={18} height={18} className="text-black" />,
+        function: (editor: any) => editor.chain().focus().toggleItalic().run(),
+      },
+      {
+        content: "underline",
+        icon: <Underline width={18} height={18} className="text-black" />,
+        function: (editor: any) => editor.chain().focus().toggleStrike().run(),
+      },
+      {
+        content: "strike",
+        icon: <Strikethrough width={18} height={18} className="text-black" />,
+        function: (editor: any) => editor.chain().focus().toggleStrike().run(),
+      },
+    ],
+  },
+  {
+    type: "button",
+    items: [
+      {
+        content: "blockquote",
+        icon: <Quote width={18} height={18} className="text-black" />,
+        function: (editor: any) =>
+          editor.chain().focus().toggleBlockquote().run(),
+      },
+      {
+        content: "codeBlock",
+        value: "javascript",
+        icon: <Code width={18} height={18} className="text-black" />,
+        function: (editor: any) =>
+          editor.chain().focus().toggleCodeBlock().run(),
+      },
+      {
+        content: "header",
+        value: "1",
+        icon: <Heading1 width={18} height={18} className="text-black" />,
+        function: (editor: any) =>
+          editor.chain().focus().toggleHeading({ level: 1 }).run(),
+      },
+      {
+        content: "header",
+        value: "2",
+        icon: <Heading2 width={18} height={18} className="text-black" />,
+        function: (editor: any) =>
+          editor.chain().focus().toggleHeading({ level: 2 }).run(),
+      },
+    ],
+  },
+  // {
+  //   type: "button",
+  //   items: [
+  //     { content: "script", value: "sub" },
+  //     { content: "script", value: "super" },
+  //   ],
+  // },
+  {
+    type: "button",
+    items: [
+      {
+        content: "indent",
+        value: "-1",
+        icon: <Indent width={18} height={18} className="text-black" />,
+      },
+      {
+        content: "indent",
+        value: "+1",
+        icon: <Indent width={18} height={18} className="text-black" />,
+      },
+      {
+        content: "orderedList",
+        value: "ordered",
+        icon: <ListBulletIcon width={18} height={18} className="text-black" />,
+        function: (editor: any) =>
+          editor.chain().focus().toggleOrderedList().run(),
+      },
+      {
+        content: "bulletList",
+        value: "bullet",
+        icon: <ListOrdered width={18} height={18} className="text-black" />,
+        function: (editor: any) =>
+          editor.chain().focus().toggleBulletList().run(),
+      },
+    ],
+  },
+  {
+    type: "select",
+    items: [
+      {
+        content: "align",
+        value: "left",
+        icon: <AlignLeft width={18} height={18} className="text-black" />,
+        function: (editor: any) =>
+          editor.chain().focus().setTextAlign("left").run(),
+      },
+      {
+        content: "align",
+        value: "center",
+        icon: <AlignCenter width={18} height={18} className="text-black" />,
+        function: (editor: any) =>
+          editor.chain().focus().setTextAlign("center").run(),
+      },
+      {
+        content: "align",
+        value: "right",
+        icon: <AlignRight width={18} height={18} className="text-black" />,
+        function: (editor: any) =>
+          editor.chain().focus().setTextAlign("right").run(),
+      },
+      {
+        content: "align",
+        value: "justify",
+        icon: <AlignJustify width={18} height={18} className="text-black" />,
+        function: (editor: any) =>
+          editor.chain().focus().setTextAlign("justify").run(),
+      },
+    ],
+  },
+  {
+    type: "select",
+    items: [
+      {
+        content: "textStyle",
+        value: "inter",
+        title: "Inter",
+        function: (editor: any) =>
+          editor.chain().focus().setFontFamily("inter").run(),
+      },
+      {
+        content: "textStyle",
+        value: "sans serif",
+        title: "Sans serif",
+        function: (editor: any) =>
+          editor.chain().focus().setFontFamily("sans serif").run(),
+      },
+      {
+        content: "textStyle",
+        value: "serif",
+        title: "Serif",
+        function: (editor: any) => editor.chain().focus().setFontFamily("serif").run(),
+      },
+      {
+        content: "textStyle",
+        value: "monospace",
+        title: "Monospace",
+        function: (editor: any) => editor.chain().focus().setFontFamily("monospace").run(),
+      },
+      {
+        content: "textStyle",
+        value: "cursive",
+        title: "Monospace",
+        function: (editor: any) => editor.chain().focus().setFontFamily("cursive").run(),
+      },
+    ],
+  },
+  {
+    type: "select",
+    items: [
+      {
+        content: "header",
+        value: "1",
+        icon: <Heading1 width={18} height={18} className="text-black" />,
+      },
+      {
+        content: "header",
+        value: "2",
+        icon: <Heading2 width={18} height={18} className="text-black" />,
+      },
+      {
+        content: "header",
+        value: "3",
+        icon: <Heading3 width={18} height={18} className="text-black" />,
+      },
+      {
+        content: "header",
+        value: "4",
+        icon: <Heading4 width={18} height={18} className="text-black" />,
+      },
+      {
+        content: "header",
+        value: "5",
+        icon: <Heading5 width={18} height={18} className="text-black" />,
+      },
+      {
+        content: "header",
+        value: "6",
+        icon: <Heading6 width={18} height={18} className="text-black" />,
+      },
+    ],
+  },
+  {
+    type: "select",
+    items: [
+      { content: "color", value: { content: "black", hex: "#0A0A0A" } },
+      { content: "color", value: { content: "dark-gray", hex: "#FFFFFF" } },
+      { content: "color", value: { content: "blue", hex: "#000080" } },
+      { content: "color", value: { content: "forest-green", hex: "#006400" } },
+      { content: "color", value: { content: "maroon", hex: "#800000" } },
+      { content: "color", value: { content: "purple", hex: "#800080" } },
+      { content: "color", value: { content: "light-gray", hex: "#cccccc" } },
+      { content: "color", value: { content: "light-blue", hex: "#00ffff" } },
+      { content: "color", value: { content: "lime-green", hex: "#00ff00" } },
+    ],
+  },
+  {
+    type: "select",
+    items: [
+      { content: "background", value: { content: "white", hex: "#fff" } },
+      { content: "background", value: { content: "black", hex: "#000" } },
+      { content: "background", value: { content: "grey", hex: "#ccc" } },
+      {
+        content: "background",
+        value: { content: "light-blue", hex: "#defbff" },
+      },
+      {
+        content: "background",
+        value: { content: "light-green", hex: "#dcedc8" },
+      },
+      {
+        content: "background",
+        value: { content: "light-yellow", hex: "#ffffcc" },
+      },
+    ],
+  },
+  {
+    type: "button",
+    items: [
+      {
+        content: "table",
+        value: "table",
+        icon: <Table width={18} height={18} className="text-black" />,
+      },
+    ],
+  },
+  {
+    type: "button",
+    items: [
+      {
+        content: "history",
+        value: "undo",
+        icon: <Undo width={18} height={18} className="text-black" />,
+      },
+      {
+        content: "history",
+        value: "redo",
+        icon: <Redo width={18} height={18} className="text-black" />,
       },
     ],
   },
