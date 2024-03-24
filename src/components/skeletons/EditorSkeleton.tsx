@@ -1,6 +1,6 @@
 import { Skeleton } from '../ui/skeleton'
 
-const QuillSkeleton = () => {
+const EditorSkeleton = () => {
   return (
     <div className="w-full flex flex-col gap-3">
       <Skeleton className="h-7 w-[250px] rounded-sm" />
@@ -12,4 +12,4 @@ const QuillSkeleton = () => {
   );
 }
 
-export default QuillSkeleton
+export default EditorSkeleton

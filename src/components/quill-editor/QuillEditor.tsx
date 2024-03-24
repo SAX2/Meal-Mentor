@@ -31,11 +31,13 @@ import { getFileDetails, getFolderDetails, updateFileData, updateFolderData } fr
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@clerk/nextjs';
-import QuillSkeleton from '../skeletons/QuillSkeleton';
-import MagicUrl from 'quill-magic-url'
+import QuillSkeleton from '../skeletons/EditorSkeleton';
 
 //@ts-ignore
+import { ImageDrop } from "quill-image-drop-module";
+//@ts-ignore
 import * as QuillBetterTable from 'quill-better-table'
+
 
 interface QuillEditorProps {
   dirDetails?: File | Folder;
@@ -210,17 +212,23 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       // const QuillBetterTable = (await Quill.import('quill-better-table'));
       
       Quill.register('modules/cursors', QuillCursors);
-      Quill.register('modules/magicUrl', QuillMagicUrl)
+      Quill.register("modules/magicUrl", QuillMagicUrl);
+      // Quill.register("modules/imageCompress", ImageCompress);
+      Quill.register('modules/imageDrop', ImageDrop);
       // Quill.register({'modules/better-table': QuillBetterTable}, true);
             
       const q = new Quill(editor, {
         theme: "snow",
         modules: {
+          clipboard: {
+
+          },
           toolbar: "#toolbar",
           cursors: {
             transformOnTextChange: true,
           },
-          table: false,          
+          table: false,      
+          imageDrop: true,
         },
         placeholder: "Start typing your text here...",
       });
