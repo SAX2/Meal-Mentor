@@ -1,3 +1,5 @@
+import { Editor } from "@tiptap/react";
+
 export type Json =
   | string
   | number
@@ -34,6 +36,25 @@ export type OptionsContext = {
   group: {
     _: OptionContext[];
   }[];
+};
+
+export type ToolbarOption = {
+  content: string;
+  value?:
+    | string
+    | number
+    | {
+        content: string;
+        hex?: string;
+      };
+  function?: (editor: Editor, value?: number | string) => void;
+  title?: string;
+  icon?: React.ReactElement;
+}
+
+export type ToolbarOptions = {
+  type: "button" | "select" | "input";
+  items: ToolbarOption[];
 };
 
 // To delete
