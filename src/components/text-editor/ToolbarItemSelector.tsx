@@ -91,13 +91,14 @@ const FontFamily = ({ option }: { option: any }) => {
 }
 
 const ColoPicker = ({ option }: { option: any }) => {
-  const color = '!bg-[' + option.value.hex + ']'
-
   return (
     <div
-      className={clsx("w-4 h-4 rounded-full border border-black/10 cursor-pointer", color)}
+      className={clsx(
+        "w-4 h-4 rounded-full border border-black/10 cursor-pointer",
+        `!bg-[${option.value.hex}]`
+      )}
     ></div>
   );
-}
+};
 
 export default SelectorDropdown;

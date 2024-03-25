@@ -18,6 +18,7 @@ import FontSize from 'tiptap-extension-font-size'
 import Underline from "@tiptap/extension-underline";
 import TextStyle from '@tiptap/extension-text-style'
 import Color from '@tiptap/extension-color'
+import Highlight from '@tiptap/extension-highlight'
 
 interface TextEditorProps {
   dirDetails?: File | Folder;
@@ -42,7 +43,8 @@ const TextEditor: React.FC<TextEditorProps> = ({
       FontSize,
       Underline,
       TextStyle,
-      Color
+      Color,
+      Highlight.configure({ multicolor: true })
     ],
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();

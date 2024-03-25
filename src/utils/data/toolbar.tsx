@@ -312,8 +312,7 @@ export const TOOLBAR_OPTIONS: ToolbarOptions[] = [
       {
         content: "color",
         value: { content: "black", hex: "#0A0A0A" },
-        function: (editor: Editor) =>
-          editor.chain().focus().unsetColor().run(),
+        function: (editor: Editor) => editor.chain().focus().unsetColor().run(),
       },
       {
         content: "color",
@@ -356,20 +355,41 @@ export const TOOLBAR_OPTIONS: ToolbarOptions[] = [
   {
     type: "select",
     items: [
-      { content: "background", value: { content: "white", hex: "#fff" } },
-      { content: "background", value: { content: "black", hex: "#000" } },
-      { content: "background", value: { content: "grey", hex: "#ccc" } },
+      {
+        content: "background",
+        value: { content: "white", hex: "#fff" },
+        function: (editor: Editor) =>
+          editor.chain().focus().unsetHighlight().run(),
+      },
+      {
+        content: "background",
+        value: { content: "black", hex: "#000" },
+        function: (editor: Editor) =>
+          editor.chain().focus().toggleHighlight({ color: "#000" }).run(),
+      },
+      {
+        content: "background",
+        value: { content: "grey", hex: "#ccc" },
+        function: (editor: Editor) =>
+          editor.chain().focus().toggleHighlight({ color: "#ccc" }).run(),
+      },
       {
         content: "background",
         value: { content: "light-blue", hex: "#defbff" },
+        function: (editor: Editor) =>
+          editor.chain().focus().toggleHighlight({ color: "#defbff" }).run(),
       },
       {
         content: "background",
         value: { content: "light-green", hex: "#dcedc8" },
+        function: (editor: Editor) =>
+          editor.chain().focus().toggleHighlight({ color: "#dcedc8" }).run(),
       },
       {
         content: "background",
         value: { content: "light-yellow", hex: "#ffffcc" },
+        function: (editor: Editor) =>
+          editor.chain().focus().toggleHighlight({ color: "#ffffcc" }).run(),
       },
     ],
   },
