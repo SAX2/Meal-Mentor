@@ -1,6 +1,6 @@
 import { sql } from 'drizzle-orm';
-import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
-import { users } from '../../../migrations/schema';
+import { foreignKey, jsonb, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { users as user } from '../../../migrations/schema';
 
 export const folders = pgTable('folders', {
   id: uuid('id').defaultRandom().primaryKey().notNull(),
@@ -13,7 +13,7 @@ export const folders = pgTable('folders', {
     .defaultNow()
     .notNull(),
   data: text('data'),
-  folderOwner: uuid('folder_owner').notNull(),
+  folderOwner: text('folder_owner').notNull(),
 });
 
 export const files = pgTable('files', {
@@ -28,7 +28,7 @@ export const files = pgTable('files', {
     .defaultNow()
     .notNull(),
   data: text('data'),
-  folderId: uuid('folder_id').notNull().references(() => folders.id, {
+  folderId: text('folder_id').notNull().references(() => folders.id, {
     onDelete: 'cascade',
   }),
 });
@@ -44,7 +44,28 @@ export const collaborators = pgTable('collaborators', {
   })
     .defaultNow()
     .notNull(),
-  userId: uuid('user_id')
+  userId: text('user_id')
     .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
+    .references(() => user.id, { onDelete: 'cascade' }),
 });
+
+export const users = pgTable("users", {
+	id: text("id").primaryKey().notNull(),
+	firstName: text("first_name"),
+	lastName: text("last_name"),
+	avatarUrl: text("avatar_url"),
+	updatedAt: timestamp("updated_at", { withTimezone: true, mode: 'string' }),
+	billingAddress: jsonb("billing_address"),
+	paymentMethod: jsonb("payment_method"),
+	email: text("email"),
+},
+// (table) => {
+// 	return {
+// 		usersIdFkey: foreignKey({
+// 			columns: [table.id],
+// 			foreignColumns: [table.id],
+// 			name: "users_id_fkey"
+// 		}),
+//   }
+//   }
+);

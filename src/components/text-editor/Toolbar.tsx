@@ -3,6 +3,8 @@ import { type Editor } from "@tiptap/react";
 import React from 'react'
 import SelectorDropdown from './ToolbarItemSelector';
 import clsx from 'clsx';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import ToolbarInputLink from './ToolbarInputLink';
 
 interface ToolbarProps {
   options: ToolbarOptions[];
@@ -13,10 +15,10 @@ const Toolbar: React.FC<ToolbarProps> = ({ editor, options }) => {
   return (
     <>
       {editor && (
-        <div className="z-[99] sticky top-16 w-full">
+        <div className="z-[50] sticky top-16 w-full">
           <div className="flex flex-wrap items-center bg-white/80 backdrop-blur-xl rounded-md shadow-button border border-outline w-fit h-fit">
             {options.map((toolbarGroup, index) => {
-              if (toolbarGroup.type === "button") {
+                            if (toolbarGroup.type === "button") {
                 return (
                   <ul
                     key={`${toolbarGroup.type}_${index}`}

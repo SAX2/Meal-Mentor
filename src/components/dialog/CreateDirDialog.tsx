@@ -5,12 +5,10 @@ import CustomDialog from '../dialog/CustomDialog';
 import React, { useState } from 'react'
 import EmojiRoute from '../emoji/EmojiRoute';
 import { Loader, PlusIcon } from 'lucide-react';
-import { routeClassname } from '../navbar/Route';
-import { cn } from "@/lib/utils";
 import { dialogs } from '@/utils/data/data';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
-import { Folder, Collaborators, File } from '@/lib/supabase/supabase.types';
+import { Folder, File } from '@/lib/supabase/supabase.types';
 import { createFile, createFolder, getFolderDetails } from '@/lib/supabase/queries';
 import { v4 } from 'uuid';
 import { useRouter } from 'next/navigation';
@@ -43,8 +41,8 @@ const DialogContent = ({ userId, dirType, id, dialogData }: { userId: string, di
   const [seletedEmoji, setSeletedEmoji] = useState<string>(
     emojis ? emojis[Math.floor(Math.random() * emojis.length)] : ""
   );  
-  const [title, setTitle] = useState<string | null>();
-  const [collborators, setCollborators] = useState<Collaborators[]>([]);
+  const [title, setTitle] = useState<string | null>(null);
+  const [collborators, setCollborators] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter()
   const uuid = v4();
@@ -163,7 +161,7 @@ const DialogContent = ({ userId, dirType, id, dialogData }: { userId: string, di
         <button
           className="w-full border border-outline shadow-button rounded-md px-3 py-1 font-medium flex justify-center items-center"
           onClick={handleSubmit}
-          disabled={!title || isLoading}
+          disabled={title === null || isLoading}
         >
           {isLoading && (
             <span className="animate-spin transition-opacity p-1">

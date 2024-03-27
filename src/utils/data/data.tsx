@@ -386,10 +386,12 @@ export const dialogs = {
     buttonSubmit: "Create folder",
     inputs: [
       {
+        id: "icon",
         label: "Icon",
         type: "icon",
       },
       {
+        id: "title",
         label: "Title",
         placeholder: "Folder title",
         type: "text",
