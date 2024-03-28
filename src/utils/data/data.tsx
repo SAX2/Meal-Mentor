@@ -139,6 +139,7 @@ export const options_context: OptionsContext[] = [
           {
             icon: <PlusIcon width={16} height={16} />,
             title: "Add new file",
+            modal: "create-file",
           },
           {
             icon: <EditIcon width={16} height={16} />,

@@ -15,6 +15,8 @@ import { OptionContext, OptionsContextTypes } from "@/utils/types";
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { useRouter } from 'next/navigation';
 import EditTitleDialog from '../dialog/EditTitleDialog';
+import CreateDir from '../dialog/CreateDirDialog';
+import { useUser } from '@clerk/nextjs';
 
 interface ContextMenuProps {
   children: React.ReactNode;
@@ -64,6 +66,7 @@ const RenderContextMenu: React.FC<RenderContextMenupProps> = ({
   dirType
 }) => {
   const router = useRouter();
+  const { user } = useUser();
 
   const handleClick = (fn: any) => {
     if (typeof fn === "function") {
@@ -107,6 +110,19 @@ const RenderContextMenu: React.FC<RenderContextMenupProps> = ({
                         </ContextMenuItem>
                       </div>
                     );
+
+                    if (option.modal == 'create-file') {
+                      return (
+                        <CreateDir
+                          dirType="file"
+                          userId={user?.id ?? ""}
+                          id={id}
+                          key={`${option.modal}-${id}`}
+                        >
+                          {renderContent}
+                        </CreateDir>
+                      );
+                    }
 
                     if (option.modal == "edit-title")
                       return (
