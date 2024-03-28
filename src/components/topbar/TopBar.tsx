@@ -63,20 +63,23 @@ const TopBar: React.FC<TopBarProps> = ({ children, folderAndDocs, sheet }) => {
         )}
       </div>
       <div className="flex items-center h-[46px] gap-2">
-        {folderAndDocs && <>
-          {isSaving && <Saving />}
-        </>}
+        {folderAndDocs &&  <Saving state={isSaving}/>}
         {children}
       </div>
     </div>
   );
 };
 
-const Saving = () => {
+const Saving = ({ state }: { state: { isSaving: boolean, saved: boolean } }) => {
   return (
-    <div className="flex items-center gap-1">
-      <Loader width={14} height={14} className="animate-spin text-grey" />
-      <p className="text-grey text-sm">Saving</p>
+    <div className="flex items-center gap-[6px] border border-outline py-[3px] px-2 rounded-sm">
+      {state.isSaving && <Loader width={14} height={14} className="animate-spin text-grey" />}
+      {(!state.saved && !state.isSaving) && <div className="w-2 h-2 rounded-full bg-grey/30"></div>}
+      <p className="text-grey text-sm">
+        {state.isSaving && "Saving"}
+        {(state.saved && !state.isSaving) && "Saved"}
+        {(!state.saved && !state.isSaving) && "Not Saved"}
+      </p>
     </div>
   );
 }

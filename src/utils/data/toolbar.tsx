@@ -9,6 +9,7 @@ import {
   Heading2,
   Indent,
   Italic,
+  Link,
   ListOrdered,
   Quote,
   Redo,
@@ -120,25 +121,25 @@ export const TOOLBAR_OPTIONS: ToolbarOptions[] = [
         content: "align",
         value: "left",
         icon: <AlignLeft width={18} height={18} className="text-black" />,
-        // function: (editor: Editor) => editor.chain().focus().setTextAlign("left").run(),
+        function: (editor: Editor) => editor.chain().focus().setTextAlign("left").run(),
       },
       {
         content: "align",
         value: "center",
         icon: <AlignCenter width={18} height={18} className="text-black" />,
-        // function: (editor: Editor) => editor.chain().focus().setTextAlign("center").run(),
+        function: (editor: Editor) => editor.chain().focus().setTextAlign("center").run(),
       },
       {
         content: "align",
         value: "right",
         icon: <AlignRight width={18} height={18} className="text-black" />,
-        // function: (editor: Editor) => editor.chain().focus().setTextAlign("right").run(),
+        function: (editor: Editor) => editor.chain().focus().setTextAlign("right").run(),
       },
       {
         content: "align",
         value: "justify",
         icon: <AlignJustify width={18} height={18} className="text-black" />,
-        // function: (editor: Editor) => editor.chain().focus().setTextAlign("justify").run(),
+        function: (editor: Editor) => editor.chain().focus().setTextAlign("justify").run(),
       },
     ],
   },
@@ -417,6 +418,26 @@ export const TOOLBAR_OPTIONS: ToolbarOptions[] = [
         value: "redo",
         icon: <Redo width={18} height={18} className="text-black" />,
         function: (editor: Editor) => editor.chain().focus().redo().run(),
+      },
+    ],
+  },
+];
+
+export const BUBBLEMENU_OPTIONS: ToolbarOptions[] = [
+  {
+    type: "input",
+    items: [
+      {
+        content: "link",
+        value: "link",
+        icon: <Link width={18} height={18} className="text-black" />,
+        function: (editor: Editor) =>
+          editor
+            .chain()
+            .focus()
+            .extendMarkRange("link")
+            .toggleLink({ href: "https://www.debanz.com" })
+            .run(),
       },
     ],
   },

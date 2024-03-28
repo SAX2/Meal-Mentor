@@ -7,18 +7,20 @@ import { useEditorContet } from "@/lib/providers/editor-provider";
 import { useAuth } from '@clerk/nextjs';
 import { getFileDetails, getFolderDetails, updateFileData, updateFolderData } from '@/lib/supabase/queries';
 import { useRouter } from 'next/navigation';
-import { TOOLBAR_OPTIONS } from "@/utils/data/toolbar";
+import { BUBBLEMENU_OPTIONS, TOOLBAR_OPTIONS } from "@/utils/data/toolbar";
 import clsx from 'clsx';
 import EditorSkeleton from '../skeletons/EditorSkeleton';
-import Toolbar from "./Toolbar";
+import Toolbar, { ToolbarItem } from "./Toolbar";
 
 //Editor
 import StarterKit from "@tiptap/starter-kit";
-import FontSize from 'tiptap-extension-font-size'
+import FontSize from "tiptap-extension-font-size";
 import Underline from "@tiptap/extension-underline";
-import TextStyle from '@tiptap/extension-text-style'
-import Color from '@tiptap/extension-color'
-import Highlight from '@tiptap/extension-highlight'
+import TextStyle from "@tiptap/extension-text-style";
+import Color from "@tiptap/extension-color";
+import Highlight from "@tiptap/extension-highlight";
+import Link from "@tiptap/extension-link";
+import TextAlign from "@tiptap/extension-text-align";
 
 interface TextEditorProps {
   dirDetails?: File | Folder;
@@ -34,6 +36,8 @@ const TextEditor: React.FC<TextEditorProps> = ({
   const { setIsSaving } = useEditorContet()
   const { userId } = useAuth();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [editorContent, setEditorContent] = useState<string>('');
+  const [debouncedEditorContent, setDebouncedEditorContent] = useState<string>('');
   const saveTimerRef = useRef<ReturnType<typeof setTimeout>>();
   const router = useRouter();
 
@@ -44,43 +48,26 @@ const TextEditor: React.FC<TextEditorProps> = ({
       Underline,
       TextStyle,
       Color,
-      Highlight.configure({ multicolor: true })
+      Highlight.configure({ multicolor: true }),
+      Link.configure({
+        openOnClick: true,
+        autolink: true,
+        linkOnPaste: true,
+        HTMLAttributes: {
+          class: 'underline cursor-pointer text-grey',
+        },
+      }),
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
     ],
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
       
       if (!userId || !fileId) return;
       
-      setIsSaving(true);
-
-      saveTimerRef.current = setTimeout(async () => {
-        setIsSaving(true)
-        if (html && fileId) {
-          try {
-            if (dirType === "folder") {
-              await updateFolderData({
-                folderId: fileId,
-                data: { data: html },
-              });
-            }
-            if (dirType === "file") {
-              await updateFileData({
-                fileId,
-                data: { data: html },
-              });
-            }
-          } catch (error) {
-            console.log(error)
-          } finally {
-            setIsSaving(false);
-          }
-        }
-      }, 850);
-
-      return () => {
-        setIsSaving(false);
-        if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
-      };
+      if (html && fileId) {
+        setIsSaving((prevState) => ({ ...prevState, saved: false }));
+        setEditorContent(html);
+      }
     },
     autofocus: true,
     editable: true,
@@ -92,6 +79,47 @@ const TextEditor: React.FC<TextEditorProps> = ({
       },
     },
   });
+
+
+  useEffect(() => {
+    const debounceTimeout = setTimeout(() => {
+      setDebouncedEditorContent(editorContent);
+    }, 2000);
+
+    return () => clearTimeout(debounceTimeout);
+  }, [editorContent]);
+
+  useEffect(() => {
+    const updateDir = async () => {
+      try {
+        setIsSaving((prevState) => ({ ...prevState, isSaving: true }));
+        if (dirType === "folder") {
+          await updateFolderData({
+            folderId: fileId,
+            data: { data: editorContent },
+          });
+        }
+        if (dirType === "file") {
+          await updateFileData({
+            fileId,
+            data: { data: editorContent },
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsSaving((prevState) => ({
+          ...prevState,
+          isSaving: false,
+          saved: true,
+        }));
+      }
+    }
+
+    if (debouncedEditorContent) {
+      updateDir();
+    }
+  }, [debouncedEditorContent]);
 
   useEffect(() => {
     if (!editor || !fileId || !dirType || !userId) return;
@@ -148,6 +176,11 @@ const TextEditor: React.FC<TextEditorProps> = ({
     <>
       <Toolbar options={TOOLBAR_OPTIONS} editor={editor} />
       {isLoading && <EditorSkeleton />}
+      {editor && (
+        <BubbleMenu editor={editor} tippyOptions={{ duration: 200 }} className="">
+          <Toolbar options={BUBBLEMENU_OPTIONS} editor={editor} />
+        </BubbleMenu>
+      )}
       <EditorContent
         editor={editor}
         className={clsx(

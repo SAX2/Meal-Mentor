@@ -33,9 +33,16 @@ const SelectorDropdown: React.FC<SelectorDropdownProps> = ({
           {selectedOption ? (
             <div className="flex gap-1 items-center">
               {selectedOption.content === "align" && selectedOption.icon}
-              {(selectedOption.content === "textStyle" ||  selectedOption.content === "heading") && <FontFamily option={selectedOption}/>}
-              {selectedOption.content === "color" && <Palette width={18} height={18} className="text-black" />}
-              {selectedOption.content === "background" &&  <Paintbrush width={18} height={18} className="text-black" />}
+              {(selectedOption.content === "textStyle" ||
+                selectedOption.content === "heading") && (
+                <FontFamily option={selectedOption} />
+              )}
+              {selectedOption.content === "color" && (
+                <Palette width={18} height={18} className="text-black" />
+              )}
+              {selectedOption.content === "background" && (
+                <Paintbrush width={18} height={18} className="text-black" />
+              )}
               <ChevronDown width={14} height={14} className="text-grey" />
             </div>
           ) : (
@@ -61,12 +68,20 @@ const SelectorDropdown: React.FC<SelectorDropdownProps> = ({
                   "p-1 hover:bg-white-2-sec rounded-sm transition-colors",
                   editor.isActive(option.content, {
                     fontFamily: option.value,
+                    textAlign: option.value,
                   }) && "bg-white-2-sec"
                 )}
               >
                 {option.content === "align" && option.icon}
-                {(option.content === "textStyle" ||  option.content === "heading" || option.content === "fontSize") && <FontFamily option={option}/>}
-                {(option.content === "color" || option.content === "background") && <ColoPicker option={option} />}
+                {(option.content === "textStyle" ||
+                  option.content === "heading" ||
+                  option.content === "fontSize") && (
+                  <FontFamily option={option} />
+                )}
+                {(option.content === "color" ||
+                  option.content === "background") && (
+                  <ColoPicker option={option} />
+                )}
               </div>
             ))}
         </div>
