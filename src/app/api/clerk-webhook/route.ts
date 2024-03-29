@@ -2,7 +2,6 @@ import db from '@/lib/supabase/db'
 import { NextResponse } from 'next/server'
 import { users } from '../../../../migrations/schema'
 import { eq } from 'drizzle-orm'
-import { User } from '@/lib/supabase/supabase.types'
 
 export async function POST(req: Request) {
   try {
@@ -10,7 +9,7 @@ export async function POST(req: Request) {
     const { id, email_addresses, first_name, last_name, image_url } = body?.data
     const email = email_addresses[0]?.email_address
 
-    const userExists = await db.select().from(users).where(eq(users.id, id));
+    const userExists = await db.select().from(users).where(eq(users.email, email));
 
     if (!userExists || userExists.length === 0) {
       await db.insert(users).values({
