@@ -41,12 +41,21 @@ const page = async ({ params }: { params: { documentId: string, folderId: string
   return (
     <>
       {data && (
-        <div className="flex gap-3 items-center max-w-[1000px] w-full px-3">
-          <EmojiRoute icon={data[0]?.iconId} customSize="w-11 h-11" dirType='file' id={data[0].id}/>
-          <h1 className="text-4xl font-extrabold truncate">{data[0]?.title}</h1>
-        </div>
+        <>
+          <div className="flex gap-3 items-center max-w-[1000px] w-full px-3">
+            <EmojiRoute
+              icon={data[0]?.iconId}
+              customSize="w-11 h-11"
+              dirType="file"
+              id={data[0].id}
+            />
+            <h1 className="text-4xl font-extrabold truncate">
+              {data[0]?.title}
+            </h1>
+          </div>
+          <TextEditor dirType="file" fileId={data[0].id ?? ""} />
+        </>
       )}
-      <TextEditor dirType="file" fileId={data ? data[0].id : ""} />
     </>
   );
 }
