@@ -5,16 +5,14 @@ import UserPopover from "./UserPopover";
 import { AvatarFallback, AvatarImage, Avatar } from "../ui/avatar";
 import { ChevronsUpDownIcon, PanelLeftCloseIcon } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { useUser } from "@clerk/nextjs";
+import { User } from "@/lib/supabase/supabase.types";
 
-const UserCard = () => {
-  const { user } = useUser();
-
+const UserCard = ({ user }: { user: User }) => {
   if (!user) return;
 
   const usernameDisplay =
     !user?.firstName || user?.firstName == null
-      ? `${user?.primaryEmailAddress?.emailAddress.split("@")[0]} MealMentor`
+      ? `${user?.email?.split("@")[0]} MealMentor`
       : `${user?.firstName} ${user?.lastName}'s MealMentor`;
 
   return (
@@ -26,7 +24,7 @@ const UserCard = () => {
               <div className="flex items-center gap-2">
                 <Avatar className="rounded-md h-[30px] w-[30px]">
                   <AvatarImage
-                    src={user?.imageUrl}
+                    src={user?.avatarUrl ?? ""}
                     alt={user.id}
                     width={30}
                     height={30}

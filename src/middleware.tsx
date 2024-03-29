@@ -4,19 +4,19 @@ import { authMiddleware, redirectToSignIn  } from "@clerk/nextjs";
 
 export default authMiddleware({
   // Routes that can be accessed while signed out
-  publicRoutes: ["/sign-up", "/sign-in"],
+  publicRoutes: ["/sign-up", "/sign-in", "/api/clerk-webhook"],
+  ignoredRoutes: [],
   afterAuth(auth, req, evt) {
     if (!auth.userId && !auth.isPublicRoute) {
       return redirectToSignIn({ returnBackUrl: req.url });
     }
-    if (!req.nextUrl.pathname.startsWith('/dashboard')) {
+    if (!req.nextUrl.pathname.startsWith("/dashboard")) {
       if (auth.userId) {
         return NextResponse.redirect(new URL("/dashboard", req.url));
       }
     }
     return NextResponse.next();
   },
-
 });
  
 export const config = {

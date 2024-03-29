@@ -1,6 +1,7 @@
 import Navbar from '@/components/navbar/Navbar';
 import Sidebar from '@/components/settings/Sidebar';
 import TopBar from '@/components/topbar/TopBar';
+import { getUser } from '@/lib/supabase/queries';
 import { currentUser } from '@clerk/nextjs';
 import Image from 'next/image';
 import React from 'react'
@@ -27,17 +28,23 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
 };
 
 const User = async () => {
-  const user = await currentUser();
+  const authUser = await currentUser();
 
-  const username = !user?.firstName || user?.firstName == null 
-  ? (user && user.externalAccounts[0]?.emailAddress.split('@')[0])
-  : `${user?.firstName} ${user?.lastName}`;
+  if (!authUser) return null;
+
+  const { data: user } = await getUser({ userId: authUser.id });
+
+  if (!user || user === null) return null;
+
+  const username = !user[0]?.firstName || user[0]?.firstName == null 
+  ? (user && user[0].email?.split('@')[0])
+  : `${user[0]?.firstName} ${user[0]?.lastName}`;
 
   return (
     <div className="flex gap-2 items-center">
       <Image
-        alt={user?.emailAddresses[0].emailAddress ?? ""}
-        src={user?.imageUrl ?? ""}
+        alt={user[0]?.email ?? ""}
+        src={user[0]?.avatarUrl ?? ""}
         width={100}
         height={100}
         className="h-11 w-11 object-cover rounded-lg"
@@ -47,7 +54,7 @@ const User = async () => {
           {username}
         </h1>
         <p className="truncate leading-[1.14] text-sm text-grey">
-          {user && user.externalAccounts[0]?.emailAddress}
+          {user && user[0]?.email}
         </p>
       </div>
     </div>

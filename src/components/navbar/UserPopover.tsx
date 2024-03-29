@@ -7,20 +7,21 @@ import { routeClassname } from "./Route"
 import { useAuth } from "@clerk/nextjs"
 import clsx from "clsx" 
 import { redirect } from "next/navigation"
+import { User } from "@/lib/supabase/supabase.types"
 
-const UserPopover = ({ user, userNameDisplay }: { user: any, userNameDisplay: string }) => {
+const UserPopover = ({ user, userNameDisplay }: { user: User, userNameDisplay: string }) => {
   const { signOut } = useAuth();
 
   return (
     <>
       <div className="flex flex-col gap-1 p-2">
         <p className="text-xs text-grey max-w-60 truncate w-fit p-1">
-          {user.externalAccounts[0].emailAddress}
+          {user.email}
         </p>
         <div className="flex gap-2 items-center hover:bg-white-2-sec p-1 rounded-sm cursor-pointer select-none">
           <Avatar className="rounded-md h-[35px] w-[35px]">
             <AvatarImage
-              src={user.imageUrl}
+              src={user.avatarUrl ?? ""}
               alt={user.id}
               width={35}
               height={35}

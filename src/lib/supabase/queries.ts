@@ -3,7 +3,8 @@
 import db from "./db";
 import { and, eq } from "drizzle-orm";
 import { files, folders } from "../../../migrations/schema";
-import { File, Folder } from "./supabase.types";
+import { File, Folder, User } from "./supabase.types";
+import { users } from "./schema";
 
 export const createFolder = async (folder: Folder) => {
   try {
@@ -109,9 +110,22 @@ export const updateFileData = async ({ fileId, data }: { fileId: string, data: a
       .update(files)
       .set({ ...data })
       .where(eq(files.id, fileId));
-    return { data: null, error: null };
   } catch (error) {
     console.log(error);
     return { data: null, error: 'Error' };
   }
 };
+
+export const getUser = async ({ userId }: { userId: string }) => {  
+  try {
+    const response = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, userId))
+      .limit(1) as User[];
+    return { data: response, error: null };
+  } catch (error) {
+    console.log(error);
+    return { data: null, error: 'Error' };
+  }
+}
