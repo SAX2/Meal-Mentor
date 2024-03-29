@@ -21,6 +21,7 @@ import Color from "@tiptap/extension-color";
 import Highlight from "@tiptap/extension-highlight";
 import Link from "@tiptap/extension-link";
 import TextAlign from "@tiptap/extension-text-align";
+import Placeholder from "@tiptap/extension-placeholder";
 
 interface TextEditorProps {
   dirDetails?: File | Folder;
@@ -58,6 +59,9 @@ const TextEditor: React.FC<TextEditorProps> = ({
         },
       }),
       TextAlign.configure({ types: ["heading", "paragraph"] }),
+      Placeholder.configure({
+        placeholder: "Write your text here..."
+      })
     ],
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
