@@ -1,3 +1,8 @@
+"use client";
+
+import React from "react";
+import clsx from "clsx";
+import FolderFiles from "./FolderFiles";
 import {
   CommandDialog,
   CommandEmpty,
@@ -7,20 +12,10 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
-import { chats, files, folders } from "@/utils/data/data";
-import { Route, RouteButton } from "../navbar/Route";
-import React from "react";
-import { ArrowDownIcon, ArrowUpIcon } from "lucide-react";
+import { Route, routeClassname } from "../navbar/Route";
 import { CommandDisplay } from "../navbar/Search";
 import { useRouter } from "next/navigation";
-
-type Commands = {
-  title: string;
-  items: {
-    key: string;
-    icon: React.ReactComponentElement<any>;
-  }[];
-};
+import { commands, searchData } from "@/utils/data/search";
 
 export const SearchCommand = ({
   setOpen,
@@ -29,42 +24,7 @@ export const SearchCommand = ({
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   open: boolean;
 }) => {
-
   const router = useRouter();
-  
-  const commands: Commands[] = [
-    {
-      title: "to navigate",
-      items: [
-        {
-          icon: <ArrowUpIcon width={18} height={18} className="text-grey" />,
-          key: "up",
-        },
-        {
-          icon: <ArrowDownIcon width={18} height={18} className="text-grey" />,
-          key: "down",
-        },
-      ],
-    },
-    {
-      title: "to open",
-      items: [
-        {
-          icon: <p className="text-grey font-medium text-[12px]">Enter</p>,
-          key: "up",
-        },
-      ],
-    },
-    {
-      title: "to exit",
-      items: [
-        {
-          icon: <p className="text-grey font-medium text-[12px]">ESC</p>,
-          key: "esc",
-        },
-      ],
-    },
-  ];
 
   React.useEffect(() => {
     const down = (e: any) => {
@@ -73,38 +33,14 @@ export const SearchCommand = ({
         setOpen((open) => !open);
       }
     };
-
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
   }, []);
 
-  const result: any[] = [];
-  
-
-  const sort = () => {
-    result.push(
-      ...files.map((file) => ({ ...file, type: "file" })),
-      ...folders.map((folder) => ({ ...folder, type: "folder" })),
-      ...chats
-        .filter((chat) => chat.aditional && chat.aditional > 0)
-        .map((chat) => ({ ...chat, type: "chat" }))
-    );
-    
-    return result.sort((a, b) => {
-      // Si 'a' tiene additional y 'b' no, 'a' debe ir antes que 'b'
-      if (a.additional && !b.additional) return -1;
-      // Si 'b' tiene additional y 'a' no, 'b' debe ir antes que 'a'
-      if (b.additional && !a.additional) return 1;
-      // En caso contrario, o ambos tienen additional o ninguno tiene, se ordena por título
-      return a.title.localeCompare(b.title);
-    }); 
-  }
-
-  const onClick = () => {
-    return setOpen((open) => !open)
-  }
-
-  sort();
+  const onClick = (path: string) => {
+    router.push(path);
+    return setOpen((open) => !open);
+  };
 
   return (
     <CommandDialog onOpenChange={setOpen} open={open} modal>
@@ -112,56 +48,58 @@ export const SearchCommand = ({
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup heading="Suggestions">
-          {result.map((item) => {
-            const path = `/dashboard/${
-              item.type == "folder"
-                ? item.id
-                : item.type == "chat"
-                ? "chat"
-                : item.folder_id
-            }${
-              item.type == "chat"
-                ? `/${item.id}`
-                : item.type == "file" && `/${item.id}`
-            }`;
+          {searchData.map(async (item) => {
+            if (item.fetchData) {
+              if (item.fetchData.type === "folder-file") {
+                return <FolderFiles onClick={onClick} />;
+              }
+            }
 
-            return (
-              <CommandItem
-                className="!p-0 bg-transparent hover:bg-none rounded-md"
-                onSelect={() => {
-                  router.push(path);
-                  onClick();
-                }}
-                key={item.id}
-                >
-                <Route
-                  isLink={false}
-                  path={path}
-                  image={
-                    item.avatar_url && {
-                      src: item.avatar_url,
-                      fallback: item.title?.charAt(0),
-                    }
-                  }
-                  icon={item.icon_id && item.icon_id}
-                  right={
-                    item.aditional == null ? null : (
-                      <RouteButton type="fixed">
-                        <p className="text-xs text-grey">{item.aditional}</p>
-                      </RouteButton>
-                    )
-                  }
-                >
-                  {item.title}
-                </Route>
-              </CommandItem>
-            );
+            if (item.items && item.items != null && item.items?.length > 0) {
+              return (
+                <>
+                  <CommandItem
+                    className="!p-0 bg-transparent hover:bg-none rounded-md mb-1"
+                    key={item.path}
+                  >
+                    <Route
+                      isLink={false}
+                      path={item.path}
+                      icon={item.icon && item.icon}
+                      iconType="SVG"
+                    >
+                      {item.title}
+                    </Route>
+                  </CommandItem>
+                  {item.items &&
+                    item.items.map((child) => {
+                      return (
+                        <CommandItem
+                          className="!p-0 bg-transparent hover:bg-none rounded-md flex gap-[7px] items-center"
+                          onSelect={() => {
+                            onClick(child.path);
+                          }}
+                          key={child.path}
+                        >
+                          <div className={clsx(routeClassname, "!py-0")}>
+                            <div className="h-7 w-4 flex justify-center">
+                              <div className="w-[1px] bg-grey/20 h-full"></div>
+                            </div>
+                            {child.icon}
+                            <p>{child.title}</p>
+                          </div>
+                        </CommandItem>
+                      );
+                    })}
+                </>
+              );
+            }
           })}
         </CommandGroup>
       </CommandList>
       <CommandSeparator />
       <div className="w-full py-2 pb-[10px] px-2 flex gap-5">
-        {commands.map(group => {
+        {commands.map((group) => {
           return (
             <CommandGroupWithTitle title={group.title} key={group.title}>
               {group.items.map((items) => {
@@ -179,11 +117,17 @@ export const SearchCommand = ({
   );
 };
 
-const CommandGroupWithTitle = ({ title, children }: { title: string, children: React.ReactNode })=> {
+const CommandGroupWithTitle = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) => {
   return (
     <div className="flex flex-row gap-2 items-center">
       <div className="flex flex-row gap-1">{children}</div>
       <p className="font-medium text-sm text-grey">{title}</p>
     </div>
   );
-}
+};
