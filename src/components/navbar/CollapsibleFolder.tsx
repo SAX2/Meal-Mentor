@@ -5,12 +5,13 @@ import ContextMenu, { ContextMenuOnClick } from "../context-menu/ContextMenu";
 import React, { useEffect, useState } from "react";
 import { File, Folder } from '@/lib/supabase/supabase.types'
 import { Collapsible, CollapsibleTrigger } from "../ui/collapsible";
-import { Route, RouteButton } from "./Route";
+import { Route, RouteButton, routeClassname } from "./Route";
 import { ChevronDownIcon, GripVerticalIcon, PlusIcon } from "lucide-react";
 import { CollapsibleContent } from "@radix-ui/react-collapsible";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { getFiles } from "@/lib/supabase/queries";
 import CreateDir from "../dialog/CreateDirDialog";
+import { cn } from "@/lib/utils";
 
 interface CollapsibleFolderProps {
   folderId: string;
@@ -88,53 +89,73 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
       </div>
       <CollapsibleContent>
         <ul className="flex flex-col gap-[2.5px] px-2">
-          {files && files.map((file) => {
-            return (
-              <li key={file.id} className="item">
-                <ContextMenu type="file" id={file.id}>
-                  <Route
-                    id={file.id}
-                    dirType="file"
-                    picker
-                    isLink
-                    path={`/dashboard/${file.folderId}/${file.id}`}
-                    left={
-                      <div className="opacity-0">
-                        <RouteButton
-                          type="hidden"
-                          className="z-[1000] relative"
-                        >
-                          <GripVerticalIcon
-                            width={14}
-                            height={14}
-                            color="grey"
-                          />
-                        </RouteButton>
-                      </div>
-                    }
-                    right={
-                      <ContextMenuOnClick type="file" id={file.id}>
-                        <RouteButton
-                          type="hidden"
-                          className="z-[1000] relative"
-                        >
-                          <DotsHorizontalIcon
-                            width={14}
-                            height={14}
-                            color="grey"
-                          />
-                        </RouteButton>
-                      </ContextMenuOnClick>
-                    }
-                    icon={file.iconId}
-                    key={file.id}
-                  >
-                    {file.title}
-                  </Route>
-                </ContextMenu>
-              </li>
-            );
-          })}
+          {files?.length === 0 && (
+            <CreateDir userId={userId} dirType="file" classname="w-full">
+              <Route
+                isLink={false}
+                path=""
+                icon={<PlusIcon width={16} height={16} className="text-grey" />}
+                iconType="SVG"
+                left={
+                  <div className="opacity-0">
+                    <RouteButton type="hidden" className="z-[1000] relative">
+                      <GripVerticalIcon width={14} height={14} color="grey" />
+                    </RouteButton>
+                  </div>
+                }
+              >
+                <p className="text-grey">Add new file</p>
+              </Route>
+            </CreateDir>
+          )}
+          {files &&
+            files.map((file) => {
+              return (
+                <li key={file.id} className="item">
+                  <ContextMenu type="file" id={file.id}>
+                    <Route
+                      id={file.id}
+                      dirType="file"
+                      picker
+                      isLink
+                      path={`/dashboard/${file.folderId}/${file.id}`}
+                      left={
+                        <div className="opacity-0">
+                          <RouteButton
+                            type="hidden"
+                            className="z-[1000] relative"
+                          >
+                            <GripVerticalIcon
+                              width={14}
+                              height={14}
+                              color="grey"
+                            />
+                          </RouteButton>
+                        </div>
+                      }
+                      right={
+                        <ContextMenuOnClick type="file" id={file.id}>
+                          <RouteButton
+                            type="hidden"
+                            className="z-[1000] relative"
+                          >
+                            <DotsHorizontalIcon
+                              width={14}
+                              height={14}
+                              color="grey"
+                            />
+                          </RouteButton>
+                        </ContextMenuOnClick>
+                      }
+                      icon={file.iconId}
+                      key={file.id}
+                    >
+                      {file.title}
+                    </Route>
+                  </ContextMenu>
+                </li>
+              );
+            })}
         </ul>
       </CollapsibleContent>
     </Collapsible>
