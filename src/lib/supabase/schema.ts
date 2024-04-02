@@ -58,14 +58,4 @@ export const users = pgTable("users", {
 	billingAddress: jsonb("billing_address"),
 	paymentMethod: jsonb("payment_method"),
 	email: text("email"),
-},
-// (table) => {
-// 	return {
-// 		usersIdFkey: foreignKey({
-// 			columns: [table.id],
-// 			foreignColumns: [table.id],
-// 			name: "users_id_fkey"
-// 		}),
-//   }
-//   }
-);
+});
