@@ -2,18 +2,20 @@
 
 import emojis from '@/utils/data/emojis.json'
 import CustomDialog from '../dialog/CustomDialog';
-import React, { useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import EmojiRoute from '../emoji/EmojiRoute';
-import { Loader, PlusIcon } from 'lucide-react';
+import { Loader, Minus, PlusIcon } from 'lucide-react';
 import { dialogs } from '@/utils/data/data';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
-import { Folder, File } from '@/lib/supabase/supabase.types';
-import { createFile, createFolder, getFolderDetails } from '@/lib/supabase/queries';
+import { Folder, File, User } from '@/lib/supabase/supabase.types';
+import { addCollaborators, createFile, createFolder, getFolderDetails, getUsersByValue } from '@/lib/supabase/queries';
 import { v4 } from 'uuid';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { DirType } from '@/utils/types';
+import Image from 'next/image';
+import { RouteButton } from '../navbar/Route';
 
 interface CreateDirProps {
   children: React.ReactNode;
@@ -42,8 +44,9 @@ const DialogContent = ({ userId, dirType, id, dialogData }: { userId: string, di
     emojis ? emojis[Math.floor(Math.random() * emojis.length)] : ""
   );  
   const [title, setTitle] = useState<string | null>(null);
-  const [collborators, setCollborators] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [collaborators, setCollaborators] = useState<User[]>([]);
+  
   const router = useRouter()
   const uuid = v4();
   
@@ -70,8 +73,22 @@ const DialogContent = ({ userId, dirType, id, dialogData }: { userId: string, di
         title: title,
         createdAt: new Date().toISOString(),
       };
-  
+
+
       const res = await createFolder(newFolder);
+
+      if (collaborators.length > 0) {
+        const { error } = await addCollaborators({
+          fileId: uuid,
+          users: collaborators,
+        });
+
+        if (error) {
+          toast.success("Error by adding collaborators");
+          setIsLoading(false);
+          return router.refresh();
+        }
+      }
       
       if (!res.error) {
         toast.success("Folder create successfully");
@@ -99,6 +116,19 @@ const DialogContent = ({ userId, dirType, id, dialogData }: { userId: string, di
         };
     
         const res = await createFile(newFile);
+
+        if (collaborators.length > 0) {
+          const { error } = await addCollaborators({
+            fileId: uuid,
+            users: collaborators,
+          });
+  
+          if (error) {
+            toast.success("Error by adding collaborators");
+            setIsLoading(false);
+            return router.refresh();
+          }
+        }
         
         if (!res.error) {
           toast.success("File create successfully");
@@ -130,27 +160,17 @@ const DialogContent = ({ userId, dirType, id, dialogData }: { userId: string, di
                 </div>
               )}
               {input.type === "collaborators" && (
-                <div className="p-2 border border-outline rounded-md flex flex-col gap-2">
-                  <div className="flex justify-between">
-                    <div className="border border-input w-fit p-1 cursor-pointer rounded-sm shadow-button">
-                      <PlusIcon width={20} height={20} className="text-black" />
-                    </div>
-                    <div className="border border-input w-fit p-1 rounded-sm">
-                      <p className="text-sm font-medium">
-                        Total {collborators.length}
-                      </p>
-                    </div>
-                  </div>
-                  {collborators.length <= 0 && (
-                    <div className="w-full min-h-24 flex justify-center items-center">
-                      <p className="font-medium">No collborators yet</p>
-                    </div>
-                  )}
-                </div>
+                <Collborators
+                  userId={userId}
+                  collaborators={collaborators}
+                  setCollaborators={setCollaborators}
+                />
               )}
               {input.type === "text" && (
                 <Input
-                  onChange={(e) => handleChange({ value: e.target.value, type: input.id })}
+                  onChange={(e) =>
+                    handleChange({ value: e.target.value, type: input.id })
+                  }
                   placeholder={input.placeholder}
                   className="shadow-none border-outline"
                 />
@@ -159,7 +179,7 @@ const DialogContent = ({ userId, dirType, id, dialogData }: { userId: string, di
           );
         })}
         <button
-          className="w-full border border-outline shadow-button rounded-md px-3 py-1 font-medium flex justify-center items-center"
+          className="cursor-pointer w-full border border-outline shadow-button rounded-md px-3 py-1 font-medium flex justify-center items-center"
           onClick={handleSubmit}
           disabled={title === null || isLoading}
         >
@@ -185,5 +205,203 @@ const InputWithLabel = ({ label, children }: { label: string; children: React.Re
     </div>
   );
 }
+
+const Collborators = ({
+  userId,
+  setCollaborators,
+  collaborators,
+}: {
+  userId: string;
+  collaborators: User[];
+  setCollaborators: Dispatch<SetStateAction<User[]>>;
+}) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [collboratorsSearch, setCollboratorsSearch] = useState<User[]>([]);
+  const [searchCollaborators, setSearchCollaborators] = useState<{
+    open: boolean;
+    search: string | null;
+  }>({ open: false, search: null });
+  const [debouncedContent, setDebouncedContent] = useState<string | null>("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    return setSearchCollaborators((prevState) => ({
+      ...prevState,
+      search: e.target.value,
+    }));
+  };
+
+  useEffect(() => {
+    const debounceTimeout = setTimeout(() => {
+      setDebouncedContent(searchCollaborators.search);
+    }, 600);
+
+    return () => clearTimeout(debounceTimeout);
+  }, [searchCollaborators.search]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    const searchUsers = async () => {
+      try {
+        const { data } = await getUsersByValue(debouncedContent ?? "");
+        if (data != null) {
+          const filter = data.filter((user) => user.id != userId);
+          setCollboratorsSearch(filter);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (debouncedContent) {
+      searchUsers();
+    }
+  }, [debouncedContent]);
+
+  const handleClickUser = ({
+    user,
+    isAdded,
+  }: {
+    user: User;
+    isAdded: boolean;
+  }) => {
+    if (!isAdded) {
+      setCollaborators((prevState) => [...prevState, user]);
+    } else {
+      const filteredCollborators = collaborators.filter(
+        (collborator) => collborator.id != user.id
+      );
+      setCollaborators(filteredCollborators);
+    }
+    return;
+  };
+
+  return (
+    <div className="p-2 border border-outline rounded-md flex flex-col gap-2">
+      <div className="flex justify-between">
+        {!searchCollaborators.open && (
+          <div
+            className="border border-input w-fit p-1 cursor-pointer rounded-sm shadow-button flex"
+            onClick={() =>
+              setSearchCollaborators((prevState) => ({
+                ...prevState,
+                open: true,
+              }))
+            }
+          >
+            <PlusIcon width={20} height={20} className="text-black" />
+          </div>
+        )}
+        {searchCollaborators.open && (
+          <input
+            type="text"
+            className="p-1 border border-input rounded-sm max-h-[30px] outline-none placeholder:text-sm"
+            placeholder="Type email of the use..."
+            onChange={handleChange}
+          />
+        )}
+        <div className="border border-input w-fit p-1 rounded-sm">
+          <p className="text-sm font-medium">Total {collaborators.length}</p>
+        </div>
+      </div>
+      {collboratorsSearch.length > 0 &&
+        searchCollaborators.search != null &&
+        searchCollaborators.search?.length > 0 && (
+          <div className="flex flex-col gap-[2.5px]">
+            {collboratorsSearch.map((collaborator) => {
+              const isAdded = collaborators.filter(
+                (collboratorAdded) => collboratorAdded.id === collaborator.id
+              );
+
+              return (
+                <UserCollborator
+                  collaborator={collaborator}
+                  handleClickUser={handleClickUser}
+                  isAdded={isAdded}
+                />
+              );
+            })}
+          </div>
+        )}
+      {collaborators.length > 0 && searchCollaborators.search?.length === 0 && (
+        <div className="flex flex-col gap-[2.5px]">
+          {collaborators.map((collaborator) => {
+            const isAdded = collaborators.filter(
+              (collaboratorAdded) => collaboratorAdded.id === collaborator.id
+            );
+
+            return (
+              <UserCollborator
+                collaborator={collaborator}
+                handleClickUser={handleClickUser}
+                isAdded={isAdded}
+              />
+            );
+          })}
+        </div>
+      )}
+      {collaborators.length <= 0 &&
+        (searchCollaborators.search === null ||
+          searchCollaborators.search?.length === 0) && (
+          <div className="w-full min-h-24 flex justify-center items-center">
+            <p className="font-medium">No collborators yet</p>
+          </div>
+        )}
+    </div>
+  );
+};
+
+const UserCollborator = ({
+  collaborator,
+  handleClickUser,
+  isAdded
+}: {
+  collaborator: User;
+  handleClickUser: ({
+    user,
+    isAdded,
+  }: {
+    user: User;
+    isAdded: boolean;
+  }) => void;
+  isAdded: User[];
+}) => {
+  return (
+    <div className="flex justify-between px-[6px] py-1 rounded-sm hover:bg-white-2-sec transition-colors">
+      <div className="flex gap-[6px] select-none">
+        <Image
+          src={collaborator.avatarUrl ?? ""}
+          alt={collaborator.email ?? ""}
+          width={20}
+          height={20}
+          className="rounded-sm"
+        />
+        <p className="text-sm">
+          {collaborator.firstName} {collaborator.lastName}
+        </p>
+      </div>
+      <div className="flex gap-[2.5px]">
+        <button
+          onClick={() =>
+            handleClickUser({
+              user: collaborator,
+              isAdded: isAdded.length > 0,
+            })
+          }
+        >
+          <RouteButton type="hover">
+            {isAdded.length > 0 && (
+              <Minus width={16} height={16} className="text-grey" />
+            )}
+            {isAdded.length === 0 && (
+              <PlusIcon width={16} height={16} className="text-grey" />
+            )}
+          </RouteButton>
+        </button>
+      </div>
+    </div>
+  );
+};
 
 export default CreateDir

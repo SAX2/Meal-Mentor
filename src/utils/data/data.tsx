@@ -397,10 +397,11 @@ export const dialogs = {
         placeholder: "Folder title",
         type: "text",
       },
-      // {
-      //   label: "Collaborators",
-      //   type: "collaborators",
-      // },
+      {
+        id: 'collaborators',
+        label: "Collaborators",
+        type: "collaborators",
+      },
     ],
   },
   createFile: {
@@ -420,11 +421,11 @@ export const dialogs = {
         placeholder: "File title",
         type: "text",
       },
-      // {
-      //   id: 'collaborators',
-      //   label: "Collaborators",
-      //   type: "collaborators",
-      // },
+      {
+        id: 'collaborators',
+        label: "Collaborators",
+        type: "collaborators",
+      },
     ],
   },
   login: {

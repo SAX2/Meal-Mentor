@@ -1,10 +1,10 @@
 'use server'
 
 import db from "./db";
-import { and, eq } from "drizzle-orm";
+import { and, eq, like, or, sql } from "drizzle-orm";
 import { files, folders } from "../../../migrations/schema";
 import { File, Folder, User } from "./supabase.types";
-import { users } from "./schema";
+import { collaborators, users } from "./schema";
 
 export const createFolder = async (folder: Folder) => {
   try {
@@ -129,3 +129,65 @@ export const getUser = async ({ userId }: { userId: string }) => {
     return { data: null, error: 'Error' };
   }
 }
+
+export const getUsersByValue = async (value: string) => {
+  try {
+    const response = await db
+      .select()
+      .from(users)
+      .where(
+        or(
+          like(users.email, `%${value}%`), 
+          like(users.firstName, `%${value}%`), 
+          like(users.lastName, `%${value}%`), 
+        )
+      )
+      .limit(3) as User[];
+    return { data: response, error: null };
+  } catch (error) {
+    console.log(error);
+    return { data: null, error: 'Error' };
+  }
+}
+
+export const addCollaborators = async ({ fileId, users }: { users: User[], fileId: string }) => {
+  try {
+    const response = users.forEach(async (user: User) => {
+      const userExists = await db.query.collaborators.findFirst({
+        where: (u, { eq }) =>
+          and(eq(u.userId, user.id), eq(u.fileId, fileId)),
+      });
+      if (!userExists)
+        await db.insert(collaborators).values({ fileId, userId: user.id });
+    });
+  
+    return { data: null, error: null };
+  } catch (error) {
+    console.log(error);
+    return { data: null, error: 'Error' };
+  }
+};
+
+export const removeCollaborators = async ({ users, fileId }: { users: User[], fileId: string }) => {
+  try {
+    const response = users.forEach(async (user: User) => {
+      const userExists = await db.query.collaborators.findFirst({
+        where: (u, { eq }) =>
+          and(eq(u.userId, user.id), eq(u.fileId, fileId)),
+      });
+      if (userExists)
+        await db
+          .delete(collaborators)
+          .where(
+            and(
+              eq(collaborators.fileId, fileId),
+              eq(collaborators.userId, user.id)
+            )
+          );
+    });
+    return { data: null, error: null };
+  } catch (error) {
+    console.log(error);
+    return { data: null, error: 'Error' };
+  }
+} 
