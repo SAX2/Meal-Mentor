@@ -1,10 +1,12 @@
 import React from "react";
-import { layoutProps } from "./layout";
-import { Metadata } from "next";
-import { getFolderDetails } from "@/lib/supabase/queries";
-import { auth } from "@clerk/nextjs";
 import EmojiRoute from "@/components/emoji/EmojiRoute";
 import TextEditor from "@/components/text-editor/TextEditor";
+import { layoutProps } from "./layout";
+import { Metadata } from "next";
+import { getCollaborators, getFolderDetails } from "@/lib/supabase/queries";
+import { auth } from "@clerk/nextjs";
+import CollaboratorList from "./components/CollaboratorList";
+import Owner from "./components/Owner";
 
 export async function generateMetadata({
   params,
@@ -26,6 +28,7 @@ const page = async ({ params }: { params: { folderId: string } }) => {
     folderId,
     userId: userIdValue,
   });
+  const { data: collaborators } = await getCollaborators({ fileId: folderId });
 
   if (error || data?.length === 0) {
     return (
@@ -41,6 +44,12 @@ const page = async ({ params }: { params: { folderId: string } }) => {
     <>
       {data && (
         <>
+          {collaborators && collaborators?.length > 0 && (
+            <div className="flex flex-col gap-4">
+              <Owner userId={data[0].folderOwner} />
+              <CollaboratorList collaborators={collaborators} />
+            </div>
+          )}
           <div className="flex gap-3 items-center max-w-[1000px] w-full px-3">
             <EmojiRoute
               icon={data[0]?.iconId}

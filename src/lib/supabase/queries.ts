@@ -191,3 +191,22 @@ export const removeCollaborators = async ({ users, fileId }: { users: User[], fi
     return { data: null, error: 'Error' };
   }
 } 
+
+export const getCollaborators = async ({ fileId }: { fileId: string }) => {
+  try {
+    const response = await db.select().from(collaborators).where(eq(collaborators.fileId, fileId));
+
+    if (response.length === 0) return { data: [], error: null };
+
+    const promises = response.map(async (collaborator) => {
+      const user = await db.select().from(users).where(eq(users.id, collaborator.userId));
+      return user[0];
+    });
+
+    const collaboratorsResult: User[] = await Promise.all(promises);
+    return { data: collaboratorsResult, error: null };
+  } catch (error) {
+    console.log(error);
+    return { data: null, error: 'Error' };
+  }
+}

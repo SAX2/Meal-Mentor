@@ -2,9 +2,13 @@ import React from 'react'
 import EmojiRoute from '@/components/emoji/EmojiRoute';
 import { layoutProps } from '../layout';
 import { Metadata } from 'next';
-import { getFileDetails } from '@/lib/supabase/queries';
+import { getCollaborators, getFileDetails } from '@/lib/supabase/queries';
 import { auth } from '@clerk/nextjs';
 import TextEditor from '@/components/text-editor/TextEditor';
+import Image from 'next/image';
+import { User } from '@/lib/supabase/supabase.types';
+import CollaboratorList from '../components/CollaboratorList';
+import Owner from '../components/Owner';
 
 export async function generateMetadata({
   params,
@@ -27,6 +31,7 @@ const page = async ({ params }: { params: { documentId: string, folderId: string
   const userIdValue = userId ?? '';
 
   const { data, error } = await getFileDetails({ fileId: documentId, userId: userIdValue });
+  const { data: collaborators } = await getCollaborators({ fileId: documentId });
 
   if (error) {
     return (
@@ -42,6 +47,12 @@ const page = async ({ params }: { params: { documentId: string, folderId: string
     <>
       {data && (
         <>
+          {collaborators && collaborators?.length > 0 && (
+            <div className="flex flex-col gap-4">
+              <Owner userId={data[0].fileOwner} />
+              <CollaboratorList collaborators={collaborators} />
+            </div>
+          )}
           <div className="flex gap-3 items-center max-w-[1000px] w-full px-3">
             <EmojiRoute
               icon={data[0]?.iconId}
