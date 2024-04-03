@@ -9,7 +9,7 @@ import { dialogs } from '@/utils/data/data';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Folder, File, User } from '@/lib/supabase/supabase.types';
-import { addCollaborators, createFile, createFolder, getFolderDetails, getUsersByValue } from '@/lib/supabase/queries';
+import { addCollaborators, createFile, createFolder, getCollaborators, getFolderDetails, getUsersByValue } from '@/lib/supabase/queries';
 import { v4 } from 'uuid';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
@@ -50,6 +50,20 @@ const DialogContent = ({ userId, dirType, id, dialogData }: { userId: string, di
   const router = useRouter()
   const uuid = v4();
   
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchCollaborators = async () => {
+      const { data, error } = await getCollaborators({ fileId: id });
+      if (error || !data) return;
+      setCollaborators(data);
+    };
+
+    if (dirType === "file") {
+      fetchCollaborators();
+    }
+  }, []);
+
   const handleChange = ({ value, type }: { value: string; type: string }) => {
     switch (type) {
       case "title":
@@ -324,7 +338,7 @@ const Collborators = ({
             })}
           </div>
         )}
-      {collaborators.length > 0 && searchCollaborators.search?.length === 0 && (
+      {collaborators.length > 0 && (searchCollaborators.search?.length === 0 || searchCollaborators.search === null) && (
         <div className="flex flex-col gap-[2.5px]">
           {collaborators.map((collaborator) => {
             const isAdded = collaborators.filter(

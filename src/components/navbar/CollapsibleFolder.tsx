@@ -5,13 +5,12 @@ import ContextMenu, { ContextMenuOnClick } from "../context-menu/ContextMenu";
 import React, { useEffect, useState } from "react";
 import { File, Folder } from '@/lib/supabase/supabase.types'
 import { Collapsible, CollapsibleTrigger } from "../ui/collapsible";
-import { Route, RouteButton, routeClassname } from "./Route";
+import { Route, RouteButton } from "./Route";
 import { ChevronDownIcon, GripVerticalIcon, PlusIcon } from "lucide-react";
 import { CollapsibleContent } from "@radix-ui/react-collapsible";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { getFiles } from "@/lib/supabase/queries";
 import CreateDir from "../dialog/CreateDirDialog";
-import { cn } from "@/lib/utils";
 
 interface CollapsibleFolderProps {
   folderId: string;
@@ -90,7 +89,12 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
       <CollapsibleContent>
         <ul className="flex flex-col gap-[2.5px] px-2">
           {files?.length === 0 && (
-            <CreateDir userId={userId} dirType="file" classname="w-full">
+            <CreateDir
+              userId={userId}
+              dirType="file"
+              classname="w-full"
+              id={folderId}
+            >
               <Route
                 isLink={false}
                 path=""
