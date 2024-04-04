@@ -192,6 +192,28 @@ export const removeCollaborators = async ({ users, fileId }: { users: User[], fi
   }
 } 
 
+export const removeCollaborator = async ({ userId, fileId }: { userId: string, fileId: string }) => {
+  try {
+    const userExists = await db.query.collaborators.findFirst({
+      where: (u, { eq }) =>
+        and(eq(u.userId, userId), eq(u.fileId, fileId)),
+    });
+    if (userExists)
+      await db
+        .delete(collaborators)
+        .where(
+          and(
+            eq(collaborators.fileId, fileId),
+            eq(collaborators.userId, userId)
+          )
+        );
+    return { data: null, error: null };
+  } catch (error) {
+    console.log(error);
+    return { data: null, error: 'Error' };
+  }
+} 
+
 export const getCollaborators = async ({ fileId }: { fileId: string }) => {
   try {
     const response = await db.select().from(collaborators).where(eq(collaborators.fileId, fileId));
