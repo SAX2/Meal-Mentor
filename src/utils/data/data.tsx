@@ -10,6 +10,7 @@ import {
   LayoutGrid,
   LinkIcon,
   Mail,
+  Minus,
   PlusIcon,
   Settings,
   Settings2Icon,
@@ -39,6 +40,7 @@ import GoogleLogo from "../../../public/providers/Google.svg";
 import MetaLogo from "../../../public/providers/Meta.svg";
 import AppleLogo from "../../../public/providers/Apple.svg";
 import Image from "next/image";
+import { actionRemoveCollaborator } from "@/app/(app)/dashboard/[folderId]/components/actions";
 
 interface AuthProviderInfo {
   title: string;
@@ -159,6 +161,21 @@ export const options_context: OptionsContext[] = [
     ],
   },
 ];
+
+export const options_context_collaborators = [
+  {
+    type: "collaborators",
+    group: [
+      {
+        _: [{
+          title: "Remove",
+          icon: <Minus width={16} height={16} />,
+          function: (fileId: string, userId: string) => actionRemoveCollaborator({ fileId, userId })
+        }],
+      },
+    ],
+  },
+]
 
 export const routes: Item[] = [
   {

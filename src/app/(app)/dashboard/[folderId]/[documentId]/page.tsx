@@ -48,7 +48,7 @@ const page = async ({ params }: { params: { documentId: string, folderId: string
       {data && (
         <>
           {collaborators && collaborators?.length > 0 && (
-            <div className="flex flex-col gap-4">
+            <div className="flex gap-4">
               <Owner userId={data[0].fileOwner} />
               <CollaboratorList collaborators={collaborators} />
             </div>
