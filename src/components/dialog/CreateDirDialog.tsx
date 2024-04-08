@@ -1,6 +1,6 @@
 'use client';
 
-import emojis from '@/utils/data/emojis.json'
+import emojisList, { sections } from '@/utils/data/emojis'
 import CustomDialog from '../dialog/CustomDialog';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import EmojiRoute from '../emoji/EmojiRoute';
@@ -40,9 +40,7 @@ const CreateDir: React.FC<CreateDirProps> = ({ userId, dirType, id, children, cl
 };
 
 const DialogContent = ({ userId, dirType, id, dialogData }: { userId: string, dirType: DirType; id?: string, dialogData: any; }) => {
-  const [seletedEmoji, setSeletedEmoji] = useState<string>(
-    emojis ? emojis[Math.floor(Math.random() * emojis.length)] : ""
-  );  
+  const [seletedEmoji, setSeletedEmoji] = useState<string>("");  
   const [title, setTitle] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [collaborators, setCollaborators] = useState<User[]>([]);
@@ -50,6 +48,18 @@ const DialogContent = ({ userId, dirType, id, dialogData }: { userId: string, di
   const router = useRouter()
   const uuid = v4();
   
+  useEffect(() => {
+    if (emojisList) {
+      const randomSection =
+        sections[Math.floor(Math.random() * sections.length)].n;
+      const sectionEmojis = emojisList[randomSection];
+      if (sectionEmojis) {
+        const randomIndex = Math.floor(Math.random() * sectionEmojis.length);
+        setSeletedEmoji(sectionEmojis[randomIndex].u);
+      }
+    }
+  }, [])
+
   useEffect(() => {
     if (!id) return;
 
