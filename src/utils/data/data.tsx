@@ -166,7 +166,7 @@ export const options_context: OptionsContext[] = [
   },
 ];
 
-type option = {
+export type options_collaborators = {
   type: string;
   group: {
     _: {
@@ -182,7 +182,7 @@ type option = {
   }[];
 };
 
-export const options_context_collaborators: option[] = [
+export const options_context_collaborators: options_collaborators[] = [
   {
     type: "collaborators",
     group: [
