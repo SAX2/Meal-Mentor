@@ -22,6 +22,8 @@ import Highlight from "@tiptap/extension-highlight";
 import Link from "@tiptap/extension-link";
 import TextAlign from "@tiptap/extension-text-align";
 import Placeholder from "@tiptap/extension-placeholder";
+import Code from "@tiptap/extension-code";
+import FontFamily from "@tiptap/extension-font-family";
 
 interface TextEditorProps {
   dirDetails?: File | Folder;
@@ -49,25 +51,29 @@ const TextEditor: React.FC<TextEditorProps> = ({
       Underline,
       TextStyle,
       Color,
+      Code,
       Highlight.configure({ multicolor: true }),
       Link.configure({
         openOnClick: true,
         autolink: true,
         linkOnPaste: true,
         HTMLAttributes: {
-          class: 'underline cursor-pointer text-grey',
+          class: "underline cursor-pointer text-grey",
         },
       }),
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       Placeholder.configure({
-        placeholder: "Write your text here..."
-      })
+        placeholder: "Write your text here...",
+      }),
+      FontFamily.configure({
+        types: ["textStyle"],
+      }),
     ],
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
-      
+
       if (!userId || !fileId) return;
-      
+
       if (html && fileId) {
         setIsSaving((prevState) => ({ ...prevState, saved: false }));
         setEditorContent(html);
@@ -78,8 +84,7 @@ const TextEditor: React.FC<TextEditorProps> = ({
     injectCSS: false,
     editorProps: {
       attributes: {
-        class:
-          "outline-none",
+        class: "outline-none",
       },
     },
   });
