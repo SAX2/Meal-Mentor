@@ -108,6 +108,10 @@
   @apply text-[20px] font-semibold
 }
 
+/* .ProseMirror .code {
+  @apply rounded-sm !bg-slate-50 !p-4 
+} */
+
 .ProseMirror code {
   background-color: rgba(#616161, 0.1);
   color: #616161;
@@ -116,8 +120,9 @@
 .ProseMirror pre {
   @apply rounded-md bg-white-2-sec p-2 leading-none font-mono;
 }
+
 .ProseMirror code {
-  @apply text-wrap bg-inherit p-0 text-sm;
+  @apply text-wrap bg-white-2-sec py-[2px] px-1;
 }
 
 .ProseMirror blockquote {
