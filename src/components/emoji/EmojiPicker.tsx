@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
-import emojis from "@/utils/data/emojis.json";
-import Image from "next/image";
+import React, { useState } from "react";
+import emojiList, { sections } from "@/utils/data/emojis";
+import { Emoji } from "@/utils/types/index";
 import { ScrollArea } from "../ui/scroll-area";
 import { SearchIcon, StarsIcon } from "lucide-react";
 import { DirType } from "@/utils/types";
@@ -21,6 +21,7 @@ const EmojiPicker = ({
   onClickFuntion?: (emoji: string) => void;
 }) => {
   const router = useRouter();
+  const [results, setResults] = useState<Emoji[] | undefined>(undefined);
 
   const handleClick = (emoji: string) => {
     if (!emoji || emoji.length === 0) return;
@@ -39,6 +40,20 @@ const EmojiPicker = ({
     }
   };
 
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const searchTerm = e.target.value.toLowerCase();
+    const filtered = sections
+      .map((section) =>
+        emojiList[section.n].filter(
+          (emoji) =>
+            emoji.n.some((name) => name.toLowerCase().includes(searchTerm))
+        )
+      )
+      .filter((sectionFiltered) => sectionFiltered.length > 0)
+      .flat();
+    setResults(filtered);
+  }
+
   return (
     <>
       <div className="h-fit p-[10px] pb-0 flex gap-1">
@@ -48,6 +63,7 @@ const EmojiPicker = ({
             type="text"
             className="text-sm outline-none w-full"
             placeholder="Search..."
+            onChange={handleOnChange}
           />
         </div>
         <button className="p-[5px] rounded-md bg-white shadow-button border-[1px]">
@@ -55,23 +71,63 @@ const EmojiPicker = ({
         </button>
       </div>
       <ScrollArea className="h-4/5 p-[10px]">
-        <div className="grid grid-cols-8 gap-0">
-          {emojis.map((emoji: string) => {
+        <div className="flex flex-col gap-5">
+          {(results && results.length > 0) && (
+            <div className="flex flex-col gap-1 relative">
+              <div className="w-full bg-white-2 sticky top-0">
+                <h1 className="font-medium text-lg">Results</h1>
+              </div>
+              <div className="grid grid-cols-7 gap-0">
+                {results.map((emoji: any) => {
+                  return (
+                    <div
+                      className="w-full flex justify-center items-center"
+                      key={emoji.u}
+                      onClick={() => handleClick(emoji.u)}
+                    >
+                      <div className="w-fit p-1 hover:bg-white-2-sec-2 transition-colors rounded-md">
+                        <img
+                          src={`https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/${emoji.u}.png`}
+                          alt={emoji.u}
+                          className="h-7 w-7"
+                          width={28}
+                          height={28}
+                          loading="lazy"
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+          {sections.map((section: { n: string; t: string }) => {
             return (
-              <div
-                className="w-full flex justify-center items-center"
-                key={emoji}
-                onClick={() => handleClick(emoji)}
-              >
-                <div className="w-fit p-1 hover:bg-white-2-sec-2 transition-colors rounded-md">
-                  <img
-                    src={`https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/${emoji}.png`}
-                    alt={emoji}
-                    className="h-6 w-6"
-                    width={24}
-                    height={24}
-                    loading="lazy"
-                  />
+              <div className="flex flex-col gap-1 relative">
+                <div className="w-full bg-white-2 sticky top-0">
+                  <h1 className="font-medium text-lg">{section.t}</h1>
+                </div>
+                <div className="grid grid-cols-7 gap-0">
+                  {emojiList[section.n].map((emoji: any) => {
+                    return (
+                      <div
+                        className="w-full flex justify-center items-center"
+                        key={emoji.u}
+                        onClick={() => handleClick(emoji.u)}
+                      >
+                        <div className="w-fit p-1 hover:bg-white-2-sec-2 transition-colors rounded-md">
+                          <img
+                            src={`https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/${emoji.u}.png`}
+                            alt={emoji.u}
+                            className="h-7 w-7"
+                            width={28}
+                            height={28}
+                            loading="lazy"
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             );

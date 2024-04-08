@@ -57,6 +57,14 @@ export type ToolbarOptions = {
   items: ToolbarOption[];
 };
 
+export type Emoji = {
+  n: string[]; u: string; a: string; v?: string[]
+}
+
+export interface EmojiList {
+  [key: string]: Emoji[];
+}
+
 // To delete
 
 export interface Types {
