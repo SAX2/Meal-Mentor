@@ -1,6 +1,7 @@
 import {
   ActivityIcon,
   BellIcon,
+  BookOpen,
   Brush,
   Building2,
   CalendarIcon,
@@ -10,8 +11,11 @@ import {
   LayoutGrid,
   LinkIcon,
   Mail,
+  MessageCircle,
   Minus,
+  Pencil,
   PlusIcon,
+  Send,
   Settings,
   Settings2Icon,
   Shield,
@@ -162,20 +166,66 @@ export const options_context: OptionsContext[] = [
   },
 ];
 
-export const options_context_collaborators = [
+type option = {
+  type: string;
+  group: {
+    _: {
+      title?: string | null;
+      icon?: React.ReactElement | null;
+      type?: string;
+      function?: (fileId: string, userId: string) => void;
+      _?: {
+        title: string;
+        icon: React.ReactElement;
+      }[];
+    }[];
+  }[];
+};
+
+export const options_context_collaborators: option[] = [
   {
     type: "collaborators",
     group: [
       {
-        _: [{
-          title: "Remove",
-          icon: <Minus width={16} height={16} />,
-          function: (fileId: string, userId: string) => actionRemoveCollaborator({ fileId, userId })
-        }],
+        _: [
+          {
+            title: "Remove",
+            icon: <Minus width={16} height={16} />,
+            function: (fileId: string, userId: string) =>
+              actionRemoveCollaborator({ fileId, userId }),
+          },
+          {
+            title: "Send message",
+            icon: <Send width={16} height={16} />,
+          },
+        ],
+      },
+      {
+        _: [
+          {
+            icon: null,
+            title: "Role",
+            type: "selector",
+            _: [
+              {
+                title: "Editor",
+                icon: <Pencil width={16} height={16} />,
+              },
+              {
+                title: "Reader",
+                icon: <BookOpen width={16} height={16} />,
+              },
+              {
+                title: "Commentarist",
+                icon: <MessageCircle width={16} height={16} />,
+              },
+            ],
+          },
+        ],
       },
     ],
   },
-]
+];
 
 export const routes: Item[] = [
   {
