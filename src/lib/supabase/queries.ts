@@ -21,6 +21,8 @@ export const deleteFolder = async (folderId: string) => {
 
   try {
     await db.delete(folders).where(eq(folders.id, folderId));
+    await db.delete(collaborators).where(eq(collaborators.fileId, folderId));
+    await db.delete(files).where(eq(files.folderId, folderId));
     return { data: null, error: null };
   } catch (error) {
     console.log(error);
@@ -39,6 +41,22 @@ export const getFolders = async (userId: string) => {
     return { data: null, error: 'Error' };
   }
 };
+
+export const getCollaboratingFolders = async (userId: string) => {
+  if (!userId) return { data: null, error: null };
+  try {
+    const response = await db.select().from(collaborators).where(eq(collaborators.userId, userId))
+    console.log(response)
+    if (response) {
+      const folder = await db.select().from(folders).where(eq(folders.id, response[0].fileId))
+      return { data: folder, error: null };
+    }
+    return { data: null, error: null };
+  } catch (error) {
+    console.log(error);
+    return { data: null, error: 'Error' };
+  }
+}
 
 export const getFolderDetails = async ({ folderId, userId }: { folderId: string, userId: string }) => {
   if (!userId || userId.length === 0) return { data: null, error: true };

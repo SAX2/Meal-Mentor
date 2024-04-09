@@ -24,14 +24,28 @@ export async function generateMetadata({
   };
 }
 
-const page = async ({ params }: { params: { documentId: string, folderId: string } }) => {
-  const { documentId } = params;
+const page = async ({
+  params,
+  searchParams
+}: {
+  params: {
+    documentId: string;
+    folderId: string;
+  };
+  searchParams: { ow: string };
+}) => {
+  const { documentId, folderId } = params;
 
   const { userId } = auth();
-  const userIdValue = userId ?? '';
 
-  const { data, error } = await getFileDetails({ fileId: documentId, userId: userIdValue });
-  const { data: collaborators } = await getCollaborators({ fileId: documentId });
+  const { data: collaborators } = await getCollaborators({ fileId: folderId });
+
+  const userIsCollaborator = collaborators?.filter((user) => user.id === userId);
+
+  const { data, error } = await getFileDetails({
+    fileId: documentId,
+    userId: (userIsCollaborator && userIsCollaborator?.length > 0) && searchParams.ow ? searchParams.ow : userId ?? "",
+  });
 
   if (error) {
     return (
@@ -69,6 +83,6 @@ const page = async ({ params }: { params: { documentId: string, folderId: string
       )}
     </>
   );
-}
+};
 
 export default page

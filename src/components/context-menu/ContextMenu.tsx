@@ -22,6 +22,7 @@ interface ContextMenuProps {
   children: React.ReactNode;
   type: OptionsContextTypes;
   id?: string;
+  collaborator: boolean;
 }
 
 interface RenderContextMenupProps {
@@ -33,7 +34,7 @@ interface RenderContextMenupProps {
 
 type typeOfRender = 'popover' | 'context'
 
-const ContextMenu: React.FC<ContextMenuProps> = ({ children, type, id }) => {
+const ContextMenu: React.FC<ContextMenuProps> = ({ children, type, id, collaborator }) => {
   return (
     <Menu>
       <ContextMenuTrigger>{children}</ContextMenuTrigger>

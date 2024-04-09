@@ -8,7 +8,7 @@ import CreateDir from "../dialog/CreateDirDialog";
 import { Route, RouteButton, routeClassname } from "./Route";
 import { routes } from "@/utils/data/data";
 import { Separator } from "../ui/separator";
-import { getFolders, getUser } from "@/lib/supabase/queries";
+import { getCollaboratingFolders, getFolders, getUser } from "@/lib/supabase/queries";
 import { Folder } from "@/lib/supabase/supabase.types";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
@@ -24,6 +24,7 @@ const Navbar = async () => {
   if (!user || user == null) return null;
 
   const { data: folders, error: foldersError } = await getFolders(user[0]?.id);
+  const { data: foldersCollaborating, error: foldersErrorCollaborating } = await getCollaboratingFolders(authUser.id);
 
   if (foldersError) redirect('/dashboard');
   
@@ -65,6 +66,31 @@ const Navbar = async () => {
       </div>
       <ul className="p-[5px] flex flex-col gap-[2.5px]">
         <li>
+          {foldersCollaborating && foldersCollaborating.length > 0 && (
+            <h1 className="text-xs font-medium text-grey px-3 pt-2 mb-2">
+              Collaborating
+            </h1>
+          )}
+          {!foldersCollaborating && <FolderListSkeleton />}
+          {(foldersCollaborating && foldersCollaborating?.length > 0) &&
+            foldersCollaborating.map((folder: Folder) => {
+              return (
+                <CollapsibleFolder
+                  userId={user[0]?.id ?? ""}
+                  folderId={folder.id}
+                  folder={folder}
+                  key={folder.id}
+                  collaborating
+                />
+              );
+            })}
+        </li>
+        <li>
+          {foldersCollaborating && foldersCollaborating.length > 0 && (
+            <h1 className="text-xs font-medium text-grey px-3 pt-2 mb-2">
+              Your folders & files
+            </h1>
+          )}
           {!folders && <FolderListSkeleton />}
           {folders &&
             folders.map((folder: Folder) => {
@@ -79,7 +105,11 @@ const Navbar = async () => {
             })}
         </li>
         <li>
-          <CreateDir userId={user[0]?.id ?? ""} dirType="folder" classname="w-full">
+          <CreateDir
+            userId={user[0]?.id ?? ""}
+            dirType="folder"
+            classname="w-full"
+          >
             <div className={cn(routeClassname, "mt-2 w-full")}>
               <PlusIcon width={16} height={16} className="text-black" />
               Add new folder

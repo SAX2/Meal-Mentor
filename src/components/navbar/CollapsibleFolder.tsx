@@ -16,12 +16,14 @@ interface CollapsibleFolderProps {
   folderId: string;
   folder: Folder;
   userId: string;
+  collaborating?: boolean;
 }
 
 const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
   folderId,
   folder,
-  userId
+  userId,
+  collaborating = false,
 }) => {
   const [open, setOpen] = useState(false);
   const [files, setFiles] = useState<File[] | null>(null);
@@ -33,7 +35,6 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
 
   useEffect(() => {
     const getFilesFunction = async () => {
-      console.log('asd')
       const { data, error } = await getFiles(folderId);
       if (!error) {
         setFiles(data);
@@ -43,17 +44,18 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
   }, [folderId]);
 
   const onOpenTransition = open ? "" : "rotate-[-90deg]";
+  const folderPath = collaborating ? `/dashboard/${folderData?.id}?ow=${folderData?.folderOwner}` : `/dashboard/${folderData?.id}`;
 
   return (
     <Collapsible onOpenChange={setOpen}>
       <div className="px-2">
-        <ContextMenu type="folder" id={folderData?.id}>
+        <ContextMenu type="folder" id={folderData?.id} collaborator={collaborating}>
           <Route
             id={folderData?.id}
             dirType="folder"
             picker
             isLink
-            path={`/dashboard/${folderData?.id}`}
+            path={folderPath}
             icon={folderData?.iconId}
             left={
               <CollapsibleTrigger>
@@ -69,7 +71,7 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
             }
             right={
               <>
-                <ContextMenuOnClick type="folder" id={folderData?.id}>
+                <ContextMenuOnClick type="folder" id={folderData?.id} collaborator={collaborating}>
                   <RouteButton type="hidden" className="">
                     <DotsHorizontalIcon width={14} height={14} color="grey" />
                   </RouteButton>
@@ -114,15 +116,17 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
           )}
           {files &&
             files.map((file) => {
+              const filePath = collaborating ? `/dashboard/${file.folderId}/${file.id}?ow=${file.fileOwner}` : `/dashboard/${file.folderId}/${file.id}`
+
               return (
                 <li key={file.id} className="item">
-                  <ContextMenu type="file" id={file.id}>
+                  <ContextMenu type="file" id={file.id} collaborator={collaborating}>
                     <Route
                       id={file.id}
                       dirType="file"
                       picker
                       isLink
-                      path={`/dashboard/${file.folderId}/${file.id}`}
+                      path={filePath}
                       left={
                         <div className="opacity-0">
                           <RouteButton
@@ -138,7 +142,7 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
                         </div>
                       }
                       right={
-                        <ContextMenuOnClick type="file" id={file.id}>
+                        <ContextMenuOnClick type="file" id={file.id} collaborator={collaborating}>
                           <RouteButton
                             type="hidden"
                             className="z-[1000] relative"

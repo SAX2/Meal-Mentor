@@ -3,7 +3,7 @@ import EmojiRoute from "@/components/emoji/EmojiRoute";
 import TextEditor from "@/components/text-editor/TextEditor";
 import { layoutProps } from "./layout";
 import { Metadata } from "next";
-import { getCollaborators, getFolderDetails } from "@/lib/supabase/queries";
+import { getCollaboratingFolders, getCollaborators, getFolderDetails } from "@/lib/supabase/queries";
 import { auth } from "@clerk/nextjs";
 import CollaboratorList from "./components/CollaboratorList";
 import Owner from "./components/Owner";
@@ -20,15 +20,23 @@ export async function generateMetadata({
   };
 }
 
-const page = async ({ params }: { params: { folderId: string } }) => {
+const page = async ({
+  params,
+  searchParams
+}: {
+  params: { folderId: string };
+  searchParams: { ow: string };
+}) => {
   const { userId } = auth();
-  const userIdValue = userId ?? '';
   const { folderId } = params;
+
+  const { data: collaborators } = await getCollaborators({ fileId: folderId });
+  const userIsCollaborator = collaborators?.filter((user) => user.id === userId);
+
   const { data, error } = await getFolderDetails({
     folderId,
-    userId: userIdValue,
+    userId: (userIsCollaborator && userIsCollaborator?.length > 0) && searchParams.ow ? searchParams.ow : userId ?? "",
   });
-  const { data: collaborators } = await getCollaborators({ fileId: folderId });
 
   if (error || data?.length === 0) {
     return (
