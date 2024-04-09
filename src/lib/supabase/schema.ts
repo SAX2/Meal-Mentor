@@ -47,6 +47,7 @@ export const collaborators = pgTable('collaborators', {
   userId: text('user_id')
     .notNull()
     .references(() => user.id, { onDelete: 'cascade' }),
+  // role: text('role').notNull().default('editor')
 });
 
 export const users = pgTable("users", {
