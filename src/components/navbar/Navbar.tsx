@@ -71,7 +71,6 @@ const Navbar = async () => {
               Collaborating
             </h1>
           )}
-          {!foldersCollaborating && <FolderListSkeleton />}
           {(foldersCollaborating && foldersCollaborating?.length > 0) &&
             foldersCollaborating.map((folder: Folder) => {
               return (
@@ -81,6 +80,7 @@ const Navbar = async () => {
                   folder={folder}
                   key={folder.id}
                   collaborating
+                  updates={foldersCollaborating}
                 />
               );
             })}
@@ -100,6 +100,7 @@ const Navbar = async () => {
                   folderId={folder.id}
                   folder={folder}
                   key={folder.id}
+                  updates={folders}
                 />
               );
             })}

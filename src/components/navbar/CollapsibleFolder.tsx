@@ -17,6 +17,7 @@ interface CollapsibleFolderProps {
   folder: Folder;
   userId: string;
   collaborating?: boolean;
+  updates: Folder[];
 }
 
 const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
@@ -24,6 +25,7 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
   folder,
   userId,
   collaborating = false,
+  updates
 }) => {
   const [open, setOpen] = useState(false);
   const [files, setFiles] = useState<File[] | null>(null);
@@ -41,7 +43,7 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
       }
     };
     getFilesFunction();
-  }, [folderId]);
+  }, [folderId, updates]);
 
   const onOpenTransition = open ? "" : "rotate-[-90deg]";
   const folderPath = collaborating ? `/dashboard/${folderData?.id}?ow=${folderData?.folderOwner}` : `/dashboard/${folderData?.id}`;
