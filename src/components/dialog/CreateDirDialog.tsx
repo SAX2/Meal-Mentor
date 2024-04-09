@@ -60,20 +60,6 @@ const DialogContent = ({ userId, dirType, id, dialogData }: { userId: string, di
     }
   }, [])
 
-  useEffect(() => {
-    if (!id) return;
-
-    const fetchCollaborators = async () => {
-      const { data, error } = await getCollaborators({ fileId: id });
-      if (error || !data) return;
-      setCollaborators(data);
-    };
-
-    if (dirType === "file") {
-      fetchCollaborators();
-    }
-  }, []);
-
   const handleChange = ({ value, type }: { value: string; type: string }) => {
     switch (type) {
       case "title":
@@ -140,19 +126,6 @@ const DialogContent = ({ userId, dirType, id, dialogData }: { userId: string, di
         };
     
         const res = await createFile(newFile);
-
-        if (collaborators.length > 0) {
-          const { error } = await addCollaborators({
-            fileId: uuid,
-            users: collaborators,
-          });
-  
-          if (error) {
-            toast.success("Error by adding collaborators");
-            setIsLoading(false);
-            return router.refresh();
-          }
-        }
         
         if (!res.error) {
           toast.success("File create successfully");
