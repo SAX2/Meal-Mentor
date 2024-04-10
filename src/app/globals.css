@@ -142,3 +142,7 @@
   height: 0;
   pointer-events: none;
 }
+
+.toast {
+  @apply !p-3 !rounded-md !shadow-pop bg-white border border-outline
+}

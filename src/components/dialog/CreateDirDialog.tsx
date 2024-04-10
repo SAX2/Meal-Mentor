@@ -16,6 +16,8 @@ import { toast } from 'sonner';
 import { DirType } from '@/utils/types';
 import Image from 'next/image';
 import { RouteButton } from '../navbar/Route';
+import { useSearchParams } from 'next/navigation'
+import Toast from '../toasts/Toast';
 
 interface CreateDirProps {
   children: React.ReactNode;
@@ -94,18 +96,18 @@ const DialogContent = ({ userId, dirType, id, dialogData }: { userId: string, di
         });
 
         if (error) {
-          toast.success("Error by adding collaborators");
+          toast(<Toast message="Error by adding collaborators" type="error" />);
           setIsLoading(false);
           return router.refresh();
         }
       }
       
       if (!res.error) {
-        toast.success("Folder create successfully");
+        toast(<Toast message="Folder create successfully" type="success" />);
         setIsLoading(false);
         return router.refresh();
       }
-      toast.error("Error while creating folder");
+      toast(<Toast message="Error while creating folder" type="error" />);
       return setIsLoading(false);
     }
     if (dirType === 'file') {
@@ -128,11 +130,11 @@ const DialogContent = ({ userId, dirType, id, dialogData }: { userId: string, di
         const res = await createFile(newFile);
         
         if (!res.error) {
-          toast.success("File create successfully");
+          toast(<Toast message="File create successfully" type="success" />);
           setIsLoading(false);
           return router.refresh();
         }
-        toast.error("Error while creating file");
+        toast(<Toast message="Error while creating file" type="error" />);
         return setIsLoading(false);
       }
     }

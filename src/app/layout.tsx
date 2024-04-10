@@ -23,7 +23,7 @@ export default function RootLayout({
         <ClerkProvider>
           <UserProvider>
             <EditorContextProvider>{children}</EditorContextProvider>
-            <Toaster />
+            <Toaster expand theme="light"/>
           </UserProvider>
         </ClerkProvider>
       </body>

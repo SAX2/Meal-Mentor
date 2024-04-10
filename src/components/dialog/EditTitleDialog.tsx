@@ -7,6 +7,7 @@ import { dialogs } from '@/utils/data/data';
 import { usePathname } from 'next/navigation';
 import { toast } from 'sonner';
 import { updateFileTitle, updateFolderTitle } from './actions';
+import Toast from '../toasts/Toast';
 
 type DirType = "folder" | "file";
 
@@ -49,19 +50,19 @@ const EditTitleContent: React.FC<EditTitleContentProps> = ({ id, dirType }) => {
     if (dirType == 'folder') {
       const { status } = await updateFolderTitle({ folderId: id, pathname, title });
       if (status === 'error') {
-        toast.error("Error while editing folder title");
+        toast(<Toast message="Error while editing folder title" type="error" />);
         return setIsLoading(false);
       }
-      toast.success("Folder title updated successfully");
+      toast(<Toast message="Folder title updated successfully" type="success" />);
       return setIsLoading(false);
     } 
     if (dirType == 'file') {
       const { status } = await updateFileTitle({ fileId: id, pathname, title });
       if (status === 'error') {
-        toast.error("Error while editing file title");
+        toast(<Toast message="Error while editing file title" type="error" />);
         return setIsLoading(false);
       }
-      toast.success("File title updated successfully");
+      toast(<Toast message="File title updated successfully" type="success" />);
       return setIsLoading(false);
     }
   };
