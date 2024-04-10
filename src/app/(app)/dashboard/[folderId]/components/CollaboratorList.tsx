@@ -17,10 +17,10 @@ const CollaboratorList = ({ collaborators, ownerId }: { collaborators: User[] | 
   if (collaborators === null) return;
 
   return (
-    <div className="flex flex-col gap-[2.5px]">
+    <div className="flex flex-col gap-1">
       <h1 className="text-sm font-medium text-grey">Collaborators</h1>
       {collaborators.length < 3 && (
-        <div className="flex gap-1 mt-1 flex-wrap">
+        <div className="flex gap-1 flex-wrap">
           {collaborators?.map((collaborator: User) => {
             return (
               <PopoverCollaborator
@@ -31,6 +31,7 @@ const CollaboratorList = ({ collaborators, ownerId }: { collaborators: User[] | 
                 ownerId={ownerId}
               >
                 <Route
+                  className='bg-white-2-sec'
                   isLink={false}
                   path=""
                   image={{

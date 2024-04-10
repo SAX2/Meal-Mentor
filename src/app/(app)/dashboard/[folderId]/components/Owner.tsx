@@ -9,10 +9,11 @@ const Owner = async ({ userId }: { userId: string }) => {
   if (!data) return;
  
   return (
-    <div className="flex flex-col gap-[2.5px]">
+    <div className="flex flex-col gap-1">
       <h1 className="text-sm font-medium text-grey">Owner</h1>
       <div className="flex">
         <Route
+          className="bg-white-2-sec"
           isLink={false}
           path=""
           image={{

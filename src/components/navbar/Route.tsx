@@ -22,6 +22,7 @@ interface RouteProps {
   iconType?: 'SVG' | undefined;
   dirType?: DirType;
   id?: string;
+  className?: string;
 }
 
 export const routeClassname =
@@ -38,7 +39,8 @@ const Route: React.FC<RouteProps> = ({
   picker,
   iconType,
   dirType,
-  id
+  id,
+  className
 }) => {
   
   const renderContent = (
@@ -62,7 +64,7 @@ const Route: React.FC<RouteProps> = ({
     <>
       {isLink ? (
         <>
-          <div className={clsx(routeClassname, "justify-between relative")}>
+          <div className={clsx(routeClassname, "justify-between relative", className)}>
             <Link
               href={path}
               className="absolute top-0 left-0 w-full h-full z-0"
@@ -80,12 +82,12 @@ const Route: React.FC<RouteProps> = ({
           </div>
         </>
       ) : (
-        <div className={clsx(routeClassname, "justify-between")}>
+        <div className={clsx(routeClassname, "justify-between", className)}>
           <div className="flex gap-[6px] items-center h-full">
             {left && <>{left}</>}
             <div className="flex gap-[7px] items-center justify-start">
               <div className="z-50">{renderContent}</div>
-              <p className="truncate">{children}</p>
+              <p className="truncate text-black">{children}</p>
             </div>
           </div>
           {right && (
