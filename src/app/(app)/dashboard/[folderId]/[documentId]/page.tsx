@@ -5,10 +5,9 @@ import { Metadata } from 'next';
 import { getCollaborators, getFileDetails } from '@/lib/supabase/queries';
 import { auth } from '@clerk/nextjs';
 import TextEditor from '@/components/text-editor/TextEditor';
-import Image from 'next/image';
-import { User } from '@/lib/supabase/supabase.types';
 import CollaboratorList from '../components/CollaboratorList';
 import Owner from '../components/Owner';
+import Link from 'next/link';
 
 export async function generateMetadata({
   params,
@@ -47,11 +46,20 @@ const page = async ({
     userId: (userIsCollaborator && userIsCollaborator?.length > 0) && searchParams.ow ? searchParams.ow : userId ?? "",
   });
 
-  if (error) {
+  if (error || data?.length === 0) {
     return (
       <>
-        <div className="w-full h-dvh flex justify-center items-center">
+        <div className="w-full h-dvh flex justify-center items-center flex-col gap-2">
           <h1 className="font-normal">{error}</h1>
+          {data?.length === 0 && (
+            <h1 className="text-9xl font-semibold text-black">404</h1>
+          )}
+          <Link
+            href={"/dashboard"}
+            className="p-1 rounded-sm border border-outline"
+          >
+            Go back to dashboard
+          </Link>
         </div>
       </>
     );
