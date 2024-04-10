@@ -46,8 +46,7 @@ export const getCollaboratingFolders = async (userId: string) => {
   if (!userId) return { data: null, error: null };
   try {
     const response = await db.select().from(collaborators).where(eq(collaborators.userId, userId))
-    console.log(response)
-    if (response) {
+    if (response && response.length > 0) {
       const folder = await db.select().from(folders).where(eq(folders.id, response[0].fileId))
       return { data: folder, error: null };
     }

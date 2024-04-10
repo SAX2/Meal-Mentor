@@ -55,7 +55,7 @@ const page = async ({
           {collaborators && collaborators?.length > 0 && (
             <div className="flex gap-4 flex-wrap">
               <Owner userId={data[0].folderOwner} />
-              <CollaboratorList collaborators={collaborators} />
+              <CollaboratorList collaborators={collaborators} ownerId={data[0].folderOwner} />
             </div>
           )}
           <div className="flex gap-3 items-center max-w-[1000px] w-full px-3">

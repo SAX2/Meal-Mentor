@@ -170,6 +170,7 @@ export type options_collaborators = {
   type: string;
   group: {
     _: {
+      ownerOnly: boolean;
       title?: string | null;
       icon?: React.ReactElement | null;
       type?: string;
@@ -189,12 +190,14 @@ export const options_context_collaborators: options_collaborators[] = [
       {
         _: [
           {
+            ownerOnly: true,
             title: "Remove",
             icon: <Minus width={16} height={16} />,
             function: (fileId: string, userId: string) =>
               actionRemoveCollaborator({ fileId, userId }),
           },
           {
+            ownerOnly: false,
             title: "Send message",
             icon: <Send width={16} height={16} />,
           },
@@ -203,6 +206,7 @@ export const options_context_collaborators: options_collaborators[] = [
       {
         _: [
           {
+            ownerOnly: true,
             icon: null,
             title: "Role",
             type: "selector",

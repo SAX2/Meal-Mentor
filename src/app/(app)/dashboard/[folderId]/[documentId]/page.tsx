@@ -64,7 +64,7 @@ const page = async ({
           {collaborators && collaborators?.length > 0 && (
             <div className="flex gap-4 flex-wrap">
               <Owner userId={data[0].fileOwner} />
-              <CollaboratorList collaborators={collaborators} />
+              <CollaboratorList collaborators={collaborators} ownerId={(userIsCollaborator && userIsCollaborator?.length > 0) && searchParams.ow ? searchParams.ow : userId ?? ""} />
             </div>
           )}
           <div className="flex gap-3 items-center max-w-[1000px] w-full px-3">

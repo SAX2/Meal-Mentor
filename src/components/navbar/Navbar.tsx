@@ -26,7 +26,7 @@ const Navbar = async () => {
   const { data: folders, error: foldersError } = await getFolders(user[0]?.id);
   const { data: foldersCollaborating, error: foldersErrorCollaborating } = await getCollaboratingFolders(authUser.id);
 
-  if (foldersError) redirect('/dashboard');
+  if (foldersError || foldersErrorCollaborating) redirect('/dashboard');
   
   return (
     <nav className="max-w-[300px] w-full max-[800px]:max-w-full bg-white-2 border-r h-full">

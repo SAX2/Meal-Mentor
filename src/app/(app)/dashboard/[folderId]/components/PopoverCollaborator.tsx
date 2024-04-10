@@ -12,11 +12,13 @@ const PopoverCollaborator = ({
   children,
   collaborator,
   userId,
+  ownerId
 }: {
   options: options_collaborators[];
   children: React.ReactNode;
   userId: string;
   collaborator: User;
+  ownerId: string;
 }) => {
   
 
@@ -34,7 +36,14 @@ const PopoverCollaborator = ({
                 <>
                   <div className="p-1">
                     {group._.map((option) => {
-                      if (option.type === "selector") {
+                      const isOwner = ownerId === userId;
+                      const isCollaborator =
+                        !option.ownerOnly && ownerId !== userId;
+
+                      if (
+                        (isOwner || isCollaborator) &&
+                        option.type === "selector"
+                      ) {
                         return (
                           <Selector
                             option={option}
@@ -46,14 +55,18 @@ const PopoverCollaborator = ({
                         );
                       }
 
-                      return (
-                        <div className="px-[6px] py-1 rounded-sm hover:bg-white-2-sec cursor-pointer">
-                          <div className="flex gap-[6px] items-center">
-                            {option.icon}
-                            {option.title}
+                      if (isOwner || isCollaborator) {
+                        return (
+                          <div className="px-[6px] py-1 rounded-sm hover:bg-white-2-sec cursor-pointer">
+                            <div className="flex gap-[6px] items-center">
+                              {option.icon}
+                              {option.title}
+                            </div>
                           </div>
-                        </div>
-                      );
+                        );
+                      }
+
+                      return null;
                     })}
                   </div>
                   {options.filter(

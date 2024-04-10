@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/u
 import { useUser } from '@clerk/nextjs';
 import PopoverCollaborator from './PopoverCollaborator';
 
-const CollaboratorList = ({ collaborators }: { collaborators: User[] | null }) => {
+const CollaboratorList = ({ collaborators, ownerId }: { collaborators: User[] | null, ownerId: string }) => {
   const { user } = useUser();
 
   if (collaborators === null) return;
@@ -28,6 +28,7 @@ const CollaboratorList = ({ collaborators }: { collaborators: User[] | null }) =
                 options={options_context_collaborators}
                 userId={user?.id ?? ""}
                 key={collaborator.id}
+                ownerId={ownerId}
               >
                 <Route
                   isLink={false}
