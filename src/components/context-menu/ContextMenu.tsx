@@ -38,7 +38,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ children, type, id, collabora
   return (
     <Menu>
       <ContextMenuTrigger>{children}</ContextMenuTrigger>
-      <ContextMenuContent className="p-0 bg-white-2 shadow-pop rounded-sm">
+      <ContextMenuContent className="p-0 bg-white-2 shadow-pop rounded-sm z-[200]">
         {type == "file" && <ContextMenuFile type="context" id={id} />}
         {type == "folder" && <ContextMenuFolder type="context" id={id} />}
         {type == "navbar" && <ContextMenuFile type="context" id={id} />}
