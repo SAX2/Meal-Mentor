@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import { BUBBLEMENU_OPTIONS, TOOLBAR_OPTIONS } from "@/utils/data/toolbar";
 import clsx from 'clsx';
 import EditorSkeleton from '../skeletons/EditorSkeleton';
-import Toolbar, { ToolbarItem } from "./Toolbar";
+import Toolbar from "./Toolbar";
 
 //Editor
 import StarterKit from "@tiptap/starter-kit";
@@ -41,7 +41,6 @@ const TextEditor: React.FC<TextEditorProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [editorContent, setEditorContent] = useState<string>('');
   const [debouncedEditorContent, setDebouncedEditorContent] = useState<string>('');
-  const saveTimerRef = useRef<ReturnType<typeof setTimeout>>();
   const router = useRouter();
 
   const editor = useEditor({
@@ -91,6 +90,8 @@ const TextEditor: React.FC<TextEditorProps> = ({
 
 
   useEffect(() => {
+    if (editorContent.length === 0) return;
+
     const debounceTimeout = setTimeout(() => {
       setDebouncedEditorContent(editorContent);
     }, 2000);
@@ -137,6 +138,7 @@ const TextEditor: React.FC<TextEditorProps> = ({
     const fetchData = async () => {
       try {
         if (dirType === 'file') {
+          editor.commands.clearContent();
           const { data: selectedDir, error } = await getFileDetails({
             fileId,
             userId: userId,
@@ -153,6 +155,7 @@ const TextEditor: React.FC<TextEditorProps> = ({
           editor.commands.setContent(selectedDir[0].data);
         }
         if (dirType === 'folder') {
+          editor.commands.clearContent();
           const { data: selectedDir, error } = await getFolderDetails({
             folderId: fileId,
             userId: userId,
@@ -175,8 +178,10 @@ const TextEditor: React.FC<TextEditorProps> = ({
         setIsLoading(false);
       }
     }
-    fetchData();
-    return;
+
+    if (fileId) {
+      fetchData();
+    }
   }, [editor, fileId, userId, dirType])
 
   const bubbleMenuItemStyle = 'p-1 hover:bg-white-2-sec rounded-sm'
@@ -185,11 +190,11 @@ const TextEditor: React.FC<TextEditorProps> = ({
     <>
       <Toolbar options={TOOLBAR_OPTIONS} editor={editor} />
       {isLoading && <EditorSkeleton />}
-      {editor && (
+      {/* {editor && (
         <BubbleMenu editor={editor} tippyOptions={{ duration: 200 }} className="">
           <Toolbar options={BUBBLEMENU_OPTIONS} editor={editor} />
         </BubbleMenu>
-      )}
+      )} */}
       <EditorContent
         editor={editor}
         className={clsx(
