@@ -30,7 +30,7 @@ const EmojiRoute: React.FC<EmojiRouteProps> = ({ icon, customSize, dirType, id, 
           loading="eager"
         />
       </PopoverTrigger>
-      <PopoverContent className="h-[200px] ml-6 p-0 bg-white-2 shadow-pop">
+      <PopoverContent className="h-[250px] ml-6 p-0 bg-white-2 shadow-pop">
         <EmojiPicker dirType={dirType ?? "file"} id={id} pickOnly={pickOnly} onClickFuntion={(emoji) => setOnClick && setOnClick(emoji)}/>
       </PopoverContent>
     </Popover>

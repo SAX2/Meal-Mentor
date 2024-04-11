@@ -55,7 +55,7 @@ const EmojiPicker = ({
   }
 
   return (
-<>
+    <>
       <div className="h-fit p-[10px] pb-0 flex gap-1">
         <div className="p-[5px] bg-white shadow-button rounded-md border-[1px] h-fit  w-full flex items-center gap-[6px] placeholder:text-grey">
           <SearchIcon width={20} height={20} className="text-grey" />
@@ -70,7 +70,7 @@ const EmojiPicker = ({
           <StarsIcon width={20} height={20} className="text-grey" />
         </button>
       </div>
-      <ScrollArea className="h-4/5 p-[10px]">
+      <ScrollArea className="h-5/6 p-[10px]">
         <div className="flex flex-col gap-5">
           {results && results.length > 0 && (
             <div className="flex flex-col gap-1 relative">
@@ -78,7 +78,13 @@ const EmojiPicker = ({
                 <h1 className="font-medium text-lg">Results</h1>
               </div>
               <div className="grid grid-cols-7 gap-0">
-                {results.map((emoji: any) => <Emoji key={emoji.u} emoji={emoji} handleClick={handleClick} />)}
+                {results.map((emoji: any) => (
+                  <Emoji
+                    key={emoji.u}
+                    emoji={emoji}
+                    handleClick={handleClick}
+                  />
+                ))}
               </div>
             </div>
           )}
@@ -88,7 +94,13 @@ const EmojiPicker = ({
                 <h1 className="font-medium text-lg">{section.t}</h1>
               </div>
               <div className="grid grid-cols-7 gap-0">
-                {emojiList[section.n].map((emoji: any) => <Emoji key={emoji.u} emoji={emoji} handleClick={handleClick} />)}
+                {emojiList[section.n].map((emoji: any) => (
+                  <Emoji
+                    key={emoji.u}
+                    emoji={emoji}
+                    handleClick={handleClick}
+                  />
+                ))}
               </div>
             </div>
           ))}
