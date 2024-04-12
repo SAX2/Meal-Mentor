@@ -18,7 +18,29 @@ const Toolbar: React.FC<ToolbarProps> = ({ editor, options }) => {
         <div className="z-[50] sticky top-16 w-full">
           <div className="flex flex-wrap items-center bg-white/80 backdrop-blur-xl rounded-md shadow-button border border-outline w-fit h-fit">
             {options.map((toolbarGroup, index) => {
-                            if (toolbarGroup.type === "button") {
+              if (toolbarGroup.type === 'select-group') {
+                  return (
+                    <ul
+                      key={`${toolbarGroup.type}_${index}`}
+                      className={`flex p-1 border-r gap-1`}
+                    >
+                      {toolbarGroup.items.map(toolbarItem => {
+                        return (
+                          <SelectorDropdown
+                            key={`${toolbarItem.content}_${Math.random() * 40}`}
+                            defaultValue={
+                              toolbarItem.items && toolbarItem.items[0]
+                            }
+                            items={toolbarItem.items ?? []}
+                            editor={editor}
+                          />
+                        );
+                      })}
+                    </ul>
+                  );
+              }
+
+              if (toolbarGroup.type === "button") {
                 return (
                   <ul
                     key={`${toolbarGroup.type}_${index}`}

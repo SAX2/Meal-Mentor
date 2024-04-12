@@ -64,8 +64,7 @@ export const TOOLBAR_OPTIONS: ToolbarOptions[] = [
         content: "code",
         value: "javascript",
         icon: <Code width={18} height={18} className="text-black" />,
-        function: (editor: Editor) =>
-          editor.chain().focus().toggleCode().run(),
+        function: (editor: Editor) => editor.chain().focus().toggleCode().run(),
       },
       {
         content: "heading",
@@ -154,31 +153,36 @@ export const TOOLBAR_OPTIONS: ToolbarOptions[] = [
         content: "textStyle",
         value: "inter",
         title: "Inter",
-        function: (editor: Editor) => editor.chain().focus().setFontFamily("inter").run(),
+        function: (editor: Editor) =>
+          editor.chain().focus().setFontFamily("inter").run(),
       },
       {
         content: "textStyle",
         value: "sans serif",
         title: "Sans serif",
-        function: (editor: Editor) => editor.chain().focus().setFontFamily("sans serif").run(),
+        function: (editor: Editor) =>
+          editor.chain().focus().setFontFamily("sans serif").run(),
       },
       {
         content: "textStyle",
         value: "serif",
         title: "Serif",
-        function: (editor: Editor) => editor.chain().focus().setFontFamily("serif").run(),
+        function: (editor: Editor) =>
+          editor.chain().focus().setFontFamily("serif").run(),
       },
       {
         content: "textStyle",
         value: "monospace",
         title: "Monospace",
-        function: (editor: Editor) => editor.chain().focus().setFontFamily("monospace").run(),
+        function: (editor: Editor) =>
+          editor.chain().focus().setFontFamily("monospace").run(),
       },
       {
         content: "textStyle",
         value: "cursive",
         title: "Monospace",
-        function: (editor: Editor) => editor.chain().focus().setFontFamily("cursive").run(),
+        function: (editor: Editor) =>
+          editor.chain().focus().setFontFamily("cursive").run(),
       },
     ],
   },
@@ -312,90 +316,98 @@ export const TOOLBAR_OPTIONS: ToolbarOptions[] = [
     ],
   },
   {
-    type: "select",
+    type: "select-group",
     items: [
       {
         content: "color",
-        value: { content: "black", hex: "#0A0A0A" },
-        function: (editor: Editor) => editor.chain().focus().unsetColor().run(),
-      },
-      {
-        content: "color",
-        value: { content: "forest-green", hex: "#006400" },
-        function: (editor: Editor) =>
-          editor.chain().focus().setColor("#006400").run(),
-      },
-      {
-        content: "color",
-        value: { content: "maroon", hex: "#800000" },
-        function: (editor: Editor) =>
-          editor.chain().focus().setColor("#800000").run(),
-      },
-      {
-        content: "color",
-        value: { content: "purple", hex: "#800080" },
-        function: (editor: Editor) =>
-          editor.chain().focus().setColor("#800080").run(),
-      },
-      {
-        content: "color",
-        value: { content: "light-gray", hex: "#cccccc" },
-        function: (editor: Editor) =>
-          editor.chain().focus().setColor("#cccccc").run(),
-      },
-      {
-        content: "color",
-        value: { content: "light-blue", hex: "#00ffff" },
-        function: (editor: Editor) =>
-          editor.chain().focus().setColor("#00ffff").run(),
-      },
-      {
-        content: "color",
-        value: { content: "lime-green", hex: "#00ff00" },
-        function: (editor: Editor) =>
-          editor.chain().focus().setColor("#00ff00").run(),
-      },
-    ],
-  },
-  {
-    type: "select",
-    items: [
-      {
-        content: "background",
-        value: { content: "white", hex: "#fff" },
-        function: (editor: Editor) =>
-          editor.chain().focus().unsetHighlight().run(),
+        type: "select",
+        items: [
+          {
+            content: "color",
+            value: { content: "black", hex: "#0A0A0A" },
+            function: (editor: Editor) =>
+              editor.chain().focus().unsetColor().run(),
+          },
+          {
+            content: "color",
+            value: { content: "forest-green", hex: "#006400" },
+            function: (editor: Editor) =>
+              editor.chain().focus().setColor("#006400").run(),
+          },
+          {
+            content: "color",
+            value: { content: "maroon", hex: "#800000" },
+            function: (editor: Editor) =>
+              editor.chain().focus().setColor("#800000").run(),
+          },
+          {
+            content: "color",
+            value: { content: "purple", hex: "#800080" },
+            function: (editor: Editor) =>
+              editor.chain().focus().setColor("#800080").run(),
+          },
+          {
+            content: "color",
+            value: { content: "light-gray", hex: "#cccccc" },
+            function: (editor: Editor) =>
+              editor.chain().focus().setColor("#cccccc").run(),
+          },
+          {
+            content: "color",
+            value: { content: "light-blue", hex: "#00ffff" },
+            function: (editor: Editor) =>
+              editor.chain().focus().setColor("#00ffff").run(),
+          },
+          {
+            content: "color",
+            value: { content: "lime-green", hex: "#00ff00" },
+            function: (editor: Editor) =>
+              editor.chain().focus().setColor("#00ff00").run(),
+          },
+        ],
       },
       {
         content: "background",
-        value: { content: "black", hex: "#000" },
-        function: (editor: Editor) =>
-          editor.chain().focus().toggleHighlight({ color: "#000" }).run(),
-      },
-      {
-        content: "background",
-        value: { content: "grey", hex: "#ccc" },
-        function: (editor: Editor) =>
-          editor.chain().focus().toggleHighlight({ color: "#ccc" }).run(),
-      },
-      {
-        content: "background",
-        value: { content: "light-blue", hex: "#defbff" },
-        function: (editor: Editor) =>
-          editor.chain().focus().toggleHighlight({ color: "#defbff" }).run(),
-      },
-      {
-        content: "background",
-        value: { content: "light-green", hex: "#dcedc8" },
-        function: (editor: Editor) =>
-          editor.chain().focus().toggleHighlight({ color: "#dcedc8" }).run(),
-      },
-      {
-        content: "background",
-        value: { content: "light-yellow", hex: "#ffffcc" },
-        function: (editor: Editor) =>
-          editor.chain().focus().toggleHighlight({ color: "#ffffcc" }).run(),
-      },
+        type: "select",
+        items: [
+          {
+            content: "background",
+            value: { content: "white", hex: "#fff" },
+            function: (editor: Editor) =>
+              editor.chain().focus().unsetHighlight().run(),
+          },
+          {
+            content: "background",
+            value: { content: "black", hex: "#000" },
+            function: (editor: Editor) =>
+              editor.chain().focus().toggleHighlight({ color: "#000" }).run(),
+          },
+          {
+            content: "background",
+            value: { content: "grey", hex: "#ccc" },
+            function: (editor: Editor) =>
+              editor.chain().focus().toggleHighlight({ color: "#ccc" }).run(),
+          },
+          {
+            content: "background",
+            value: { content: "light-blue", hex: "#defbff" },
+            function: (editor: Editor) =>
+              editor.chain().focus().toggleHighlight({ color: "#defbff" }).run(),
+          },
+          {
+            content: "background",
+            value: { content: "light-green", hex: "#dcedc8" },
+            function: (editor: Editor) =>
+              editor.chain().focus().toggleHighlight({ color: "#dcedc8" }).run(),
+          },
+          {
+            content: "background",
+            value: { content: "light-yellow", hex: "#ffffcc" },
+            function: (editor: Editor) =>
+              editor.chain().focus().toggleHighlight({ color: "#ffffcc" }).run(),
+          },
+        ],
+      }
     ],
   },
   {

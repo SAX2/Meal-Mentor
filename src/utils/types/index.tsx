@@ -38,6 +38,8 @@ export type OptionsContext = {
   }[];
 };
 
+export type ToolbarOptionType = "button" | "select" | "input" | "select-group"
+
 export type ToolbarOption = {
   content: string;
   value?:
@@ -50,10 +52,12 @@ export type ToolbarOption = {
   function?: (editor: Editor, value?: number | string) => void;
   title?: string;
   icon?: React.ReactElement;
+  type?: ToolbarOptionType;
+  items?: ToolbarOption[];
 }
 
 export type ToolbarOptions = {
-  type: "button" | "select" | "input";
+  type: ToolbarOptionType;
   items: ToolbarOption[];
 };
 
