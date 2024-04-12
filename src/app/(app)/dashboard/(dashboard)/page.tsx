@@ -17,11 +17,19 @@ const page = async () => {
   const folders: Folder[] | null = [];
 
   if (foldersOwn) {
-    folders.push(...foldersOwn);
+    const ownFolders = foldersOwn.map((folder) => ({
+      ...folder,
+      collaborating: false,
+    }));
+    folders.push(...ownFolders);
   }
   
   if (foldersCollab) {
-    folders.push(...foldersCollab);
+    const collaboratingFolders = foldersCollab.map((folder) => ({
+      ...folder,
+      collaborating: true,
+    }));
+    folders.push(...collaboratingFolders);
   }
 
   return (

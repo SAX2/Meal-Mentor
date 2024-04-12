@@ -1,26 +1,22 @@
 import React from 'react'
 import Emoji from '@/components/emoji/Emoji';
 import Link from 'next/link';
+import CreateDir from '@/components/dialog/CreateDirDialog';
 import { Route, RouteButton } from '@/components/navbar/Route';
 import { getFiles } from '@/lib/supabase/queries';
 import { Folder } from '@/lib/supabase/supabase.types';
-import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { auth } from '@clerk/nextjs';
 import { FileText, PlusIcon } from 'lucide-react';
-import CreateDir from '@/components/dialog/CreateDirDialog';
+import { MoreOptionsFolder } from './FolderCardButtons';
 
 interface FolderCardProps {
   folderId: string;
-  folder: Folder;
+  folder: Folder & { collaborating?: boolean };
 }
 
 const FolderCard: React.FC<FolderCardProps> = async ({ folderId, folder }) => {
   const { userId } = auth();
   const { data: files, error } = await getFiles(folderId);
-
-  // const folderOwner = 
-
-  // if (folder.folderOwner !== userId) 
 
   if (error) return;
 
@@ -28,21 +24,21 @@ const FolderCard: React.FC<FolderCardProps> = async ({ folderId, folder }) => {
   
   return (
     <div className="p-3 rounded-lg bg-white-2 border border-outline h-fit">
-      <div className="flex flex-col gap-[6px]">
-        <div className="flex justify-between gap-1 items-center">
-          <div className="flex items-center gap-[6px]">
+      <div className="flex flex-col gap-[6px] w-full">
+        {folder.collaborating && (
+          <p className="text-xs text-grey">Collaborating</p>
+        )}
+        <div className="flex justify-between gap-1 items-center w-full">
+          <div className="flex items-center gap-[6px] w-full">
             <Emoji icon={folder.iconId} width={22} height={22} />
-            <h1 className="text-lg font-semibold truncate w-full">
-              {folder.title}
-            </h1>
+            <h1 className="text-lg font-semibold truncate">{folder.title}</h1>
           </div>
-            <RouteButton type="hover">
-              <DotsHorizontalIcon
-                width={14}
-                height={14}
-                className="text-grey"
-              />
-            </RouteButton>
+          <div className="w-[24px]">
+            <MoreOptionsFolder
+              collaborating={folder.collaborating ?? false}
+              folderId={folderId}
+            />
+          </div>
         </div>
         <div className="folder w-full relative">
           <Link
@@ -58,11 +54,15 @@ const FolderCard: React.FC<FolderCardProps> = async ({ folderId, folder }) => {
               <FileText width={20} height={20} className="text-grey" />
               <p className="font-medium text-grey">Files</p>
             </div>
-            <CreateDir id={folderId} userId={userId ?? ""} dirType="file">
-              <RouteButton type="hover">
-                <PlusIcon width={14} height={14} className="text-grey" />
-              </RouteButton>
-            </CreateDir>
+            {!folder.collaborating && (
+              <div>
+                <CreateDir id={folderId} userId={userId ?? ""} dirType="file">
+                  <RouteButton type="hover">
+                    <PlusIcon width={14} height={14} className="text-grey" />
+                  </RouteButton>
+                </CreateDir>
+              </div>
+            )}
           </div>
           <div className="flex flex-col">
             {files?.map((file) => {
@@ -82,6 +82,36 @@ const FolderCard: React.FC<FolderCardProps> = async ({ folderId, folder }) => {
                 </div>
               );
             })}
+            {!folder.collaborating && files?.length === 0 && (
+              <div className="flex h-fit">
+                <div className="w-[24px] min-h-full flex justify-center">
+                  <div className="h-full w-[2px] bg-outline"></div>
+                </div>
+                <CreateDir
+                  userId={userId ?? ""}
+                  id={folderId}
+                  dirType="file"
+                  classname="w-full"
+                >
+                  <div className="rounded-sm border border-outline border-dashed bg-white flex gap-1 items-center p-1 w-full cursor-pointer justify-center">
+                    <PlusIcon width={16} height={16} className="text-grey" />
+                    <span className="text-sm font-medium text-grey">
+                      Add new file
+                    </span>
+                  </div>
+                </CreateDir>
+              </div>
+            )}
+            {folder.collaborating && files?.length === 0 && (
+              <div className="flex h-fit">
+                <div className="w-[24px] min-h-full flex justify-center">
+                  <div className="h-full w-[2px] bg-outline"></div>
+                </div>
+                <div className='py-1'>
+                  <p className="text-grey text-xs">Empty folder</p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
