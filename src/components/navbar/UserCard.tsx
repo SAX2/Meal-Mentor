@@ -6,14 +6,16 @@ import { AvatarFallback, AvatarImage, Avatar } from "../ui/avatar";
 import { ChevronsUpDownIcon, PanelLeftCloseIcon } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { User } from "@/lib/supabase/supabase.types";
+import useFormatName from "@/lib/hooks/useFormatName";
 
 const UserCard = ({ user }: { user: User }) => {
-  if (!user) return;
-
-  const usernameDisplay =
-    !user?.firstName || user?.firstName == null
-      ? `${user?.email?.split("@")[0]} MealMentor`
-      : `${user?.firstName} ${user?.lastName}'s MealMentor`;
+  if (!user) return;  
+  
+  const { usernameDisplay } = useFormatName({
+    email: user.email ?? "",
+    lastName: user.lastName ?? "",
+    firstName: user.firstName ?? "",
+  });
 
   return (
     <>
@@ -44,7 +46,7 @@ const UserCard = ({ user }: { user: User }) => {
             </div>
           </PopoverTrigger>
           <PopoverContent className="bg-white-2 shadow-pop min-w-[325px] ml-2 p-0">
-            <UserPopover user={user} userNameDisplay={usernameDisplay} />
+            <UserPopover user={user} />
           </PopoverContent>
         </Popover>
       )}
