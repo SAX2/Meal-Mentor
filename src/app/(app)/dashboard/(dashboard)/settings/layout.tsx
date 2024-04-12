@@ -1,29 +1,20 @@
-import Navbar from '@/components/navbar/Navbar';
 import Sidebar from '@/components/settings/Sidebar';
-import TopBar from '@/components/topbar/TopBar';
-import { getUser } from '@/lib/supabase/queries';
-import { currentUser } from '@clerk/nextjs';
 import Image from 'next/image';
 import React from 'react'
+import { getUser } from '@/lib/supabase/queries';
+import { currentUser } from '@clerk/nextjs';
 
 const layout = async ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="w-full h-dvh">
-      <div className="sticky top-0 bg-white">
-        <TopBar sheet={<Navbar />}/>
+    <>
+      <div className="flex w-full justify-between">
+        <User />
       </div>
-      <div className="p-8 flex justify-center">
-        <div className="max-w-[1100px] w-full flex flex-col gap-8">
-          <div className="flex w-full justify-between">
-            <User />
-          </div>
-          <div className="flex gap-8">
-            <Sidebar />
-            {children}
-          </div>
-        </div>
+      <div className="flex gap-8">
+        <Sidebar />
+        {children}
       </div>
-    </div>
+    </>
   );
 };
 

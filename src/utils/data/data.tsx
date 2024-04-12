@@ -1,5 +1,4 @@
 import {
-  ActivityIcon,
   BellIcon,
   BookOpen,
   Brush,
@@ -23,6 +22,7 @@ import {
   TrashIcon,
   UserIcon,
   WalletCards,
+  LayoutDashboard
 } from "lucide-react";
 import { File, Folder } from "../../lib/supabase/supabase.types";
 import {
@@ -233,19 +233,19 @@ export const options_context_collaborators: options_collaborators[] = [
 
 export const routes: Item[] = [
   {
+    isLink: true,
+    path: "",
+    title: "Home",
+    icon: <LayoutDashboard width={16} height={16} />,
+    additional: null,
+  },
+  {
     isLink: false,
     path: "/notifications",
     type: "notifications",
     title: "Notifications",
     icon: <BellIcon width={16} height={16} />,
     additional: 7,
-  },
-  {
-    isLink: true,
-    path: "/progress-tracking",
-    title: "Progress Tracking",
-    icon: <ActivityIcon width={16} height={16} />,
-    additional: null,
   },
   {
     isLink: true,
