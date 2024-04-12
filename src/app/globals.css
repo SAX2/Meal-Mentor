@@ -76,7 +76,7 @@
 }
 
 .ProseMirror {
-  @apply p-[10px] bg-transparent min-h-full;
+  @apply p-[10px] bg-transparent min-h-full selection:!bg-blue-200/75;
 }
 
 .ProseMirror > * + * {

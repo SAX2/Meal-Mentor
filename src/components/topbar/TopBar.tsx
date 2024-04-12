@@ -7,18 +7,20 @@ import { routes as routeList } from "@/utils/data/data";
 import { Item } from "@/utils/types";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "../ui/breadcrumb";
 import { Route } from "../navbar/Route";
-import { Sheet, SheetClose, SheetContent, SheetTrigger } from "../ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Loader, Menu } from "lucide-react";
 import { useEditorContet } from "@/lib/providers/editor-provider";
 import UseMediaQuery from "@/lib/hooks/useMediaQuery";
+import Navbar from "../navbar/Navbar";
 
 interface TopBarProps {
   children?: React.ReactNode;
   folderAndDocs?: boolean;
-  sheet?: React.ReactElement;
+  sheet?: React.ReactElement | "navbar";
+  route?: string;
 }
 
-const TopBar: React.FC<TopBarProps> = ({ children, folderAndDocs, sheet }) => {
+const TopBar: React.FC<TopBarProps> = ({ children, folderAndDocs, sheet, route }) => {
   const params = useParams()
   const pathname = usePathname()
 
@@ -32,7 +34,11 @@ const TopBar: React.FC<TopBarProps> = ({ children, folderAndDocs, sheet }) => {
       setDocumentId(Array.isArray(params.documentId) ? params.documentId[0] : params.documentId)
       setFolderId(Array.isArray(params.folderId) ? params.folderId[0] : params.folderId);
     } else {
-      setRoutes(routeList.filter((route) => `/dashboard${route.path}` == pathname))
+      if (route) {
+        return setRoutes(routeList.filter((routePath) => `/dashboard${routePath.path}` == route));
+      }
+
+      return setRoutes(routeList.filter((route) => `/dashboard${route.path}` == pathname))
     }
   }, [])
 
@@ -51,7 +57,7 @@ const TopBar: React.FC<TopBarProps> = ({ children, folderAndDocs, sheet }) => {
                 className="z-[200] min-[800px]:hidden bg-white-2 border-r border-outline p-0"
                 closeButton={false}
               >
-                {sheet}
+                {sheet == "navbar" ? <Navbar /> : sheet}
               </SheetContent>
             </Sheet>
           </UseMediaQuery>
@@ -63,7 +69,7 @@ const TopBar: React.FC<TopBarProps> = ({ children, folderAndDocs, sheet }) => {
         )}
       </div>
       <div className="flex items-center h-[46px] gap-2">
-        {folderAndDocs &&  <Saving state={isSaving}/>}
+        {folderAndDocs && <Saving state={isSaving} />}
         {children}
       </div>
     </div>
