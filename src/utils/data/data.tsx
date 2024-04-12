@@ -29,7 +29,8 @@ import {
   actionDeleteFile,
   actionDeleteFolder,
   actionDuplicateFolder,
-  actionDuplicateFile
+  actionDuplicateFile,
+  actionRemoveFolderForCollab
 } from "@/components/context-menu/actions";
 import {
   AuthProvider,
@@ -156,6 +157,33 @@ export const options_context: OptionsContext[] = [
       },
       {
         _: [
+          {
+            icon: <LinkIcon width={16} height={16} />,
+            title: "Copy on clipboard",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    type: "folder-collaborator",
+    group: [
+      {
+        _: [
+          {
+            icon: <StarIcon width={16} height={16} />,
+            title: "Add to favorites",
+          },
+        ],
+      },
+      {
+        _: [
+          {
+            icon: <Minus width={16} height={16} />,
+            title: "Remove folder",
+            warning: true,
+            function: (id: string) => actionRemoveFolderForCollab(id),
+          },
           {
             icon: <LinkIcon width={16} height={16} />,
             title: "Copy on clipboard",

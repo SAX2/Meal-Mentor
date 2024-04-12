@@ -30,6 +30,7 @@ interface RenderContextMenupProps {
   typeOfRender: typeOfRender;
   dirType: DirType;
   id?: string;
+  collaborating: boolean;
 }
 
 type typeOfRender = 'popover' | 'context'
@@ -39,22 +40,22 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ children, type, id, collabora
     <Menu>
       <ContextMenuTrigger>{children}</ContextMenuTrigger>
       <ContextMenuContent className="p-0 bg-white-2 shadow-pop rounded-sm z-[200]">
-        {type == "file" && <ContextMenuFile type="context" id={id} />}
-        {type == "folder" && <ContextMenuFolder type="context" id={id} />}
-        {type == "navbar" && <ContextMenuFile type="context" id={id} />}
+        {type == "file" && <ContextMenuFile type="context" id={id} collaborating={collaborator} />}
+        {type == "folder" && <ContextMenuFolder type="context" id={id} collaborating={collaborator} />}
+        {type == "navbar" && <ContextMenuFile type="context" id={id} collaborating={collaborator} />}
       </ContextMenuContent>
     </Menu>
   );
 };
 
-export const ContextMenuOnClick: React.FC<ContextMenuProps> = ({ children, type, id }) => {
+export const ContextMenuOnClick: React.FC<ContextMenuProps> = ({ children, type, id, collaborator }) => {
   return (
     <Popover>
       <PopoverTrigger>{children}</PopoverTrigger>
       <PopoverContent className="p-0 bg-white-2 shadow-pop rounded-sm w-fit">
-        {type == "file" && <ContextMenuFile type="popover" id={id} />}
-        {type == "folder" && <ContextMenuFolder type="popover" id={id} />}
-        {type == "navbar" && <ContextMenuFile type="popover" id={id} />}
+        {type == "file" && <ContextMenuFile type="popover" id={id} collaborating={collaborator} />}
+        {type == "folder" && <ContextMenuFolder type="popover" id={id} collaborating={collaborator} />}
+        {type == "navbar" && <ContextMenuFile type="popover" id={id} collaborating={collaborator} />}
       </PopoverContent>
     </Popover>
   );
@@ -64,7 +65,8 @@ const RenderContextMenu: React.FC<RenderContextMenupProps> = ({
   type,
   typeOfRender,
   id,
-  dirType
+  dirType,
+  collaborating = false,
 }) => {
   const router = useRouter();
   const { user } = useUser();
@@ -76,11 +78,13 @@ const RenderContextMenu: React.FC<RenderContextMenupProps> = ({
     }
   };
 
+  const options = collaborating
+    ? options_context?.filter((o) => o.type === "folder-collaborator")[0]
+    : options_context?.filter((o) => o.type === type)[0];
+
   return (
     <>
-      {options_context
-        .filter((o) => o.type === type)[0]
-        ?.group?.map((group, index) => {
+      {options.group?.map((group, index) => {
           return (
             <>
               {typeOfRender == "context" && (
@@ -97,11 +101,9 @@ const RenderContextMenu: React.FC<RenderContextMenupProps> = ({
                               option.function && option.function(id ? id : "")
                           )
                         }
+                        key={`${option.title}_${Math.random() * 40}`}
                       >
-                        <ContextMenuItem
-                          content={option}
-                          key={`${option.title}_${Math.random() * 40}`}
-                        >
+                        <ContextMenuItem content={option}>
                           <ContextMenuButton>
                             {option.icon && (
                               <div className="text-black">{option.icon}</div>
@@ -112,7 +114,7 @@ const RenderContextMenu: React.FC<RenderContextMenupProps> = ({
                       </div>
                     );
 
-                    if (option.modal == 'create-file') {
+                    if (option.modal == "create-file") {
                       return (
                         <CreateDir
                           dirType="file"
@@ -144,7 +146,15 @@ const RenderContextMenu: React.FC<RenderContextMenupProps> = ({
                 <div className="flex flex-col gap-0 p-[5px]" key={index}>
                   {group._?.map((option) => {
                     return (
-                      <div key={`${option.title}_${Math.random() * 40}`}>
+                      <div
+                        onClick={() =>
+                          handleClick(
+                            () =>
+                              option.function && option.function(id ? id : "")
+                          )
+                        }
+                        key={`${option.title}_${Math.random() * 40}`}
+                      >
                         <ContextMenuButton>
                           {option.icon && (
                             <div className="text-black">{option.icon}</div>
@@ -167,14 +177,14 @@ const RenderContextMenu: React.FC<RenderContextMenupProps> = ({
   );
 };
 
-const ContextMenuFile = ({ type, id }: { type: typeOfRender, id?: string }) => {
+const ContextMenuFile = ({ type, id, collaborating }: { type: typeOfRender, id?: string, collaborating: boolean, }) => {
   const lastUpdateText = 'Last time updated by Santino Degra at'
   const lastUpdateDate = '31 may 2023, 23:31'
 
 
   return (
     <div className="flex flex-col w-[200px]">
-      <RenderContextMenu type="file" typeOfRender={type} id={id} dirType='file' />
+      <RenderContextMenu type="file" typeOfRender={type} id={id} dirType='file' collaborating={collaborating} />
       <Separator />
       <div className="p-[5px]">
         <p className="text-xs text-grey p-[6px]">
@@ -186,13 +196,13 @@ const ContextMenuFile = ({ type, id }: { type: typeOfRender, id?: string }) => {
   );
 }
 
-const ContextMenuFolder = ({ type, id }: { type: typeOfRender, id?: string}) => {
+const ContextMenuFolder = ({ type, id, collaborating }: { type: typeOfRender, id?: string, collaborating: boolean, }) => {
   const lastUpdateText = 'Last time updated by Santino Degra at'
   const lastUpdateDate = '31 may 2023, 23:31'
 
   return (
     <div className="flex flex-col w-[200px]">
-      <RenderContextMenu type="folder" typeOfRender={type} id={id} dirType='folder'/>
+      <RenderContextMenu type="folder" typeOfRender={type} id={id} dirType='folder' collaborating={collaborating}/>
       <Separator />
       <div className="p-[5px]">
         <p className="text-xs text-grey p-[6px]">
