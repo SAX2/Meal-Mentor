@@ -145,6 +145,27 @@ const RenderContextMenu: React.FC<RenderContextMenupProps> = ({
               {typeOfRender == "popover" && (
                 <div className="flex flex-col gap-0 p-[5px]" key={index}>
                   {group._?.map((option) => {
+                    const renderContent = (
+                      <ContextMenuButton>
+                        {option.icon && (
+                          <div className="text-black">{option.icon}</div>
+                        )}
+                        {option.title}
+                      </ContextMenuButton>
+                    );
+
+                    if (option.modal === 'edit-title') {
+                      return (
+                        <EditTitleDialog
+                          dirType={dirType}
+                          id={id ?? ""}
+                          key={`${option.modal}-${id}`}
+                        >
+                          {renderContent}
+                        </EditTitleDialog>
+                      );
+                    }
+
                     return (
                       <div
                         onClick={() =>
@@ -155,12 +176,7 @@ const RenderContextMenu: React.FC<RenderContextMenupProps> = ({
                         }
                         key={`${option.title}_${Math.random() * 40}`}
                       >
-                        <ContextMenuButton>
-                          {option.icon && (
-                            <div className="text-black">{option.icon}</div>
-                          )}
-                          {option.title}
-                        </ContextMenuButton>
+                        {renderContent}
                       </div>
                     );
                   })}
@@ -188,7 +204,7 @@ const ContextMenuFile = ({ type, id, collaborating }: { type: typeOfRender, id?:
       <Separator />
       <div className="p-[5px]">
         <p className="text-xs text-grey p-[6px]">
-          {lastUpdateText}{" "}
+          {lastUpdateText}
           <span className="font-semibold">{lastUpdateDate}</span>
         </p>
       </div>
