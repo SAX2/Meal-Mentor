@@ -10,7 +10,11 @@ export default authMiddleware({
     if (!auth.userId && !auth.isPublicRoute) {
       return redirectToSignIn({ returnBackUrl: req.url });
     }
-    if (!req.nextUrl.pathname.startsWith("/dashboard")) {
+    if (
+      !req.nextUrl.pathname.startsWith("/dashboard") &&
+      !req.nextUrl.pathname.startsWith("/sign-in") &&
+      !req.nextUrl.pathname.startsWith("/sign-up")
+    ) {
       if (auth.userId) {
         return NextResponse.redirect(new URL("/dashboard", req.url));
       }

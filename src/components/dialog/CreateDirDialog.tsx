@@ -16,7 +16,6 @@ import { toast } from 'sonner';
 import { DirType } from '@/utils/types';
 import Image from 'next/image';
 import { RouteButton } from '../navbar/Route';
-import { useSearchParams } from 'next/navigation'
 import Toast from '../toasts/Toast';
 
 interface CreateDirProps {
@@ -351,7 +350,7 @@ const Collborators = ({
   );
 };
 
-const UserCollborator = ({
+export const UserCollborator = ({
   collaborator,
   handleClickUser,
   isAdded

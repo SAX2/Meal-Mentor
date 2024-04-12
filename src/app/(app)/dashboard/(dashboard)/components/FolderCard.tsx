@@ -40,7 +40,7 @@ const FolderCard: React.FC<FolderCardProps> = async ({ folderId, folder }) => {
             />
           </div>
         </div>
-        <div className="folder w-full relative">
+        <div className="folder w-full">
           <Link
             href={`/dashboard/${folder.id}`}
             className="px-2 py-1 bg-white rounded-md w-full border border-outline line-clamp-2 text-grey hover:bg-white-2-sec transition-colors"
