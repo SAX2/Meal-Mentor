@@ -52,7 +52,7 @@ export const ContextMenuOnClick: React.FC<ContextMenuProps> = ({ children, type,
   return (
     <Popover>
       <PopoverTrigger>{children}</PopoverTrigger>
-      <PopoverContent className="p-0 bg-white-2 shadow-pop rounded-sm w-fit">
+      <PopoverContent className="p-0 bg-white-2 shadow-pop rounded-sm w-fit !z-[200]">
         {type == "file" && <ContextMenuFile type="popover" id={id} collaborating={collaborator} />}
         {type == "folder" && <ContextMenuFolder type="popover" id={id} collaborating={collaborator} />}
         {type == "navbar" && <ContextMenuFile type="popover" id={id} collaborating={collaborator} />}
@@ -153,6 +153,19 @@ const RenderContextMenu: React.FC<RenderContextMenupProps> = ({
                         {option.title}
                       </ContextMenuButton>
                     );
+
+                    if (option.modal == "create-file") {
+                      return (
+                        <CreateDir
+                          dirType="file"
+                          userId={user?.id ?? ""}
+                          id={id}
+                          key={`${option.modal}-${id}`}
+                        >
+                          {renderContent}
+                        </CreateDir>
+                      );
+                    }
 
                     if (option.modal === 'edit-title') {
                       return (

@@ -28,7 +28,7 @@ const CustomDialog: React.FC<CustomDialogProps> = ({
   return (
     <Dialog>
       <DialogTrigger className={cn("", classname)}>{children}</DialogTrigger>
-      <DialogContent className={cn("shadow-pop", classnameContent)}>
+      <DialogContent className={cn("shadow-pop !max-w-4/5 !w-full", classnameContent)}>
         {header && (
           <DialogHeader>
             {title && <DialogTitle>{title}</DialogTitle>}

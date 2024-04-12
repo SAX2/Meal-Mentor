@@ -34,11 +34,11 @@ const page = async () => {
 
   return (
     <>
-      <article className="flex flex-col gap-8">
+      <article className="flex flex-col md:gap-8 gap-4">
         <section>
           <h1 className="text-xl font-semibold">Folder & Files</h1>
         </section>
-        <section className="grid grid-cols-4 gap-4">
+        <section className="grid xl:grid-cols-4 lg:grid-cols-3 gap-4 md:grid-cols-2">
           {folders &&
             folders.map((folder) => {
               return (
