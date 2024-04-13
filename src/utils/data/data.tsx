@@ -22,7 +22,9 @@ import {
   TrashIcon,
   UserIcon,
   WalletCards,
-  LayoutDashboard
+  LayoutDashboard,
+  GlobeIcon,
+  LockKeyhole
 } from "lucide-react";
 import { File, Folder } from "../../lib/supabase/supabase.types";
 import {
@@ -475,6 +477,36 @@ export const files: File[] = [
     folderId: "3cfbff41-a704-453e-baba-6154243fe3ef",
     createdAt: "",
     fileOwner: "bd4b29e6-2a7a-4e0a-af40-0518b0dbe263",
+  },
+];
+
+export const dirView = [
+  {
+    type: "global",
+    title: "Any user who has the link",
+    description: "Any Internet user with the link can see it",
+    icon: <GlobeIcon width={24} height={24} className="text-black" />,
+    options: [
+      {
+        title: "Reader",
+        function: () => { return },
+      },
+      {
+        title: "Commentator",
+        function: () => { return },
+      },
+      {
+        title: "Editor",
+        function: () => { return },
+      },
+    ]
+  },
+  {
+    type: "restricted",
+    title: "Restricted",
+    description: "Only people who have access will be able to open the document with the link",
+    icon: <LockKeyhole width={24} height={24} className="text-black" />,
+    options: null
   },
 ];
 
