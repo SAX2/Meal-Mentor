@@ -1,6 +1,8 @@
 import React from 'react'
 import Navbar from './components/navbar/Navbar'
+import OnScroll from './components/navbar/OnScroll';
 import { Spotlight } from './components/container-scroll/Spotlight'
+import Footer from './components/footer/Footer';
 
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -14,12 +16,11 @@ const layout = ({ children }: { children: React.ReactNode }) => {
         <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_5%,black)]"></div>
         <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_5%,black)]"></div>
       </div>
-      <div className="w-full flex justify-center px-4 sticky top-0 z-[100]">
-        <div className="w-full max-w-[1200px]">
-          <Navbar />
-        </div>
-      </div>
+      <OnScroll>
+        <Navbar />
+      </OnScroll>
       <div className="relative z-[100]">{children}</div>
+      <Footer />
     </div>
   );
 };

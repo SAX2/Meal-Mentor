@@ -9,9 +9,7 @@ const Navbar = () => {
   return (
     <div className="py-4 flex justify-between gap-4">
       <div className="flex gap-2 items-center">
-        <div>
-          <Logo className="w-8" />
-        </div>
+        <Logo className="w-8" />
         <h1 className="text-xl font-semibold">Meal Mentor</h1>
       </div>
       <div className="flex items-center gap-4 max-md:hidden">
