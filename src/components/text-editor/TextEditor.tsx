@@ -29,12 +29,14 @@ interface TextEditorProps {
   dirDetails?: File | Folder;
   fileId: string;
   dirType: "folder" | "file";
+  owner: string | null;
 }
 
 const TextEditor: React.FC<TextEditorProps> = ({
   dirType,
   fileId,
   dirDetails,
+  owner
 }) => {
   const { setIsSaving } = useEditorContet()
   const { userId } = useAuth();
@@ -139,34 +141,47 @@ const TextEditor: React.FC<TextEditorProps> = ({
       try {
         if (dirType === 'file') {
           editor.commands.clearContent();
+
           const { data: selectedDir, error } = await getFileDetails({
             fileId,
-            userId: userId,
+            userId: owner ?? userId,
           });
+
           if (error) return router.replace(`/dashboard`);
+
           if (selectedDir === null) {
             setIsLoading(false);
+
             return;
           }
+          
           if ( selectedDir[0].data === null) {
             setIsLoading(false);
+
             return;
           }
+
           editor.commands.setContent(selectedDir[0].data);
         }
         if (dirType === 'folder') {
           editor.commands.clearContent();
+
           const { data: selectedDir, error } = await getFolderDetails({
             folderId: fileId,
-            userId: userId,
+            userId: owner ?? userId,
           });
+
           if (error) return router.replace(`/dashboard`);
+
           if (selectedDir === null) {
             setIsLoading(false);
+
             return;
           }
+
           if ( selectedDir[0].data === null) {
             setIsLoading(false);
+
             return;
           }
           editor.commands.setContent(selectedDir[0].data);

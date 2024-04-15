@@ -86,7 +86,7 @@ const page = async ({
               {data[0]?.title}
             </h1>
           </div>
-          <TextEditor dirType="file" fileId={data[0].id ?? ""} />
+          <TextEditor dirType="file" fileId={data[0].id ?? ""} owner={searchParams.ow ?? null} />
         </>
       )}
     </>
