@@ -23,7 +23,7 @@ const FolderCard: React.FC<FolderCardProps> = async ({ folderId, folder }) => {
   const root = folder.data && folder.data.replace(/<[^>]+>/g, '')
   
   return (
-    <div className="p-3 rounded-lg bg-white-2 border border-outline h-fit">
+    <div className="p-3 rounded-lg bg-white-2 border border-outline h-fit max-lg:h-full">
       <div className="flex flex-col gap-[6px] w-full">
         {folder.collaborating && (
           <p className="text-xs text-grey">Collaborating</p>

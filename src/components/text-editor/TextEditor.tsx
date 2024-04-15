@@ -90,9 +90,8 @@ const TextEditor: React.FC<TextEditorProps> = ({
     },
   });
 
-
   useEffect(() => {
-    if (editorContent.length === 0) return;
+    if (editorContent.length === 0 || editor === null || !fileId) return;
 
     const debounceTimeout = setTimeout(() => {
       setDebouncedEditorContent(editorContent);

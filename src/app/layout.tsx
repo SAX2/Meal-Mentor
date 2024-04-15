@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner"
 import { ClerkProvider } from '@clerk/nextjs'
-import { UserProvider } from "@/lib/providers/supabase-user-provider";
 import { EditorContextProvider } from "@/lib/providers/editor-provider";
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,10 +20,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ClerkProvider>
-          <UserProvider>
-            <EditorContextProvider>{children}</EditorContextProvider>
-            <Toaster expand theme="light"/>
-          </UserProvider>
+          <EditorContextProvider>{children}</EditorContextProvider>
+          <Toaster expand theme="light" />
         </ClerkProvider>
       </body>
     </html>
