@@ -209,6 +209,7 @@ const SharePopover = ({
 
                       return (
                         <UserCollborator
+                          key={collaborator.id}
                           collaborator={collaborator}
                           isAdded={isAdded}
                           handleClickUser={handleClickUser}
@@ -223,7 +224,7 @@ const SharePopover = ({
                       People who have access:
                     </h3>
                     <div className="flex flex-col">
-                      {collaborators.map((collaborator) => {
+                      {collaborators.map((collaborator, index) => {
                         const isAdded = collaborators.filter(
                           (collboratorAdded) =>
                             collboratorAdded.id === collaborator.id
@@ -231,6 +232,7 @@ const SharePopover = ({
 
                         return (
                           <UserCollborator
+                            key={`${index}_${collaborator.id}`}
                             collaborator={collaborator}
                             isAdded={isAdded}
                             handleClickUser={handleClickUser}
@@ -258,6 +260,7 @@ const SharePopover = ({
                               .map((view) => {
                                 return (
                                   <SelectItem
+                                    key={view.title}
                                     value={view.type}
                                     className="p-[2.5px] px-2 hover:!bg-white-2-sec focus:!bg-white-2-sec"
                                   >

@@ -46,6 +46,7 @@ const PopoverCollaborator = ({
                       ) {
                         return (
                           <Selector
+                            key={option.title}
                             option={option}
                             defaultValue={{
                               icon: option._ ? option._[0].icon : null,
@@ -57,7 +58,7 @@ const PopoverCollaborator = ({
 
                       if (isOwner || isCollaborator) {
                         return (
-                          <div className="px-[6px] py-1 rounded-sm hover:bg-white-2-sec cursor-pointer">
+                          <div className="px-[6px] py-1 rounded-sm hover:bg-white-2-sec cursor-pointer" key={option.title}>
                             <div className="flex gap-[6px] items-center">
                               {option.icon}
                               {option.title}
@@ -130,6 +131,7 @@ const Selector = ({
           option._.map((option: any) => {
             return (
               <SelectItem
+                key={option.title}
                 value={option.title}
                 className="text-base focus:bg-white-2-sec"
               >
