@@ -6,11 +6,10 @@ interface CTAProps {
   children: React.ReactNode;
   type: "plans" | "main" | "login";
   className?: string;
+  path: string;
 }
 
-const CTA: React.FC<CTAProps> = ({ type, className, children }) => {
-  const path = type === "plans" ? "/plans" : type === 'login' ? "sign-in" : "/sign-up";
-
+const CTA: React.FC<CTAProps> = ({ type, className, children, path }) => {
   return (
     <Link
       href={path}

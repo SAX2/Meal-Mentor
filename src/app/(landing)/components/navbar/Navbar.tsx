@@ -4,8 +4,11 @@ import CTA from '../container-scroll/CTA';
 import { Logo } from '../../../../../public/logo/mealmentor'
 import { navbar } from '@/utils/data/landing';
 import { CornerDownLeft } from 'lucide-react';
+import { auth } from '@clerk/nextjs';
 
 const Navbar = () => {
+  const { sessionId } = auth();
+
   return (
     <div className="py-4 flex justify-between gap-4">
       <div className="flex gap-2 items-center">
@@ -28,13 +31,16 @@ const Navbar = () => {
           })}
         </ul>
         <div className="flex items-center gap-2">
-          <CTA type="main" className="px-2 py-[2px] rounded-md">
-            <CornerDownLeft width={16} height={16} />
-            Start typing
-          </CTA>
-          <CTA type="login" className="px-2 py-[2px] rounded-md">
-            Login
-          </CTA>
+          {sessionId && <CTA type='login' className='px-2 py-[2px] rounded-md' path='/dashboard'>Dashboard</CTA>}
+          {!sessionId && <>
+            <CTA type="main" className="px-2 py-[2px] rounded-md" path={"/sign-up"}>
+              <CornerDownLeft width={16} height={16} />
+              Start typing
+            </CTA>
+            <CTA type="login" className="px-2 py-[2px] rounded-md"  path={"/sign-in"}>
+              Login
+            </CTA>
+          </>}
         </div>
       </div>
     </div>

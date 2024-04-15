@@ -5,8 +5,11 @@ import CTA from '../components/container-scroll/CTA';
 import { CornerDownLeft } from 'lucide-react';
 import { bento, customers } from '@/utils/data/landing';
 import { cn } from '@/lib/utils';
+import { auth } from '@clerk/nextjs';
 
 const page = () => {
+  const { sessionId } = auth();
+
   return (
     <div className="flex flex-col gap-8">
       <div className="w-full flex justify-center px-4">
@@ -18,12 +21,12 @@ const page = () => {
             Seamless Collaboration, <br /> Amplified Productivity
           </h1>
           <div className="flex gap-3 items-center mt-3">
-            <CTA type="main" className="text-xl">
+            <CTA type="main" className="text-xl" path={sessionId ? "/dashboard" : "/sign-up"}>
               <CornerDownLeft width={24} height={24} />
               Start typing
             </CTA>
-            <CTA type="plans" className="text-xl">
-              Plans
+            <CTA type="plans" className="text-xl" path={"#"}>
+              See plans
             </CTA>
           </div>
         </div>
@@ -108,12 +111,12 @@ const page = () => {
           <h1 className="text-6xl max-md:text-5xl font-bold text-center tracking-tight">Get started <br className='hidden max-sm:block'/> for free</h1>
           <p className='text-grey text-center'>Seamless teamwork. Unlock potential. Start free trial now.</p>
           <div className="flex gap-3 items-center mt-3">
-            <CTA type="main" className="text-xl">
+            <CTA type="main" className="text-xl" path={sessionId ? "/dashboard" : "/sign-up"}>
               <CornerDownLeft width={24} height={24} />
               Try for free
             </CTA>
-            <CTA type="plans" className="text-xl">
-              Plans
+            <CTA type="plans" className="text-xl" path={"#"}>
+              See plans
             </CTA>
           </div>
         </div>
