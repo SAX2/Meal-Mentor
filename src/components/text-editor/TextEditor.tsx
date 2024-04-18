@@ -11,6 +11,7 @@ import { BUBBLEMENU_OPTIONS, TOOLBAR_OPTIONS } from "@/utils/data/toolbar";
 import clsx from 'clsx';
 import EditorSkeleton from '../skeletons/EditorSkeleton';
 import Toolbar from "./Toolbar";
+import { createClient } from '@supabase/supabase-js'
 
 //Editor
 import StarterKit from "@tiptap/starter-kit";
@@ -44,6 +45,7 @@ const TextEditor: React.FC<TextEditorProps> = ({
   const [editorContent, setEditorContent] = useState<string>('');
   const [debouncedEditorContent, setDebouncedEditorContent] = useState<string>('');
   const router = useRouter();
+  const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
 
   const editor = useEditor({
     extensions: [
@@ -89,6 +91,10 @@ const TextEditor: React.FC<TextEditorProps> = ({
       },
     },
   });
+
+  const handleInserts = (payload: string) => {
+    console.log('Change received!', payload)
+  }
 
   useEffect(() => {
     if (editorContent.length === 0 || editor === null || !fileId) return;

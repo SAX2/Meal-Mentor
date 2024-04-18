@@ -10,7 +10,7 @@ const SignIn = () => {
 
   return (
     <div className="flex flex-col gap-[10px]">
-      {/* <InputModal label="Email" placeholder="Your email" type="email" handleOnChange={(value) => setEmail(value)} /> */}
+      <InputModal label="Email" placeholder="Your email" type="email" />
       <InputModal
         label="Password"
         placeholder="Your secret password"
