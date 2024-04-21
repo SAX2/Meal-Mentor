@@ -13,7 +13,7 @@ import { User } from "@/lib/supabase/supabase.types"
 const UserPopover = ({ user }: { user: User }) => {
   const { client, session: sessionActive, setActive, signOut } = useClerk();
 
-  const getUserName = (session: any) => {
+  const GetUserName = (session: any) => {
     const { usernameDisplay } = useFormatName({
       email: session?.user?.primaryEmailAddress?.emailAddress ?? "",
       firstName: session?.user?.firstName ?? "",
@@ -34,7 +34,7 @@ const UserPopover = ({ user }: { user: User }) => {
             client.activeSessions.map((session) => {
               if (!session) return null;
 
-              const usernameDisplay = getUserName(session);
+              const usernameDisplay = GetUserName(session);
 
               return (
                 <div
