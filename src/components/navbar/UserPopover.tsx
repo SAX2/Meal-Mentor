@@ -4,7 +4,7 @@ import clsx from "clsx"
 import useFormatName from "@/lib/hooks/useFormatName"
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar"
 import { Separator } from "../ui/separator"
-import { Check, LifeBuoyIcon, LogOutIcon, PanelTop, UserRoundPlusIcon, Users } from "lucide-react"
+import { Check, LogOutIcon, PanelTop, UserRoundPlusIcon, Users } from "lucide-react"
 import { Route, routeClassname } from "./Route"
 import { useClerk } from "@clerk/nextjs"
 import { redirect } from "next/navigation"
@@ -24,6 +24,8 @@ const UserPopover = ({ user }: { user: User }) => {
         <div>
           {client &&
             client.activeSessions.map((session) => {
+              if (!session) return null;
+
               const { usernameDisplay } = useFormatName({
                 email: session?.user?.primaryEmailAddress?.emailAddress ?? "",
                 firstName: session?.user?.firstName ?? "",
@@ -32,6 +34,7 @@ const UserPopover = ({ user }: { user: User }) => {
 
               return (
                 <div
+                  key={session.id}
                   className="flex gap-2 items-center justify-between hover:bg-white-2-sec p-1 rounded-sm cursor-pointer select-none"
                   onClick={() => setActive({ session: session.id })}
                 >
