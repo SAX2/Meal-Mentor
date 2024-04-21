@@ -1,8 +1,10 @@
 const useFormatName = ({ email, firstName, lastName }: {
-  firstName: string;
-  lastName: string;
-  email: string;
+  firstName: string | null;
+  lastName: string | null;
+  email: string | null;
 }) => {
+
+  if (email === null || lastName === null || firstName === null) return { usernameDisplay: null };
   
   const usernameDisplay =
     !firstName || firstName == null

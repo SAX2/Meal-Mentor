@@ -9,8 +9,6 @@ import { User } from "@/lib/supabase/supabase.types";
 import useFormatName from "@/lib/hooks/useFormatName";
 
 const UserCard = ({ user }: { user: User }) => {
-  if (!user) return null;
-
   const { usernameDisplay } = useFormatName({
     email: user.email ?? "",
     lastName: user.lastName ?? "",
