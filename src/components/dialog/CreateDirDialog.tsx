@@ -314,6 +314,7 @@ const Collborators = ({
 
               return (
                 <UserCollborator
+                  key={collaborator.id}
                   collaborator={collaborator}
                   handleClickUser={handleClickUser}
                   isAdded={isAdded}
@@ -331,6 +332,7 @@ const Collborators = ({
 
             return (
               <UserCollborator
+                key={collaborator.id}
                 collaborator={collaborator}
                 handleClickUser={handleClickUser}
                 isAdded={isAdded}

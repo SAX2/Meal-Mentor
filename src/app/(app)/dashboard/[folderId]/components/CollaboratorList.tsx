@@ -50,7 +50,7 @@ const CollaboratorList = ({ collaborators, ownerId }: { collaborators: User[] | 
         <div className="flex flex-row-reverse justify-end -space-x-[3px] space-x-reverse *:ring-2 *:ring-white mt-1">
           {collaborators?.map((collaborator: User) => {
             return (
-              <Avatar className="w-5 h-5 rounded-sm">
+              <Avatar className="w-5 h-5 rounded-sm" key={collaborator.avatarUrl}>
                 <AvatarImage
                   src={collaborator.avatarUrl ?? ""}
                   alt={collaborator.email ?? ""}

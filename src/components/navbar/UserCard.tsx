@@ -3,14 +3,14 @@
 import React from "react";
 import UserPopover from "./UserPopover";
 import { AvatarFallback, AvatarImage, Avatar } from "../ui/avatar";
-import { ChevronsUpDownIcon, PanelLeftCloseIcon } from "lucide-react";
+import { ChevronsUpDownIcon } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { User } from "@/lib/supabase/supabase.types";
 import useFormatName from "@/lib/hooks/useFormatName";
 
 const UserCard = ({ user }: { user: User }) => {
-  if (!user) return;  
-  
+  if (!user) return null;
+
   const { usernameDisplay } = useFormatName({
     email: user.email ?? "",
     lastName: user.lastName ?? "",

@@ -51,7 +51,7 @@ export const SearchCommand = ({
           {searchData.map(async (item) => {
             if (item.fetchData) {
               if (item.fetchData.type === "folder-file") {
-                return <FolderFiles onClick={onClick} />;
+                return <FolderFiles onClick={onClick} key={item.path} />;
               }
             }
 

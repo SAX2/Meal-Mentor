@@ -11,6 +11,8 @@ import { redirect } from "next/navigation"
 import { User } from "@/lib/supabase/supabase.types"
 
 const UserPopover = ({ user }: { user: User }) => {
+  if (!user) return null;
+
   const { client, session: sessionActive, setActive, signOut } = useClerk();
 
   return (
