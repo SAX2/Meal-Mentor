@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react'
-import { File, Folder } from "@/lib/supabase/supabase.types";
+import { Document, Folder } from "@/lib/supabase/supabase.types";
 import { useEditorContet } from "@/lib/providers/editor-provider";
 import { useAuth } from '@clerk/nextjs';
 import { getFileDetails, getFolderDetails, updateFileData, updateFolderData } from '@/lib/supabase/queries';
@@ -27,7 +27,7 @@ import Code from "@tiptap/extension-code";
 import FontFamily from "@tiptap/extension-font-family";
 
 interface TextEditorProps {
-  dirDetails?: File | Folder;
+  dirDetails?: Document | Folder;
   fileId: string;
   dirType: "folder" | "file";
   owner: string | null;

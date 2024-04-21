@@ -3,7 +3,7 @@
 import db from "./db";
 import { and, eq, like, or, sql } from "drizzle-orm";
 import { files, folders } from "../../../migrations/schema";
-import { File, Folder, User } from "./supabase.types";
+import { Document, Folder, User } from "./supabase.types";
 import { collaborators, users } from "./schema";
 
 export const createFolder = async (folder: Folder) => {
@@ -81,7 +81,7 @@ export const updateFolderData = async ({ folderId, data }: { folderId: string, d
   }
 };
 
-export const createFile = async (file: File) => {
+export const createFile = async (file: Document) => {
   try {
     await db.insert(files).values(file);
     return { data: null, error: null };

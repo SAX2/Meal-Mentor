@@ -13,6 +13,16 @@ import { User } from "@/lib/supabase/supabase.types"
 const UserPopover = ({ user }: { user: User }) => {
   const { client, session: sessionActive, setActive, signOut } = useClerk();
 
+  const getUserName = (session: any) => {
+    const { usernameDisplay } = useFormatName({
+      email: session?.user?.primaryEmailAddress?.emailAddress ?? "",
+      firstName: session?.user?.firstName ?? "",
+      lastName: session?.user?.lastName ?? "",
+    });
+
+    return usernameDisplay
+  }
+
   return (
     <>
       <div className="flex flex-col gap-1 p-2">
@@ -24,11 +34,7 @@ const UserPopover = ({ user }: { user: User }) => {
             client.activeSessions.map((session) => {
               if (!session) return null;
 
-              const { usernameDisplay } = useFormatName({
-                email: session?.user?.primaryEmailAddress?.emailAddress ?? "",
-                firstName: session?.user?.firstName ?? "",
-                lastName: session?.user?.lastName ?? "",
-              });
+              const usernameDisplay = getUserName(session);
 
               return (
                 <div

@@ -12,7 +12,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { getCollaboratingFolders, getCollaborators, getFileDetails, getFolderDetails } from "@/lib/supabase/queries";
-import { File, Folder, User } from "@/lib/supabase/supabase.types";
+import { Document, Folder, User } from "@/lib/supabase/supabase.types";
 import { useAuth } from "@clerk/nextjs";
 
 const Routes = ({
@@ -23,7 +23,7 @@ const Routes = ({
   documentId?: string;
 }) => {
   const { userId } = useAuth();
-  const [items, setItems] = useState<(Folder & { type: string } | File & { type: string })[]>([]);
+  const [items, setItems] = useState<(Folder & { type: string } | Document & { type: string })[]>([]);
   const [collaborator, setCollaborator] = useState<{ folderOwner: string | null, user: User[] | null }>({ folderOwner: null, user: null });
 
   useEffect(() => {
@@ -71,7 +71,7 @@ const Routes = ({
           if (folder && folder.length > 0) {
             const combinedItems: (
               | (Folder & { type: string })
-              | (File & { type: string })
+              | (Document & { type: string })
             )[] = folder.map((item) => ({
               ...item,
               type: "folder",
@@ -85,7 +85,7 @@ const Routes = ({
   
               if (!fileError) {
                 if (file) {
-                  const filesWithTypes: (File & { type: string })[] = file.map(
+                  const filesWithTypes: (Document & { type: string })[] = file.map(
                     (fileItem) => ({
                       ...fileItem,
                       type: "file",
@@ -102,7 +102,7 @@ const Routes = ({
         if (isFolderOwner) {
           const combinedItems: (
             | (Folder & { type: string })
-            | (File & { type: string })
+            | (Document & { type: string })
           )[] = isFolderOwner.map((item) => ({
             ...item,
             type: "folder",
@@ -116,7 +116,7 @@ const Routes = ({
 
             if (!fileError) {
               if (file) {
-                const filesWithTypes: (File & { type: string })[] = file.map(
+                const filesWithTypes: (Document & { type: string })[] = file.map(
                   (fileItem) => ({
                     ...fileItem,
                     type: "file",

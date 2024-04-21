@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import ContextMenu, { ContextMenuOnClick } from "../context-menu/ContextMenu";
 import React, { useEffect, useState } from "react";
-import { File, Folder } from '@/lib/supabase/supabase.types'
+import { Document, Folder } from '@/lib/supabase/supabase.types'
 import { Collapsible, CollapsibleTrigger } from "../ui/collapsible";
 import { Route, RouteButton } from "./Route";
 import { ChevronDownIcon, GripVerticalIcon, PlusIcon } from "lucide-react";
@@ -28,7 +28,7 @@ const CollapsibleFolder: React.FC<CollapsibleFolderProps> = ({
   updates
 }) => {
   const [open, setOpen] = useState(false);
-  const [files, setFiles] = useState<File[] | null>(null);
+  const [files, setFiles] = useState<Document[] | null>(null);
   const [folderData, setFolderData] = useState<Folder | null>(null);
 
   useEffect(() => {

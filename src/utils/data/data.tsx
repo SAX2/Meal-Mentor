@@ -26,7 +26,7 @@ import {
   GlobeIcon,
   LockKeyhole
 } from "lucide-react";
-import { File, Folder } from "../../lib/supabase/supabase.types";
+import { Document, Folder } from "../../lib/supabase/supabase.types";
 import {
   actionDeleteFile,
   actionDeleteFolder,
@@ -450,7 +450,7 @@ export const folders: Folder[] = [
   },
 ];
 
-export const files: File[] = [
+export const files: Document[] = [
   {
     id: "0b536308-55f3-4b74-a34e-4510e0a434d4",
     title: "Menu generator",

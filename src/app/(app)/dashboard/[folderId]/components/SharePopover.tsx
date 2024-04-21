@@ -9,7 +9,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Select, SelectItem, SelectTrigger, SelectContent } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { addCollaborators, getCollaborators, getFolderDetails, getUsersByValue, removeCollaborator, removeCollaborators } from '@/lib/supabase/queries';
-import { File, Folder, User } from '@/lib/supabase/supabase.types';
+import { Document, Folder, User } from '@/lib/supabase/supabase.types';
 import { cn } from '@/lib/utils';
 import { dirView } from '@/utils/data/data';
 import { useAuth, useClerk } from '@clerk/nextjs';
@@ -28,7 +28,7 @@ const SharePopover = ({
 }) => {
   const { userId } = useAuth();
   const [folder, setFoler] = useState<Folder[]>([]);
-  const [file, setFile] = useState<File[]>([]);
+  const [file, setFile] = useState<Document[]>([]);
   const [selectedView, setSelectedView] = useState(dirView[0]);
   const [isOpenModal, setIsOpenModal] = useState<boolean>();
   

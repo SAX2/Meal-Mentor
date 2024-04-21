@@ -7,13 +7,13 @@ import { CommandItem } from '../ui/command';
 import { Route, routeClassname } from '../navbar/Route';
 import { getFiles, getFolders } from '@/lib/supabase/queries';
 import { useUser } from '@clerk/nextjs';
-import { File, Folder } from '@/lib/supabase/supabase.types';
+import { Document, Folder } from '@/lib/supabase/supabase.types';
 
 const FolderFiles = ({ onClick }: { onClick: (path: string) => void; }) => {
   const { user } = useUser();
 
   const [folder, setFolder] = useState<Folder[] | null>(null);
-  const [files, setFiles] = useState<File[] | null>(null);
+  const [files, setFiles] = useState<Document[] | null>(null);
 
   useEffect(() => {
     const fetchFolder = async () => {

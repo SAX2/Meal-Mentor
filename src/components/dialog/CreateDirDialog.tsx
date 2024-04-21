@@ -8,8 +8,8 @@ import { Loader, Minus, PlusIcon } from 'lucide-react';
 import { dialogs } from '@/utils/data/data';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
-import { Folder, File, User } from '@/lib/supabase/supabase.types';
-import { addCollaborators, createFile, createFolder, getCollaborators, getFolderDetails, getUsersByValue } from '@/lib/supabase/queries';
+import { Folder, Document, User } from '@/lib/supabase/supabase.types';
+import { addCollaborators, createFile, createFolder, getFolderDetails, getUsersByValue } from '@/lib/supabase/queries';
 import { v4 } from 'uuid';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
@@ -116,7 +116,7 @@ const DialogContent = ({ userId, dirType, id, dialogData }: { userId: string, di
 
       if (error) return setIsLoading(false);
       if (data) {
-        const newFile: File = {
+        const newFile: Document = {
           id: uuid,
           data: null,
           fileOwner: userId,

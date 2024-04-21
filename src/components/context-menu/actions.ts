@@ -1,7 +1,7 @@
 "use server"
 
 import { createFile, createFolder, deleteFile, deleteFolder, getFileDetails, getFolderDetails, removeCollaborator } from "@/lib/supabase/queries"
-import { File, Folder } from "@/lib/supabase/supabase.types"
+import { Document, Folder } from "@/lib/supabase/supabase.types"
 import { auth } from "@clerk/nextjs"
 import { toast } from "sonner"
 import { v4 } from "uuid"
@@ -71,7 +71,7 @@ export const actionDuplicateFile = async (fileId: string) => {
   if (errorFolder) return toast.error(`Error creating file with id ${fileId}`)
     
   if (data) {
-    const newFile: File = {
+    const newFile: Document = {
       id: uuid,
       data: null,
       fileOwner: userId ?? '',
