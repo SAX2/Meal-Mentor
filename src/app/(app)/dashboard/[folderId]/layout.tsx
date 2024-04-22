@@ -8,7 +8,7 @@ import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import Navbar from '@/components/navbar/Navbar';
 import SharePopover from './components/SharePopover';
 
-export interface LayoutProps {
+interface LayoutProps {
   children: React.ReactNode;
   params: { documentId: string, folderId: string };
 }

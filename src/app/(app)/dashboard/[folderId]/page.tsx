@@ -1,7 +1,6 @@
 import React from "react";
 import EmojiRoute from "@/components/emoji/EmojiRoute";
 import TextEditor from "@/components/text-editor/TextEditor";
-import { LayoutProps } from "./layout";
 import { Metadata } from "next";
 import { getCollaborators, getFolderDetails } from "@/lib/supabase/queries";
 import { auth } from "@clerk/nextjs";
@@ -11,7 +10,7 @@ import Link from "next/link";
 
 export async function generateMetadata({
   params,
-}: LayoutProps): Promise<Metadata> {
+}: { params: { folderId: string } }): Promise<Metadata> {
   const { userId } = auth();
   const userIdValue = userId ?? '';
   const { data, error } = await getFolderDetails({ folderId: params.folderId, userId: userIdValue });
