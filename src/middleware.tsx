@@ -7,6 +7,12 @@ export default authMiddleware({
   publicRoutes: ["/sign-up", "/sign-in", "/api/clerk-webhook", "/product"],
   ignoredRoutes: ["/api/clerk-webhook/user-delete",],
   afterAuth(auth, req, evt) {
+    if (req.nextUrl.pathname === '/') {
+      if (!auth.userId) {
+        return NextResponse.redirect(new URL("/product", req.url));
+      }
+    }
+
     if (!auth.userId && !auth.isPublicRoute) {
       return redirectToSignIn({ returnBackUrl: req.url });
     }
