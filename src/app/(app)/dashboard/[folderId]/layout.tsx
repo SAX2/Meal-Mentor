@@ -8,12 +8,12 @@ import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import Navbar from '@/components/navbar/Navbar';
 import SharePopover from './components/SharePopover';
 
-export interface layoutProps {
+export interface LayoutProps {
   children: React.ReactNode;
   params: { documentId: string, folderId: string };
 }
 
-const layout:React.FC<layoutProps> = ({ children, params }) => {
+const layout:React.FC<LayoutProps> = ({ children, params }) => {
   return (
     <ScrollArea className="w-full h-dvh">
       <div className="sticky top-0 z-[150] bg-white">

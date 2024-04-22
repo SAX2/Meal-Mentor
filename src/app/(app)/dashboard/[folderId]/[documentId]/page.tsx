@@ -1,6 +1,6 @@
 import React from 'react'
 import EmojiRoute from '@/components/emoji/EmojiRoute';
-import { layoutProps } from '../layout';
+import { LayoutProps } from '../layout';
 import { Metadata } from 'next';
 import { getCollaborators, getFileDetails } from '@/lib/supabase/queries';
 import { auth } from '@clerk/nextjs';
@@ -11,7 +11,7 @@ import Link from 'next/link';
 
 export async function generateMetadata({
   params,
-}: layoutProps): Promise<Metadata> {
+}: LayoutProps): Promise<Metadata> {
   const fileId = params.documentId;
   const { userId } = auth();
   const userIdValue = userId ?? '';
