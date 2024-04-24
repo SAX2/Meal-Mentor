@@ -48,7 +48,7 @@ export const SearchCommand = ({
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup heading="Suggestions">
-          {searchData.map(async (item) => {
+          {searchData.map((item) => {
             if (item.fetchData) {
               if (item.fetchData.type === "folder-file") {
                 return <FolderFiles onClick={onClick} key={item.path} />;
