@@ -19,7 +19,7 @@ const Sidebar = () => {
                     <Route
                       key={route.path}
                       isLink={route.isLink}
-                      path={route.path}
+                      path={`/dashboard${route.path}`}
                       iconType="SVG"
                       icon={route.icon}
                       right={
@@ -47,8 +47,8 @@ const Sidebar = () => {
                             return (
                               <Route
                                 key={route.path}
-                                isLink={route.isLink}
-                                path={route.path}
+                                isLink={true}
+                                path={`/dashboard${route.path}`}
                               >
                                 {route.title}
                               </Route>

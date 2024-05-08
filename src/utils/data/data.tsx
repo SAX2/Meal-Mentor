@@ -316,12 +316,6 @@ export const routesSetting: SidebarSettings[] = [
         title: "Appearence",
         icon: <Brush width={16} height={16} />,
       },
-      {
-        isLink: true,
-        path: "/settings/notifications",
-        title: "Notifications",
-        icon: <BellIcon width={16} height={16} />,
-      },
     ],
   },
   {
@@ -367,28 +361,28 @@ export const routesSetting: SidebarSettings[] = [
       },
     ],
   },
-  {
-    title: "Integrations",
-    routes: [
-      {
-        isLink: true,
-        path: "/settings/applications",
-        title: "Applications",
-        icon: <LayoutGrid width={16} height={16} />,
-      },
-    ],
-  },
-  {
-    title: "Logs",
-    routes: [
-      {
-        isLink: true,
-        path: "/settings/security-logs",
-        title: "Security Logs",
-        icon: <FileClock width={16} height={16} />,
-      },
-    ],
-  },
+  // {
+  //   title: "Integrations",
+  //   routes: [
+  //     {
+  //       isLink: true,
+  //       path: "/settings/applications",
+  //       title: "Applications",
+  //       icon: <LayoutGrid width={16} height={16} />,
+  //     },
+  //   ],
+  // },
+  // {
+  //   title: "Logs",
+  //   routes: [
+  //     {
+  //       isLink: true,
+  //       path: "/settings/security-logs",
+  //       title: "Security Logs",
+  //       icon: <FileClock width={16} height={16} />,
+  //     },
+  //   ],
+  // },
 ];
 
 export const chats: Chat[] = [
