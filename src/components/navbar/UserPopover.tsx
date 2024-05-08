@@ -106,7 +106,7 @@ const UserPopover = ({ user }: { user: User }) => {
       <div className="p-2 flex flex-col">
         <Route
           isLink
-          path="/product"
+          path="/"
           icon={<PanelTop width={16} height={16} />}
           iconType="SVG"
         >

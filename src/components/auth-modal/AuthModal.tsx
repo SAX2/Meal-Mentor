@@ -120,13 +120,17 @@ interface InputModalProps {
   placeholder?: string;
   type?: "text" | "password" | "number" | "email" | "submit";
   handleOnChange?: (value: string) => void;
+  value?: string;
+  className?: string;
 }
 
 export const InputModal: React.FC<InputModalProps> = ({
   handleOnChange,
   label,
   placeholder,
-  type
+  type,
+  value,
+  className
 }) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -142,10 +146,11 @@ export const InputModal: React.FC<InputModalProps> = ({
         {label}
       </Label>
       <Input
+        value={value && value}
         type={type}
         onChange={handleChange}
         placeholder={placeholder}
-        className="shadow-none border-outline"
+        className={cn("shadow-none border-outline focus-visible:ring-[1.5px] active:ring-[1.5px] focus-visible:ring-black/40 active:ring-black/40", className)}
       />
     </div>
   );

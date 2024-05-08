@@ -1,5 +1,5 @@
 import React from 'react'
-import MainImage from "../../../../public/landing/main.png";
+import MainImage from "../../../public/landing/main.png";
 import Image from 'next/image';
 import CTA from './components/container-scroll/CTA';
 import { CornerDownLeft } from 'lucide-react';

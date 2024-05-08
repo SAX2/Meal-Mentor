@@ -1,11 +1,16 @@
+"use client"
+
 import React from 'react'
 import { routesSetting } from '@/utils/data/data'
 import { Separator } from '../ui/separator';
 import { Route } from '../navbar/Route';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible';
 import { ChevronDownIcon } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 const Sidebar = () => {
+  const pathanme = usePathname();
+
   return (
     <div className="max-w-[300px] w-full flex flex-col gap-3">
       {routesSetting.map((group, index) => {
@@ -17,6 +22,7 @@ const Sidebar = () => {
                 {group.routes.map((route) => {
                   const renderContent = (
                     <Route
+                      className={pathanme === `/dashboard${route.path}` ? 'bg-white-2-sec' : ""}
                       key={route.path}
                       isLink={route.isLink}
                       path={`/dashboard${route.path}`}

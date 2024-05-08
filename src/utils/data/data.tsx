@@ -300,7 +300,7 @@ export const routesSetting: SidebarSettings[] = [
     routes: [
       {
         isLink: true,
-        path: "/settings/profile",
+        path: "/settings",
         title: "Public profile",
         icon: <Settings width={16} height={16} />,
       },
