@@ -61,9 +61,9 @@ const Navbar = async () => {
           return routeElement;
         })}
       </ul>
-      <div className="p-[5px]">
+      {/* <div className="p-[5px]">
         <Chats userId={user[0]?.id ?? ""} />
-      </div>
+      </div> */}
       <ul className="p-[5px] flex flex-col gap-[2.5px]">
         <li>
           {foldersCollaborating && foldersCollaborating.length > 0 && (
